@@ -10,6 +10,8 @@ import { AppShell } from './components/layout/AppShell/AppShell.js';
 import { AdventureNewPage } from './features/adventure/AdventureNewPage/index.js';
 import { AdventureOverviewPage } from './features/adventure/AdventureOverviewPage/index.js';
 import { AdventureSettingsPage } from './features/adventure/AdventureSettingsPage/index.js';
+import { KidsPresetsPage } from './features/adventure/KidsPresetsPage/index.js';
+import { NPCRosterPage } from './features/adventure/NPCRosterPage/index.js';
 import { ScenesPage } from './features/adventure/ScenesPage/index.js';
 import { LoginPage } from './features/auth/LoginPage/LoginPage.js';
 import { RegisterPage } from './features/auth/RegisterPage/RegisterPage.js';
@@ -177,6 +179,26 @@ const adventureSettingsRoute = createRoute({
   },
 });
 
+const adventureNpcsRoute = createRoute({
+  getParentRoute: () => shellRoute,
+  path: '/adventures/$id/npcs',
+  beforeLoad: requireAuth,
+  component: function AdventureNpcsRoute() {
+    const { id } = adventureNpcsRoute.useParams();
+    return <NPCRosterPage adventureId={id} />;
+  },
+});
+
+const adventurePresetsRoute = createRoute({
+  getParentRoute: () => shellRoute,
+  path: '/adventures/$id/presets',
+  beforeLoad: requireAuth,
+  component: function AdventurePresetsRoute() {
+    const { id } = adventurePresetsRoute.useParams();
+    return <KidsPresetsPage adventureId={id} />;
+  },
+});
+
 // ── Session routes ────────────────────────────────────────────────────────────
 
 const adventureSessionsRoute = createRoute({
@@ -313,6 +335,8 @@ const routeTree = rootRoute.addChildren([
     adventureDetailRoute,
     adventureScenesRoute,
     adventureSettingsRoute,
+    adventureNpcsRoute,
+    adventurePresetsRoute,
     adventureSessionsRoute,
     dmSessionRoute,
     playerSessionRoute,

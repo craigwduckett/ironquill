@@ -1,4 +1,5 @@
 import {
+  doublePrecision,
   integer,
   jsonb,
   pgEnum,
@@ -19,6 +20,30 @@ export const adventureTypeEnum = pgEnum('adventure_type', ['campaign', 'one_shot
 export const rulesetEnum = pgEnum('ruleset', ['standard', 'kids', 'custom']);
 export const adventureStatusEnum = pgEnum('adventure_status', ['draft', 'active', 'completed']);
 export const adventurePlayerRoleEnum = pgEnum('adventure_player_role', ['player', 'co_dm']);
+export const sceneTypeEnum = pgEnum('scene_type', [
+  'exploration',
+  'social',
+  'combat',
+  'puzzle',
+  'rest',
+  'transition',
+]);
+export const encounterDifficultyEnum = pgEnum('encounter_difficulty', [
+  'easy',
+  'medium',
+  'hard',
+  'deadly',
+]);
+
+// ── Supporting types ──────────────────────────────────────────────────────────
+// Declared before tables so JSONB column typings can reference them.
+
+export type LootEntry = {
+  type: 'item' | 'gold' | 'xp';
+  itemId?: string | undefined;
+  itemName?: string | undefined;
+  quantity: number;
+};
 
 // ── Adventures ────────────────────────────────────────────────────────────────
 
@@ -99,12 +124,34 @@ export const scenes = pgTable('scenes', {
     .notNull()
     .references(() => adventures.id, { onDelete: 'cascade' }),
   title: varchar('title', { length: 200 }).notNull(),
+  sceneType: sceneTypeEnum('scene_type').notNull().default('exploration'),
   narrativeReadAloud: text('narrative_read_aloud'),
   dmNotes: text('dm_notes'),
+  dmTips: text('dm_tips'),
+  loot: jsonb('loot').$type<LootEntry[]>(),
   orderIndex: integer('order_index').notNull().default(0),
+  // Node positions for the visual flow graph editor.
+  positionX: doublePrecision('position_x'),
+  positionY: doublePrecision('position_y'),
   backgroundImageId: text('background_image_id'),
   createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
   updatedAt: timestamp('updated_at', { withTimezone: true }).notNull().defaultNow(),
+});
+
+// ── Scene Connections ─────────────────────────────────────────────────────────
+// Directed edges in the scene flow graph. Label describes the branching condition.
+
+export const sceneConnections = pgTable('scene_connections', {
+  id: uuid('id').primaryKey().defaultRandom(),
+  fromSceneId: uuid('from_scene_id')
+    .notNull()
+    .references(() => scenes.id, { onDelete: 'cascade' }),
+  toSceneId: uuid('to_scene_id')
+    .notNull()
+    .references(() => scenes.id, { onDelete: 'cascade' }),
+  label: varchar('label', { length: 200 }),
+  conditionNotes: text('condition_notes'),
+  createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
 });
 
 // ── Scene NPCs ────────────────────────────────────────────────────────────────
@@ -125,6 +172,36 @@ export const sceneNpcs = pgTable('scene_npcs', {
   updatedAt: timestamp('updated_at', { withTimezone: true }).notNull().defaultNow(),
 });
 
+// ── Encounters ────────────────────────────────────────────────────────────────
+// One encounter per scene (typically for combat scenes).
+
+export const encounters = pgTable('encounters', {
+  id: uuid('id').primaryKey().defaultRandom(),
+  sceneId: uuid('scene_id')
+    .notNull()
+    .unique()
+    .references(() => scenes.id, { onDelete: 'cascade' }),
+  difficultyRating: encounterDifficultyEnum('difficulty_rating'),
+  terrainNotes: text('terrain_notes'),
+  createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
+  updatedAt: timestamp('updated_at', { withTimezone: true }).notNull().defaultNow(),
+});
+
+// ── Encounter Monsters ────────────────────────────────────────────────────────
+
+export const encounterMonsters = pgTable('encounter_monsters', {
+  id: uuid('id').primaryKey().defaultRandom(),
+  encounterId: uuid('encounter_id')
+    .notNull()
+    .references(() => encounters.id, { onDelete: 'cascade' }),
+  srdMonsterId: uuid('srd_monster_id').references(() => srdMonsters.id, {
+    onDelete: 'set null',
+  }),
+  customStatBlock: jsonb('custom_stat_block').$type<Record<string, unknown>>(),
+  quantity: integer('quantity').notNull().default(1),
+  createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
+});
+
 // ── Inferred types ────────────────────────────────────────────────────────────
 
 export type Adventure = typeof adventures.$inferSelect;
@@ -134,3 +211,6 @@ export type AdventurePlayer = typeof adventurePlayers.$inferSelect;
 export type Scene = typeof scenes.$inferSelect;
 export type NewScene = typeof scenes.$inferInsert;
 export type SceneNpc = typeof sceneNpcs.$inferSelect;
+export type SceneConnection = typeof sceneConnections.$inferSelect;
+export type Encounter = typeof encounters.$inferSelect;
+export type EncounterMonster = typeof encounterMonsters.$inferSelect;

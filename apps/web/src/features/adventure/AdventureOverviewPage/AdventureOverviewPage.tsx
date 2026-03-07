@@ -97,6 +97,18 @@ export function AdventureOverviewPage({ adventureId }: Props) {
               Scenes
             </Button>
           </Link>
+          <Link to="/adventures/$id/npcs" params={{ id: adventureId }}>
+            <Button variant="secondary" size="sm">
+              NPCs
+            </Button>
+          </Link>
+          {adventure.ruleset === 'kids' && (
+            <Link to="/adventures/$id/presets" params={{ id: adventureId }}>
+              <Button variant="secondary" size="sm">
+                Presets
+              </Button>
+            </Link>
+          )}
           <Link to="/adventures/$id/settings" params={{ id: adventureId }}>
             <Button variant="ghost" size="sm">
               Settings

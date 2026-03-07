@@ -32,6 +32,41 @@
   padding: var(--space-12);
 }
 
+.viewToggle {
+  display: flex;
+  gap: 2px;
+  margin-bottom: var(--space-5);
+  background: var(--color-surface-raised);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 3px;
+  width: fit-content;
+}
+
+.viewTab {
+  padding: var(--space-1) var(--space-4);
+  border-radius: var(--radius-sm);
+  border: none;
+  background: transparent;
+  color: var(--color-text-secondary);
+  font-size: var(--text-sm);
+  font-weight: var(--font-medium);
+  cursor: pointer;
+  transition:
+    background 0.15s,
+    color 0.15s;
+}
+
+.viewTab:hover {
+  color: var(--color-text-primary);
+}
+
+.viewTabActive {
+  background: var(--color-surface);
+  color: var(--color-text-primary);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
 .sceneList {
   display: flex;
   flex-direction: column;
@@ -74,10 +109,23 @@
   margin-top: 2px;
 }
 
+.sceneTitleRow {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-bottom: var(--space-1);
+}
+
 .sceneTitle {
   font-weight: var(--font-semibold);
   color: var(--color-text-primary);
-  margin-bottom: var(--space-1);
+  margin: 0;
+}
+
+.sceneTypeBadge {
+  font-size: var(--text-xs);
+  font-weight: var(--font-semibold);
+  text-transform: capitalize;
 }
 
 .sceneNarrative {
@@ -107,7 +155,8 @@
 }
 
 .input,
-.textarea {
+.textarea,
+.select {
   width: 100%;
   padding: var(--space-2) var(--space-3);
   background: var(--color-surface);
@@ -120,7 +169,8 @@
 }
 
 .input:focus,
-.textarea:focus {
+.textarea:focus,
+.select:focus {
   border-color: var(--color-accent);
 }
 

@@ -9,9 +9,39 @@ import {
   useScenes,
   useUpdateScene,
 } from '../hooks/useAdventures.js';
+import { SceneFlowGraph } from '../SceneFlowGraph/SceneFlowGraph.js';
 import styles from './ScenesPage.module.css';
 
 type Props = { adventureId: string };
+
+type SceneType = Scene['sceneType'];
+
+const SCENE_TYPES: SceneType[] = [
+  'exploration',
+  'social',
+  'combat',
+  'puzzle',
+  'rest',
+  'transition',
+];
+
+const SCENE_TYPE_LABELS: Record<SceneType, string> = {
+  exploration: 'Exploration',
+  social: 'Social',
+  combat: 'Combat',
+  puzzle: 'Puzzle',
+  rest: 'Rest',
+  transition: 'Transition',
+};
+
+const SCENE_TYPE_COLOURS: Record<SceneType, string> = {
+  exploration: '#3b82f6',
+  social: '#a855f7',
+  combat: '#ef4444',
+  puzzle: '#f59e0b',
+  rest: '#22c55e',
+  transition: '#6b7280',
+};
 
 function SceneRow({
   scene,
@@ -26,6 +56,8 @@ function SceneRow({
   const [title, setTitle] = useState(scene.title);
   const [narrative, setNarrative] = useState(scene.narrativeReadAloud ?? '');
   const [dmNotes, setDmNotes] = useState(scene.dmNotes ?? '');
+  const [dmTips, setDmTips] = useState(scene.dmTips ?? '');
+  const [sceneType, setSceneType] = useState<SceneType>(scene.sceneType);
   const updateScene = useUpdateScene(adventureId, scene.id);
   const deleteScene = useDeleteScene(adventureId);
 
@@ -34,6 +66,8 @@ function SceneRow({
       title,
       narrativeReadAloud: narrative,
       dmNotes,
+      dmTips,
+      sceneType,
     });
     setEditing(false);
     onEdited();
@@ -49,6 +83,21 @@ function SceneRow({
             onChange={(e) => setTitle(e.target.value)}
             placeholder="Scene title"
           />
+          <label htmlFor={`scene-type-${scene.id}`} className={styles.label}>
+            Scene type
+          </label>
+          <select
+            id={`scene-type-${scene.id}`}
+            className={styles.select}
+            value={sceneType}
+            onChange={(e) => setSceneType(e.target.value as SceneType)}
+          >
+            {SCENE_TYPES.map((type) => (
+              <option key={type} value={type}>
+                {SCENE_TYPE_LABELS[type]}
+              </option>
+            ))}
+          </select>
           <label htmlFor={`scene-narrative-${scene.id}`} className={styles.label}>
             Read-aloud narrative
           </label>
@@ -71,6 +120,17 @@ function SceneRow({
             rows={3}
             placeholder="NPC motivations, secret info, trap triggers…"
           />
+          <label htmlFor={`scene-tips-${scene.id}`} className={styles.label}>
+            DM tips
+          </label>
+          <textarea
+            id={`scene-tips-${scene.id}`}
+            className={styles.textarea}
+            value={dmTips}
+            onChange={(e) => setDmTips(e.target.value)}
+            rows={3}
+            placeholder="Suggestions for running this scene…"
+          />
           <div className={styles.editActions}>
             <Button
               variant="primary"
@@ -90,7 +150,15 @@ function SceneRow({
           <div className={styles.sceneInfo}>
             <span className={styles.sceneOrder}>{scene.orderIndex + 1}</span>
             <div>
-              <p className={styles.sceneTitle}>{scene.title}</p>
+              <div className={styles.sceneTitleRow}>
+                <p className={styles.sceneTitle}>{scene.title}</p>
+                <span
+                  className={styles.sceneTypeBadge}
+                  style={{ color: SCENE_TYPE_COLOURS[scene.sceneType] }}
+                >
+                  {SCENE_TYPE_LABELS[scene.sceneType]}
+                </span>
+              </div>
               {scene.narrativeReadAloud && (
                 <p className={styles.sceneNarrative}>
                   {scene.narrativeReadAloud.slice(0, 120)}
@@ -118,16 +186,20 @@ function SceneRow({
   );
 }
 
+type ViewMode = 'list' | 'flow';
+
 export function ScenesPage({ adventureId }: Props) {
   const { data: sceneList, isLoading, refetch } = useScenes(adventureId);
   const createScene = useCreateScene(adventureId);
   const [newTitle, setNewTitle] = useState('');
   const [adding, setAdding] = useState(false);
+  const [viewMode, setViewMode] = useState<ViewMode>('list');
 
   async function handleAdd() {
     if (!newTitle.trim()) return;
     await createScene.mutateAsync({
       title: newTitle.trim(),
+      sceneType: 'exploration',
       orderIndex: sceneList?.length ?? 0,
     });
     setNewTitle('');
@@ -143,10 +215,29 @@ export function ScenesPage({ adventureId }: Props) {
         <h1 className={styles.title}>Scenes</h1>
       </div>
 
+      <div className={styles.viewToggle}>
+        <button
+          type="button"
+          className={`${styles.viewTab} ${viewMode === 'list' ? styles.viewTabActive : ''}`}
+          onClick={() => setViewMode('list')}
+        >
+          List view
+        </button>
+        <button
+          type="button"
+          className={`${styles.viewTab} ${viewMode === 'flow' ? styles.viewTabActive : ''}`}
+          onClick={() => setViewMode('flow')}
+        >
+          Flow view
+        </button>
+      </div>
+
       {isLoading ? (
         <div className={styles.center}>
           <Spinner size="lg" />
         </div>
+      ) : viewMode === 'flow' ? (
+        <SceneFlowGraph adventureId={adventureId} />
       ) : (
         <div className={styles.sceneList}>
           {(sceneList ?? []).map((scene) => (

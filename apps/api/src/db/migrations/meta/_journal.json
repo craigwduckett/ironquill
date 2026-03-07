@@ -64,6 +64,13 @@
       "when": 1772950000000,
       "tag": "0008_srd_2024_schema",
       "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1741392000000,
+      "tag": "0009_phase2_complete",
+      "breakpoints": true
     }
   ]
 }

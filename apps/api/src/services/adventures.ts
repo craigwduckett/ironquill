@@ -2,13 +2,29 @@ import { randomBytes } from 'node:crypto';
 import type {
   AdventureCreateInput,
   AdventureUpdateInput,
+  CharacterPresetCreateInput,
+  CharacterPresetUpdateInput,
+  EncounterCreateInput,
+  EncounterMonsterCreateInput,
+  EncounterUpdateInput,
+  SceneConnectionCreateInput,
   SceneCreateInput,
   SceneNpcCreateInput,
+  SceneNpcUpdateInput,
   SceneUpdateInput,
 } from '@ironquill/shared';
-import { and, eq } from 'drizzle-orm';
+import { and, eq, inArray } from 'drizzle-orm';
 import { db } from '../db/client.js';
-import { adventurePlayers, adventures, sceneNpcs, scenes } from '../db/schema/adventures.js';
+import {
+  adventurePlayers,
+  adventures,
+  characterPresets,
+  encounterMonsters,
+  encounters,
+  sceneConnections,
+  sceneNpcs,
+  scenes,
+} from '../db/schema/adventures.js';
 import { AppError } from '../lib/errors.js';
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
@@ -177,6 +193,48 @@ export async function removeScene(
   await db.delete(scenes).where(and(eq(scenes.id, sceneId), eq(scenes.adventureId, adventureId)));
 }
 
+// ── Scene Connections ─────────────────────────────────────────────────────────
+
+export async function listConnections(adventureId: string, userId: string) {
+  await assertOwner(adventureId, userId);
+  const adventureScenes = await db
+    .select({ id: scenes.id })
+    .from(scenes)
+    .where(eq(scenes.adventureId, adventureId));
+  const sceneIds = adventureScenes.map((s) => s.id);
+  if (sceneIds.length === 0) return [];
+
+  return db.select().from(sceneConnections).where(inArray(sceneConnections.fromSceneId, sceneIds));
+}
+
+export async function createConnection(
+  adventureId: string,
+  sceneId: string,
+  userId: string,
+  input: SceneConnectionCreateInput,
+) {
+  await assertOwner(adventureId, userId);
+  const [connection] = await db
+    .insert(sceneConnections)
+    .values({
+      fromSceneId: sceneId,
+      toSceneId: input.toSceneId,
+      label: input.label,
+      conditionNotes: input.conditionNotes,
+    })
+    .returning();
+  return connection;
+}
+
+export async function removeConnection(
+  adventureId: string,
+  connectionId: string,
+  userId: string,
+): Promise<void> {
+  await assertOwner(adventureId, userId);
+  await db.delete(sceneConnections).where(eq(sceneConnections.id, connectionId));
+}
+
 // ── Scene NPCs ────────────────────────────────────────────────────────────────
 
 export async function listNpcs(adventureId: string, userId: string) {
@@ -188,14 +246,7 @@ export async function listNpcs(adventureId: string, userId: string) {
   const sceneIds = adventureScenes.map((s) => s.id);
   if (sceneIds.length === 0) return [];
 
-  return db
-    .select()
-    .from(sceneNpcs)
-    .where(
-      sceneIds.length === 1
-        ? eq(sceneNpcs.sceneId, sceneIds[0] ?? '')
-        : eq(sceneNpcs.sceneId, sceneIds[0] ?? ''),
-    );
+  return db.select().from(sceneNpcs).where(inArray(sceneNpcs.sceneId, sceneIds));
 }
 
 export async function createNpc(
@@ -210,4 +261,164 @@ export async function createNpc(
     .values({ sceneId, ...input })
     .returning();
   return npc;
+}
+
+export async function updateNpc(
+  adventureId: string,
+  npcId: string,
+  userId: string,
+  input: SceneNpcUpdateInput,
+) {
+  await assertOwner(adventureId, userId);
+  const [updated] = await db
+    .update(sceneNpcs)
+    .set({ ...input, updatedAt: new Date() })
+    .where(eq(sceneNpcs.id, npcId))
+    .returning();
+  if (!updated) throw AppError.notFound('NPC');
+  return updated;
+}
+
+export async function removeNpc(adventureId: string, npcId: string, userId: string): Promise<void> {
+  await assertOwner(adventureId, userId);
+  await db.delete(sceneNpcs).where(eq(sceneNpcs.id, npcId));
+}
+
+// ── Encounters ────────────────────────────────────────────────────────────────
+
+export async function getEncounter(adventureId: string, sceneId: string, userId: string) {
+  await assertOwner(adventureId, userId);
+  const [encounter] = await db
+    .select()
+    .from(encounters)
+    .where(eq(encounters.sceneId, sceneId))
+    .limit(1);
+  return encounter ?? null;
+}
+
+export async function createEncounter(
+  adventureId: string,
+  sceneId: string,
+  userId: string,
+  input: EncounterCreateInput,
+) {
+  await assertOwner(adventureId, userId);
+  const [encounter] = await db
+    .insert(encounters)
+    .values({ sceneId, ...input })
+    .returning();
+  return encounter;
+}
+
+export async function updateEncounter(
+  adventureId: string,
+  sceneId: string,
+  userId: string,
+  input: EncounterUpdateInput,
+) {
+  await assertOwner(adventureId, userId);
+  const [updated] = await db
+    .update(encounters)
+    .set({ ...input, updatedAt: new Date() })
+    .where(eq(encounters.sceneId, sceneId))
+    .returning();
+  if (!updated) throw AppError.notFound('Encounter');
+  return updated;
+}
+
+export async function listEncounterMonsters(adventureId: string, sceneId: string, userId: string) {
+  await assertOwner(adventureId, userId);
+  const [encounter] = await db
+    .select({ id: encounters.id })
+    .from(encounters)
+    .where(eq(encounters.sceneId, sceneId))
+    .limit(1);
+  if (!encounter) return [];
+
+  return db.select().from(encounterMonsters).where(eq(encounterMonsters.encounterId, encounter.id));
+}
+
+export async function addEncounterMonster(
+  adventureId: string,
+  sceneId: string,
+  userId: string,
+  input: EncounterMonsterCreateInput,
+) {
+  await assertOwner(adventureId, userId);
+
+  const existing = await db
+    .select()
+    .from(encounters)
+    .where(eq(encounters.sceneId, sceneId))
+    .limit(1);
+
+  const encounter = existing[0] ?? (await db.insert(encounters).values({ sceneId }).returning())[0];
+
+  if (!encounter) throw AppError.notFound('Encounter');
+
+  const [monster] = await db
+    .insert(encounterMonsters)
+    .values({ encounterId: encounter.id, ...input })
+    .returning();
+  return monster;
+}
+
+export async function removeEncounterMonster(
+  adventureId: string,
+  monsterId: string,
+  userId: string,
+): Promise<void> {
+  await assertOwner(adventureId, userId);
+  await db.delete(encounterMonsters).where(eq(encounterMonsters.id, monsterId));
+}
+
+// ── Character Presets (Kids Mode) ─────────────────────────────────────────────
+
+export async function listPresets(adventureId: string, userId: string) {
+  await assertOwner(adventureId, userId);
+  return db
+    .select()
+    .from(characterPresets)
+    .where(eq(characterPresets.adventureId, adventureId))
+    .orderBy(characterPresets.createdAt);
+}
+
+export async function createPreset(
+  adventureId: string,
+  userId: string,
+  input: CharacterPresetCreateInput,
+) {
+  await assertOwner(adventureId, userId);
+  const [preset] = await db
+    .insert(characterPresets)
+    .values({ adventureId, ownerId: userId, ...input })
+    .returning();
+  return preset;
+}
+
+export async function updatePreset(
+  adventureId: string,
+  presetId: string,
+  userId: string,
+  input: CharacterPresetUpdateInput,
+) {
+  await assertOwner(adventureId, userId);
+  const [updated] = await db
+    .update(characterPresets)
+    .set({ ...input, updatedAt: new Date() })
+    .where(and(eq(characterPresets.id, presetId), eq(characterPresets.adventureId, adventureId)))
+    .returning();
+  if (!updated) throw AppError.notFound('Preset');
+  return updated;
+}
+
+export async function removePreset(
+  adventureId: string,
+  presetId: string,
+  userId: string,
+): Promise<void> {
+  await assertOwner(adventureId, userId);
+  await db
+    .delete(characterPresets)
+    .where(and(eq(characterPresets.id, presetId), eq(characterPresets.adventureId, adventureId)));
 }

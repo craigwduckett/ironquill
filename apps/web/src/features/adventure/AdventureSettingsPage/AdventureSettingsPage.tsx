@@ -1,3 +1,4 @@
+import type { RulesetOverrides } from '@ironquill/shared';
 import { Link, useNavigate } from '@tanstack/react-router';
 import { useEffect, useState } from 'react';
 import { Button } from '../../../components/ui/Button/Button.js';
@@ -6,6 +7,48 @@ import { useAdventure, useDeleteAdventure, useUpdateAdventure } from '../hooks/u
 import styles from './AdventureSettingsPage.module.css';
 
 type Props = { adventureId: string };
+
+const DEFAULT_KIDS_OVERRIDES: RulesetOverrides = {
+  simplifiedRolls: true,
+  weakerEnemies: true,
+  forgivingCombat: true,
+  simplifiedSpellcasting: true,
+  streamlinedInventory: true,
+};
+
+type KidsToggle = {
+  key: keyof RulesetOverrides;
+  label: string;
+  description: string;
+};
+
+const KIDS_TOGGLES: KidsToggle[] = [
+  {
+    key: 'simplifiedRolls',
+    label: 'Simplified Rolls',
+    description: 'd20 binary: below 10 fails, 10+ succeeds',
+  },
+  {
+    key: 'weakerEnemies',
+    label: 'Weaker Enemies',
+    description: 'Monster HP and AC reduced, no legendary actions',
+  },
+  {
+    key: 'forgivingCombat',
+    label: 'Forgiving Combat',
+    description: '0 HP means unconscious, no death saves',
+  },
+  {
+    key: 'simplifiedSpellcasting',
+    label: 'Simplified Spellcasting',
+    description: 'Spells usable X times per rest, no slot tracking',
+  },
+  {
+    key: 'streamlinedInventory',
+    label: 'Streamlined Inventory',
+    description: 'No weight or encumbrance tracking',
+  },
+];
 
 export function AdventureSettingsPage({ adventureId }: Props) {
   const navigate = useNavigate();
@@ -19,6 +62,8 @@ export function AdventureSettingsPage({ adventureId }: Props) {
   const [ruleset, setRuleset] = useState<'standard' | 'kids' | 'custom'>('standard');
   const [levelMin, setLevelMin] = useState(1);
   const [levelMax, setLevelMax] = useState(5);
+  const [rulesetOverrides, setRulesetOverrides] =
+    useState<RulesetOverrides>(DEFAULT_KIDS_OVERRIDES);
   const [saved, setSaved] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState(false);
 
@@ -33,6 +78,17 @@ export function AdventureSettingsPage({ adventureId }: Props) {
     }
   }, [adventure]);
 
+  function handleRulesetChange(next: 'standard' | 'kids' | 'custom') {
+    setRuleset(next);
+    if (next === 'kids') {
+      setRulesetOverrides(DEFAULT_KIDS_OVERRIDES);
+    }
+  }
+
+  function toggleOverride(key: keyof RulesetOverrides) {
+    setRulesetOverrides((prev) => ({ ...prev, [key]: !prev[key] }));
+  }
+
   async function handleSave(e: React.FormEvent) {
     e.preventDefault();
     await updateAdventure.mutateAsync({
@@ -42,6 +98,7 @@ export function AdventureSettingsPage({ adventureId }: Props) {
       ruleset,
       levelRangeMin: levelMin,
       levelRangeMax: levelMax,
+      ...(ruleset === 'kids' ? { rulesetOverrides } : {}),
     });
     setSaved(true);
     setTimeout(() => setSaved(false), 2000);
@@ -119,7 +176,9 @@ export function AdventureSettingsPage({ adventureId }: Props) {
                 id="set-ruleset"
                 className={styles.select}
                 value={ruleset}
-                onChange={(e) => setRuleset(e.target.value as 'standard' | 'kids' | 'custom')}
+                onChange={(e) =>
+                  handleRulesetChange(e.target.value as 'standard' | 'kids' | 'custom')
+                }
               >
                 <option value="standard">Standard 5e SRD</option>
                 <option value="kids">Kids Mode</option>
@@ -127,6 +186,37 @@ export function AdventureSettingsPage({ adventureId }: Props) {
               </select>
             </div>
           </div>
+
+          {ruleset === 'kids' && (
+            <div className={styles.kidsSection}>
+              <h3 className={styles.kidsSectionTitle}>Kids Mode Options</h3>
+              <div className={styles.toggleList}>
+                {KIDS_TOGGLES.map(({ key, label, description }) => (
+                  <label key={key} className={styles.toggleRow} htmlFor={`toggle-${key}`}>
+                    <div className={styles.toggleInfo}>
+                      <span className={styles.toggleLabel}>{label}</span>
+                      <span className={styles.toggleDescription}>{description}</span>
+                    </div>
+                    <div className={styles.toggleSwitch}>
+                      <input
+                        id={`toggle-${key}`}
+                        type="checkbox"
+                        className={styles.toggleInput}
+                        checked={rulesetOverrides[key]}
+                        onChange={() => toggleOverride(key)}
+                      />
+                      <span className={styles.toggleTrack} aria-hidden="true">
+                        <span className={styles.toggleThumb} />
+                      </span>
+                      <span className={styles.toggleStatus}>
+                        {rulesetOverrides[key] ? 'ON' : 'OFF'}
+                      </span>
+                    </div>
+                  </label>
+                ))}
+              </div>
+            </div>
+          )}
 
           <div className={styles.row}>
             <div className={styles.field}>
