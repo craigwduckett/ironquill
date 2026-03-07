@@ -5,23 +5,23 @@ export function SrdAttributionsPage() {
     <div className={styles.container}>
       <h1 className={styles.heading}>SRD Attributions &amp; Licenses</h1>
       <p className={styles.intro}>
-        IronQuill uses content from the Dungeons &amp; Dragons 5th Edition System Reference Document
-        ("SRD"). This content is reproduced under the licenses described below. IronQuill is not
-        affiliated with, endorsed by, or connected to Wizards of the Coast LLC or Hasbro Inc.
+        IronQuill uses content from the D&amp;D 5e System Reference Document ("SRD"). This content
+        is reproduced under the licenses described below. IronQuill is not affiliated with, endorsed
+        by, or connected to Wizards of the Coast LLC or Hasbro Inc.
       </p>
 
       {/* ── CC-BY-4.0 (2024) ───────────────────────────────────────────────── */}
       <section className={styles.section}>
-        <h2>SRD 5.2 (2024) — Creative Commons Attribution 4.0</h2>
+        <h2>SRD 5.2.1 (2024) — Creative Commons Attribution 4.0</h2>
         <div className={styles.attributionBlock}>
           <p>
-            This work includes material taken from the System Reference Document 5.2 ("SRD 5.2") by
-            Wizards of the Coast LLC and available at{' '}
+            This work includes material from the System Reference Document 5.2.1 ("SRD 5.2.1") by
+            Wizards of the Coast LLC, available at{' '}
             <a href="https://www.dndbeyond.com/srd" target="_blank" rel="noopener noreferrer">
               https://www.dndbeyond.com/srd
             </a>
-            . The SRD 5.2 is licensed under the Creative Commons Attribution 4.0 International
-            License available at{' '}
+            . The SRD 5.2.1 is licensed under the Creative Commons Attribution 4.0 International
+            License, available at{' '}
             <a
               href="https://creativecommons.org/licenses/by/4.0/legalcode"
               target="_blank"
@@ -33,7 +33,7 @@ export function SrdAttributionsPage() {
           </p>
         </div>
         <p className={styles.note}>
-          SRD 5.2 content in IronQuill is identified by <code>source_edition: "2024"</code>. Where
+          SRD 5.2.1 content in IronQuill is identified by <code>source_edition: "2024"</code>. Where
           this content has been adapted (e.g., simplified for Kids Mode), the adaptation is noted in
           context.
         </p>

@@ -1,0 +1,1024 @@
+[
+  {
+    "index": "ability-check",
+    "topic": "Ability Check",
+    "category": "Ability Check",
+    "description": "An ability check is a D20 Test that represents using one of the six abilities—or a specific skill associated with an ability—to overcome a challenge.",
+    "keywords": ["D20 Test", "skill", "proficiency", "difficulty class", "DC"]
+  },
+  {
+    "index": "ability-score-and-modifier",
+    "topic": "Ability Score and Modifier",
+    "category": "General",
+    "description": "A creature has six ability scores—Strength, Dexterity, Constitution, Intelligence, Wisdom, and Charisma—each of which has a corresponding modifier. Add the modifier when you make a D20 Test with the corresponding ability or when a rule asks you to do so.",
+    "keywords": ["Strength", "Dexterity", "Constitution", "Intelligence", "Wisdom", "Charisma", "D20 Test", "modifier"]
+  },
+  {
+    "index": "action",
+    "topic": "Action",
+    "category": "Combat",
+    "description": "On your turn, you can take one action. Actions defined in the glossary include: Attack, Dash, Disengage, Dodge, Help, Hide, Influence, Magic, Ready, Search, Study, Utilize.",
+    "keywords": ["Attack", "Dash", "Disengage", "Dodge", "Help", "Hide", "Influence", "Magic", "Ready", "Search", "Study", "Utilize", "turn", "bonus action"]
+  },
+  {
+    "index": "advantage",
+    "topic": "Advantage",
+    "category": "General",
+    "description": "If you have Advantage on a D20 Test, roll two d20s, and use the higher roll. A roll can't be affected by more than one Advantage, and Advantage and Disadvantage on the same roll cancel each other.",
+    "keywords": ["D20 Test", "Disadvantage", "d20", "roll"]
+  },
+  {
+    "index": "adventure",
+    "topic": "Adventure",
+    "category": "General",
+    "description": "An adventure is a series of encounters. A story emerges through playing them.",
+    "keywords": ["encounter", "campaign", "story"]
+  },
+  {
+    "index": "alignment",
+    "topic": "Alignment",
+    "category": "General",
+    "description": "A creature's alignment broadly describes its ethical attitudes and ideals. Alignment is a combination of two factors: one identifies morality (good, evil, or neutral), and the other describes attitudes toward order (lawful, chaotic, or neutral). These factors allow for nine possible combinations, such as Lawful Good and Neutral Evil.",
+    "keywords": ["good", "evil", "neutral", "lawful", "chaotic", "morality", "character creation"]
+  },
+  {
+    "index": "ally",
+    "topic": "Ally",
+    "category": "General",
+    "description": "A creature is your ally if it is a member of your adventuring party, your friend, on your side in combat, or a creature that the rules or the GM designates as your ally.",
+    "keywords": ["enemy", "party", "combat", "GM"]
+  },
+  {
+    "index": "area-of-effect",
+    "topic": "Area of Effect",
+    "category": "Spellcasting",
+    "description": "Many spells and other features specify that they have an area of effect, which typically has one of six shapes: Cone, Cube, Cylinder, Emanation, Line, or Sphere. An area of effect has a point of origin from which the effect's energy erupts. If all straight lines extending from the point of origin to a location in the area of effect are blocked by Total Cover, that location isn't included in the area of effect.",
+    "keywords": ["Cone", "Cube", "Cylinder", "Emanation", "Line", "Sphere", "point of origin", "Total Cover", "spell"]
+  },
+  {
+    "index": "armor-class",
+    "topic": "Armor Class",
+    "category": "Combat",
+    "description": "An Armor Class (AC) is the target number for an attack roll. AC represents how difficult it is to hit a target. Your base AC calculation is 10 plus your Dexterity modifier. If a rule gives you another base AC calculation, you choose which to use; you can't use more than one.",
+    "keywords": ["AC", "attack roll", "Dexterity", "defense", "armor"]
+  },
+  {
+    "index": "armor-training",
+    "topic": "Armor Training",
+    "category": "Equipment",
+    "description": "Armor training allows you to use armor of a certain category without drawbacks. If you wear Light, Medium, or Heavy armor and lack training with it, you have Disadvantage on any D20 Test that involves Strength or Dexterity, and you can't cast spells. If you use a Shield and lack training with it, you don't gain its AC bonus.",
+    "keywords": ["armor", "Disadvantage", "Strength", "Dexterity", "shield", "spells", "proficiency"]
+  },
+  {
+    "index": "attack",
+    "topic": "Attack",
+    "category": "Action",
+    "description": "When you take the Attack action, you can make one attack roll with a weapon or an Unarmed Strike. You can either equip or unequip one weapon when you make an attack as part of this action. If you move on your turn and have a feature such as Extra Attack that gives you more than one attack, you can use some or all of that movement to move between those attacks.",
+    "keywords": ["attack roll", "weapon", "Unarmed Strike", "Extra Attack", "equip", "movement"]
+  },
+  {
+    "index": "attack-roll",
+    "topic": "Attack Roll",
+    "category": "Combat",
+    "description": "An attack roll is a D20 Test that represents making an attack with a weapon, an Unarmed Strike, or a spell.",
+    "keywords": ["D20 Test", "weapon", "Unarmed Strike", "spell", "Armor Class", "Critical Hit"]
+  },
+  {
+    "index": "attitude",
+    "topic": "Attitude",
+    "category": "General",
+    "description": "A monster has a starting attitude toward a player character: Friendly, Hostile, or Indifferent. These attitudes affect ability checks made to influence the monster.",
+    "keywords": ["Friendly", "Hostile", "Indifferent", "Influence", "monster", "NPC"]
+  },
+  {
+    "index": "attunement",
+    "topic": "Attunement",
+    "category": "Equipment",
+    "description": "Some magic items require a creature to form a bond—called Attunement—with them before the creature can use the item's magical properties. A creature can have Attunement with no more than three magic items at a time.",
+    "keywords": ["magic item", "bond", "three items", "magical properties"]
+  },
+  {
+    "index": "blinded",
+    "topic": "Blinded",
+    "category": "Condition",
+    "description": "While you have the Blinded condition, you experience the following effects. Can't See: You can't see and automatically fail any ability check that requires sight. Attacks Affected: Attack rolls against you have Advantage, and your attack rolls have Disadvantage.",
+    "keywords": ["condition", "sight", "Advantage", "Disadvantage", "attack roll", "ability check", "Heavily Obscured"]
+  },
+  {
+    "index": "blindsight",
+    "topic": "Blindsight",
+    "category": "General",
+    "description": "If you have Blindsight, you can see within a specific range without relying on physical sight. Within that range, you can see anything that isn't behind Total Cover even if you have the Blinded condition or are in Darkness. Moreover, in that range, you can see something that has the Invisible condition.",
+    "keywords": ["Blinded", "Darkness", "Total Cover", "Invisible", "sense", "vision"]
+  },
+  {
+    "index": "bloodied",
+    "topic": "Bloodied",
+    "category": "Combat",
+    "description": "A creature is Bloodied while it has half its Hit Points or fewer remaining.",
+    "keywords": ["Hit Points", "HP", "half health", "condition"]
+  },
+  {
+    "index": "bonus-action",
+    "topic": "Bonus Action",
+    "category": "Combat",
+    "description": "A Bonus Action is a special action that you can take on the same turn that you take an action. You can't take more than one Bonus Action on a turn, and you have a Bonus Action to take only if a rule explicitly says so.",
+    "keywords": ["action", "turn", "Reaction", "Incapacitated"]
+  },
+  {
+    "index": "breaking-objects",
+    "topic": "Breaking Objects",
+    "category": "General",
+    "description": "Objects can be harmed by attacks and by some spells. Object AC is based on its substance: Cloth/paper/rope (11), Crystal/glass/ice (13), Wood (15), Stone (17), Iron/steel (19), Mithral (21), Adamantine (23). Objects have Immunity to Poison and Psychic damage. Big objects may have a Damage Threshold.",
+    "keywords": ["Armor Class", "Hit Points", "Damage Threshold", "Immunity", "object", "attack", "Utilize"]
+  },
+  {
+    "index": "bright-light",
+    "topic": "Bright Light",
+    "category": "General",
+    "description": "Bright Light is normal illumination.",
+    "keywords": ["light", "visibility", "Dim Light", "Darkness", "exploration"]
+  },
+  {
+    "index": "burning",
+    "topic": "Burning",
+    "category": "General",
+    "description": "A burning creature or object takes 1d4 Fire damage at the start of each of its turns. As an action, you can extinguish fire on yourself by giving yourself the Prone condition and rolling on the ground. The fire also goes out if it is doused, submerged, or suffocated.",
+    "keywords": ["hazard", "Fire", "damage", "Prone", "turn"]
+  },
+  {
+    "index": "burrow-speed",
+    "topic": "Burrow Speed",
+    "category": "Movement",
+    "description": "A creature that has a Burrow Speed can use that speed to move through sand, earth, mud, or ice. The creature can't burrow through solid rock unless the creature has a trait that allows it to do so.",
+    "keywords": ["Speed", "movement", "underground", "rock", "earth"]
+  },
+  {
+    "index": "campaign",
+    "topic": "Campaign",
+    "category": "General",
+    "description": "A campaign is a series of adventures.",
+    "keywords": ["adventure", "story", "session"]
+  },
+  {
+    "index": "cantrip",
+    "topic": "Cantrip",
+    "category": "Spellcasting",
+    "description": "A cantrip is a level 0 spell, which is cast without a spell slot.",
+    "keywords": ["spell", "spell slot", "level 0", "casting"]
+  },
+  {
+    "index": "carrying-capacity",
+    "topic": "Carrying Capacity",
+    "category": "General",
+    "description": "Your size and Strength score determine the maximum weight in pounds that you can carry. For Small/Medium creatures: carry up to Strength × 15 lb., drag/lift/push up to Strength × 30 lb. While dragging, lifting, or pushing weight in excess of carrying capacity, your Speed can be no more than 5 feet.",
+    "keywords": ["Strength", "weight", "encumbrance", "Speed", "size", "drag", "lift", "push"]
+  },
+  {
+    "index": "challenge-rating",
+    "topic": "Challenge Rating",
+    "category": "Combat",
+    "description": "Challenge Rating (CR) summarizes the threat a monster poses to a group of four player characters. Compare a monster's CR to the characters' level. If the CR is higher, the monster is likely a danger. If the CR is lower, the monster likely poses little threat.",
+    "keywords": ["CR", "monster", "threat", "Experience Points", "XP", "level", "encounter difficulty"]
+  },
+  {
+    "index": "charmed",
+    "topic": "Charmed",
+    "category": "Condition",
+    "description": "While you have the Charmed condition, you experience the following effects. Can't Harm the Charmer: You can't attack the charmer or target the charmer with damaging abilities or magical effects. Social Advantage: The charmer has Advantage on any ability check to interact with you socially.",
+    "keywords": ["condition", "charmer", "attack", "Advantage", "social", "enchantment"]
+  },
+  {
+    "index": "climbing",
+    "topic": "Climbing",
+    "category": "Movement",
+    "description": "While you're climbing, each foot of movement costs 1 extra foot (2 extra feet in Difficult Terrain). You ignore this extra cost if you have a Climb Speed and use it to climb. At the GM's option, climbing a slippery surface or one with few handholds might require a successful DC 15 Strength (Athletics) check.",
+    "keywords": ["movement", "Speed", "Difficult Terrain", "Climb Speed", "Strength", "Athletics"]
+  },
+  {
+    "index": "climb-speed",
+    "topic": "Climb Speed",
+    "category": "Movement",
+    "description": "A Climb Speed can be used in place of Speed to traverse a vertical surface without expending the extra movement normally associated with climbing.",
+    "keywords": ["Speed", "climbing", "movement", "vertical"]
+  },
+  {
+    "index": "concentration",
+    "topic": "Concentration",
+    "category": "Spellcasting",
+    "description": "Some spells and other effects require Concentration to remain active. If the effect's creator loses Concentration, the effect ends. Concentration is broken by: starting another Concentration effect; taking damage (requires Constitution saving throw, DC equals 10 or half damage taken up to a maximum DC of 30); having the Incapacitated condition; or dying. The creator can end Concentration at any time (no action required).",
+    "keywords": ["spell", "Constitution", "saving throw", "Incapacitated", "damage", "DC", "duration"]
+  },
+  {
+    "index": "condition",
+    "topic": "Condition",
+    "category": "General",
+    "description": "A condition is a temporary game state. Conditions: Blinded, Charmed, Deafened, Exhaustion, Frightened, Grappled, Incapacitated, Invisible, Paralyzed, Petrified, Poisoned, Prone, Restrained, Stunned, Unconscious. A condition doesn't stack with itself; a recipient either has a condition or doesn't. The Exhaustion condition is an exception.",
+    "keywords": ["Blinded", "Charmed", "Deafened", "Exhaustion", "Frightened", "Grappled", "Incapacitated", "Invisible", "Paralyzed", "Petrified", "Poisoned", "Prone", "Restrained", "Stunned", "Unconscious", "temporary", "game state"]
+  },
+  {
+    "index": "cone",
+    "topic": "Cone",
+    "category": "Spellcasting",
+    "description": "A Cone is an area of effect that extends in straight lines from a point of origin in a direction its creator chooses. A Cone's width at any point along its length is equal to that point's distance from the point of origin.",
+    "keywords": ["area of effect", "spell", "point of origin", "direction", "width"]
+  },
+  {
+    "index": "cover",
+    "topic": "Cover",
+    "category": "Combat",
+    "description": "Cover provides a degree of protection to a target behind it. Three degrees: Half Cover (+2 bonus to AC and Dexterity saving throws), Three-Quarters Cover (+5 bonus to AC and Dexterity saving throws), and Total Cover (can't be targeted directly).",
+    "keywords": ["Half Cover", "Three-Quarters Cover", "Total Cover", "AC", "Armor Class", "Dexterity", "saving throw", "protection"]
+  },
+  {
+    "index": "crawling",
+    "topic": "Crawling",
+    "category": "Movement",
+    "description": "While you're crawling, each foot of movement costs 1 extra foot (2 extra feet in Difficult Terrain).",
+    "keywords": ["movement", "Speed", "Difficult Terrain", "Prone"]
+  },
+  {
+    "index": "creature",
+    "topic": "Creature",
+    "category": "General",
+    "description": "Any being in the game, including a player's character, is a creature.",
+    "keywords": ["player character", "monster", "NPC", "creature type"]
+  },
+  {
+    "index": "creature-type",
+    "topic": "Creature Type",
+    "category": "General",
+    "description": "Every creature, including every player character, has a tag in the rules that identifies the type of creature it is. Most player characters are of the Humanoid type. Creature types: Aberration, Beast, Celestial, Construct, Dragon, Elemental, Fey, Fiend, Giant, Humanoid, Monstrosity, Ooze, Plant, Undead.",
+    "keywords": ["Aberration", "Beast", "Celestial", "Construct", "Dragon", "Elemental", "Fey", "Fiend", "Giant", "Humanoid", "Monstrosity", "Ooze", "Plant", "Undead", "type", "monster"]
+  },
+  {
+    "index": "critical-hit",
+    "topic": "Critical Hit",
+    "category": "Combat",
+    "description": "If you roll a 20 on the d20 for an attack roll, you score a Critical Hit, and the attack hits regardless of any modifiers or the target's AC. A Critical Hit lets you roll extra dice for the attack's damage against the target. Roll all of the attack's damage dice twice and add them together.",
+    "keywords": ["attack roll", "d20", "natural 20", "damage", "dice", "Armor Class"]
+  },
+  {
+    "index": "cube",
+    "topic": "Cube",
+    "category": "Spellcasting",
+    "description": "A Cube is an area of effect that extends in straight lines from a point of origin located anywhere on a face of the Cube. The effect that creates a Cube specifies its size, which is the length of each side.",
+    "keywords": ["area of effect", "spell", "point of origin", "size"]
+  },
+  {
+    "index": "curses",
+    "topic": "Curses",
+    "category": "General",
+    "description": "Some game effects curse a creature or an object. The effect that confers a curse defines what the curse does. Curses can be removed by the Remove Curse and Greater Restoration spells or other magic that explicitly ends curses.",
+    "keywords": ["Remove Curse", "Greater Restoration", "spell", "magical effect", "Bestow Curse"]
+  },
+  {
+    "index": "cylinder",
+    "topic": "Cylinder",
+    "category": "Spellcasting",
+    "description": "A Cylinder is an area of effect that extends in straight lines from a point of origin located at the center of the circular top or bottom of the Cylinder. The effect that creates a Cylinder specifies the radius of the Cylinder's base and the Cylinder's height.",
+    "keywords": ["area of effect", "spell", "point of origin", "radius", "height"]
+  },
+  {
+    "index": "d20-test",
+    "topic": "D20 Test",
+    "category": "General",
+    "description": "D20 Tests encompass the three main d20 rolls of the game: ability checks, attack rolls, and saving throws. If something in the game affects D20 Tests, it affects all three of these rolls.",
+    "keywords": ["ability check", "attack roll", "saving throw", "d20", "Advantage", "Disadvantage", "Difficulty Class"]
+  },
+  {
+    "index": "damage",
+    "topic": "Damage",
+    "category": "Combat",
+    "description": "Damage represents harm that causes a creature or an object to lose Hit Points.",
+    "keywords": ["Hit Points", "HP", "damage roll", "damage type", "Resistance", "Vulnerability", "Immunity"]
+  },
+  {
+    "index": "damage-roll",
+    "topic": "Damage Roll",
+    "category": "Combat",
+    "description": "A damage roll is a die roll, adjusted by any applicable modifiers, that deals damage to a target.",
+    "keywords": ["damage", "dice", "modifier", "Hit Points", "attack"]
+  },
+  {
+    "index": "damage-threshold",
+    "topic": "Damage Threshold",
+    "category": "Combat",
+    "description": "A creature or an object that has a damage threshold has Immunity to all damage unless it takes an amount of damage from a single attack or effect equal to or greater than its damage threshold, in which case it takes that entire instance of damage.",
+    "keywords": ["Immunity", "damage", "Hit Points", "object", "resilience", "threshold"]
+  },
+  {
+    "index": "damage-types",
+    "topic": "Damage Types",
+    "category": "Combat",
+    "description": "Attacks and other harmful effects deal different types of damage. Types: Acid, Bludgeoning, Cold, Fire, Force, Lightning, Necrotic, Piercing, Poison, Psychic, Radiant, Slashing, Thunder. Damage types have no rules of their own, but other rules such as Resistance rely on the types.",
+    "keywords": ["Acid", "Bludgeoning", "Cold", "Fire", "Force", "Lightning", "Necrotic", "Piercing", "Poison", "Psychic", "Radiant", "Slashing", "Thunder", "Resistance", "Immunity", "Vulnerability"]
+  },
+  {
+    "index": "darkness",
+    "topic": "Darkness",
+    "category": "General",
+    "description": "An area of Darkness is Heavily Obscured.",
+    "keywords": ["Heavily Obscured", "Blinded", "Darkvision", "Truesight", "visibility", "light"]
+  },
+  {
+    "index": "darkvision",
+    "topic": "Darkvision",
+    "category": "General",
+    "description": "If you have Darkvision, you can see in Dim Light within a specified range as if it were Bright Light and in Darkness within that range as if it were Dim Light. You discern colors in that Darkness only as shades of gray.",
+    "keywords": ["Dim Light", "Bright Light", "Darkness", "vision", "sense", "range"]
+  },
+  {
+    "index": "dash",
+    "topic": "Dash",
+    "category": "Action",
+    "description": "When you take the Dash action, you gain extra movement for the current turn. The increase equals your Speed after applying any modifiers. With a Speed of 30 feet, for example, you can move up to 60 feet on your turn if you Dash.",
+    "keywords": ["movement", "Speed", "Fly Speed", "Swim Speed", "action", "turn"]
+  },
+  {
+    "index": "dead",
+    "topic": "Dead",
+    "category": "General",
+    "description": "A dead creature has no Hit Points and can't regain them unless it is first revived by magic such as the Raise Dead or Revivify spell. When such a spell is cast, the spirit knows who is casting it and can refuse.",
+    "keywords": ["Hit Points", "Raise Dead", "Revivify", "Exhaustion", "Attunement", "magic", "spirit", "Outer Planes"]
+  },
+  {
+    "index": "deafened",
+    "topic": "Deafened",
+    "category": "Condition",
+    "description": "While you have the Deafened condition, you experience the following effect. Can't Hear: You can't hear and automatically fail any ability check that requires hearing.",
+    "keywords": ["condition", "hearing", "ability check", "sound"]
+  },
+  {
+    "index": "death-saving-throw",
+    "topic": "Death Saving Throw",
+    "category": "Combat",
+    "description": "A player character must make a Death Saving Throw (also called a Death Save) if they start their turn with 0 Hit Points.",
+    "keywords": ["saving throw", "Hit Points", "0 HP", "dying", "unconscious", "stable"]
+  },
+  {
+    "index": "dehydration",
+    "topic": "Dehydration",
+    "category": "General",
+    "description": "A creature requires an amount of water per day based on its size. A creature that drinks less than half the required water for a day gains 1 Exhaustion level at the day's end.",
+    "keywords": ["hazard", "water", "Exhaustion", "survival", "size", "per day"]
+  },
+  {
+    "index": "difficult-terrain",
+    "topic": "Difficult Terrain",
+    "category": "Movement",
+    "description": "If a space is Difficult Terrain, every foot of movement in that space costs 1 extra foot. Difficult Terrain isn't cumulative; either a space is Difficult Terrain or it isn't.",
+    "keywords": ["movement", "Speed", "terrain", "cost", "foot", "crawling", "climbing", "swimming"]
+  },
+  {
+    "index": "difficulty-class",
+    "topic": "Difficulty Class",
+    "category": "General",
+    "description": "A Difficulty Class (DC) is the target number for an ability check or a saving throw.",
+    "keywords": ["DC", "ability check", "saving throw", "D20 Test", "target number"]
+  },
+  {
+    "index": "dim-light",
+    "topic": "Dim Light",
+    "category": "General",
+    "description": "An area with Dim Light is Lightly Obscured.",
+    "keywords": ["Lightly Obscured", "Bright Light", "Darkness", "visibility", "light", "exploration"]
+  },
+  {
+    "index": "disadvantage",
+    "topic": "Disadvantage",
+    "category": "General",
+    "description": "If you have Disadvantage on a D20 Test, roll two d20s and use the lower roll. A roll can't be affected by more than one Disadvantage, and Advantage and Disadvantage on the same roll cancel each other.",
+    "keywords": ["D20 Test", "Advantage", "d20", "roll", "penalty"]
+  },
+  {
+    "index": "disengage",
+    "topic": "Disengage",
+    "category": "Action",
+    "description": "If you take the Disengage action, your movement doesn't provoke Opportunity Attacks for the rest of the current turn.",
+    "keywords": ["Opportunity Attack", "movement", "action", "turn", "combat"]
+  },
+  {
+    "index": "dodge",
+    "topic": "Dodge",
+    "category": "Action",
+    "description": "If you take the Dodge action, you gain the following benefits until the start of your next turn: any attack roll made against you has Disadvantage if you can see the attacker, and you make Dexterity saving throws with Advantage. You lose these benefits if you have the Incapacitated condition or if your Speed is 0.",
+    "keywords": ["action", "Disadvantage", "Advantage", "Dexterity", "saving throw", "Incapacitated", "Speed", "defense"]
+  },
+  {
+    "index": "emanation",
+    "topic": "Emanation",
+    "category": "Spellcasting",
+    "description": "An Emanation is an area of effect that extends in straight lines from a creature or an object in all directions. The effect that creates an Emanation specifies the distance it extends. An Emanation moves with the creature or object that is its origin unless it is an instantaneous or stationary effect.",
+    "keywords": ["area of effect", "spell", "all directions", "radius", "origin", "creature", "object"]
+  },
+  {
+    "index": "encounter",
+    "topic": "Encounter",
+    "category": "General",
+    "description": "An encounter is a scene in an adventure that is part of at least one of the game's three pillars: social interaction, exploration, or combat.",
+    "keywords": ["adventure", "social interaction", "exploration", "combat", "scene"]
+  },
+  {
+    "index": "enemy",
+    "topic": "Enemy",
+    "category": "General",
+    "description": "A creature is your enemy if it fights against you in combat, actively works to harm you, or is designated as your enemy by the rules or GM.",
+    "keywords": ["ally", "combat", "monster", "opposition", "GM"]
+  },
+  {
+    "index": "exhaustion",
+    "topic": "Exhaustion",
+    "category": "Condition",
+    "description": "While you have the Exhaustion condition, you experience the following effects. Exhaustion Levels: This condition is cumulative. Each time you receive it, you gain 1 Exhaustion level. You die if your Exhaustion level reaches 6. D20 Tests Affected: When you make a D20 Test, the roll is reduced by 2 times your Exhaustion level. Speed Reduced: Your Speed is reduced by a number of feet equal to 5 times your Exhaustion level. Removing Exhaustion Levels: Finishing a Long Rest removes 1 Exhaustion level.",
+    "keywords": ["condition", "cumulative", "levels", "D20 Test", "Speed", "Long Rest", "death", "dehydration", "malnutrition", "suffocation"]
+  },
+  {
+    "index": "experience-points",
+    "topic": "Experience Points",
+    "category": "General",
+    "description": "As they overcome challenges and complete adventures, characters earn Experience Points (XP), which are awarded by the Game Master. When a character's XP total crosses certain thresholds, the character's level increases.",
+    "keywords": ["XP", "level", "advancement", "level up", "Game Master", "challenge", "monster"]
+  },
+  {
+    "index": "expertise",
+    "topic": "Expertise",
+    "category": "Ability Check",
+    "description": "Expertise is a feature that enhances your use of a skill proficiency. When you make an ability check with a skill proficiency in which you have Expertise, your Proficiency Bonus is doubled for that check. You can't have Expertise in the same skill proficiency more than once.",
+    "keywords": ["proficiency", "Proficiency Bonus", "skill", "ability check", "doubled", "Bard", "Rogue"]
+  },
+  {
+    "index": "falling",
+    "topic": "Falling",
+    "category": "General",
+    "description": "A creature that falls takes 1d6 Bludgeoning damage at the end of the fall for every 10 feet it fell, to a maximum of 20d6. When the creature lands, it has the Prone condition unless it avoids taking any damage from the fall.",
+    "keywords": ["hazard", "Bludgeoning", "damage", "Prone", "Reaction", "Strength", "Athletics", "Dexterity", "Acrobatics", "water"]
+  },
+  {
+    "index": "flying",
+    "topic": "Flying",
+    "category": "Movement",
+    "description": "A variety of effects allow a creature to fly. While flying, you fall if you have the Incapacitated or Prone condition or your Fly Speed is reduced to 0. You can stay aloft in those circumstances if you can hover.",
+    "keywords": ["Fly Speed", "movement", "Incapacitated", "Prone", "hover", "falling"]
+  },
+  {
+    "index": "fly-speed",
+    "topic": "Fly Speed",
+    "category": "Movement",
+    "description": "A Fly Speed can be used to travel through the air. While you have a Fly Speed, you can stay aloft until you land, fall, or die.",
+    "keywords": ["Speed", "flying", "movement", "air", "hover"]
+  },
+  {
+    "index": "friendly",
+    "topic": "Friendly",
+    "category": "General",
+    "description": "A Friendly creature views you favorably. You have Advantage on an ability check to influence a Friendly creature.",
+    "keywords": ["attitude", "Advantage", "Influence", "NPC", "monster", "social"]
+  },
+  {
+    "index": "frightened",
+    "topic": "Frightened",
+    "category": "Condition",
+    "description": "While you have the Frightened condition, you experience the following effects. Ability Checks and Attacks Affected: You have Disadvantage on ability checks and attack rolls while the source of fear is within line of sight. Can't Approach: You can't willingly move closer to the source of fear.",
+    "keywords": ["condition", "Disadvantage", "ability check", "attack roll", "line of sight", "fear", "movement"]
+  },
+  {
+    "index": "grappled",
+    "topic": "Grappled",
+    "category": "Condition",
+    "description": "While you have the Grappled condition, you experience the following effects. Speed 0: Your Speed is 0 and can't increase. Attacks Affected: You have Disadvantage on attack rolls against any target other than the grappler. Movable: The grappler can drag or carry you when it moves.",
+    "keywords": ["condition", "Speed", "Disadvantage", "attack roll", "drag", "grappling", "Tiny", "size"]
+  },
+  {
+    "index": "grappling",
+    "topic": "Grappling",
+    "category": "Combat",
+    "description": "A creature can grapple another creature. Characters typically grapple by using an Unarmed Strike. Successfully grappling a creature gives it the Grappled condition. A creature must have a hand free to grapple, and can grapple only one creature at a time with that part.",
+    "keywords": ["Grappled", "Unarmed Strike", "Strength", "Athletics", "Dexterity", "Acrobatics", "escape", "DC", "Incapacitated", "combat", "hand"]
+  },
+  {
+    "index": "hazard",
+    "topic": "Hazard",
+    "category": "General",
+    "description": "A hazard is an environmental danger. Hazards defined in this glossary include Burning, Dehydration, Falling, Malnutrition, and Suffocation.",
+    "keywords": ["Burning", "Dehydration", "Falling", "Malnutrition", "Suffocation", "environment", "danger"]
+  },
+  {
+    "index": "healing",
+    "topic": "Healing",
+    "category": "General",
+    "description": "Healing is how you regain Hit Points.",
+    "keywords": ["Hit Points", "HP", "Short Rest", "Long Rest", "spell", "potion"]
+  },
+  {
+    "index": "heavily-obscured",
+    "topic": "Heavily Obscured",
+    "category": "General",
+    "description": "You have the Blinded condition while trying to see something in a Heavily Obscured space.",
+    "keywords": ["Blinded", "Darkness", "vision", "visibility", "exploration", "fog"]
+  },
+  {
+    "index": "help",
+    "topic": "Help",
+    "category": "Action",
+    "description": "When you take the Help action, you do one of the following. Assist an Ability Check: Choose one of your skill or tool proficiencies and one ally nearby; that ally has Advantage on the next ability check they make with the chosen skill or tool. Assist an Attack Roll: You momentarily distract an enemy within 5 feet of you, giving Advantage to the next attack roll by one of your allies against that enemy.",
+    "keywords": ["action", "Advantage", "ability check", "attack roll", "ally", "proficiency", "skill", "tool"]
+  },
+  {
+    "index": "heroic-inspiration",
+    "topic": "Heroic Inspiration",
+    "category": "General",
+    "description": "If you (a player character) have Heroic Inspiration, you can expend it to reroll any die immediately after rolling it, and you must use the new roll. If you gain Heroic Inspiration but already have it, it's lost unless you give it to a player character who lacks it.",
+    "keywords": ["reroll", "die", "player character", "inspiration", "luck"]
+  },
+  {
+    "index": "hide",
+    "topic": "Hide",
+    "category": "Action",
+    "description": "With the Hide action, you try to hide yourself. You must succeed on a DC 15 Dexterity (Stealth) check while Heavily Obscured or behind Three-Quarters Cover or Total Cover, and must be out of any enemy's line of sight. On a successful check, you have the Invisible condition while hidden.",
+    "keywords": ["action", "Dexterity", "Stealth", "Invisible", "Heavily Obscured", "Three-Quarters Cover", "Total Cover", "line of sight", "Wisdom", "Perception"]
+  },
+  {
+    "index": "high-jump",
+    "topic": "High Jump",
+    "category": "Movement",
+    "description": "When you make a High Jump, you leap into the air a number of feet equal to 3 plus your Strength modifier (minimum of 0 feet) if you move at least 10 feet on foot immediately before the jump. When you make a standing High Jump, you can jump only half that distance.",
+    "keywords": ["movement", "jump", "Strength", "modifier", "vertical", "standing", "foot"]
+  },
+  {
+    "index": "hit-point-dice",
+    "topic": "Hit Point Dice",
+    "category": "General",
+    "description": "Hit Point Dice, or Hit Dice for short, help determine a player character's Hit Point maximum. Most monsters also have Hit Dice. A creature can spend Hit Dice during a Short Rest to regain Hit Points.",
+    "keywords": ["HP", "Hit Points", "Short Rest", "Constitution", "character creation", "monster"]
+  },
+  {
+    "index": "hit-points",
+    "topic": "Hit Points",
+    "category": "General",
+    "description": "Hit Points (HP) are a measure of how difficult it is to kill or destroy a creature or an object. Damage reduces Hit Points, and healing restores them. You can't have more Hit Points than your Hit Point maximum, and you can't have less than 0.",
+    "keywords": ["HP", "damage", "healing", "maximum", "0 HP", "dying", "death"]
+  },
+  {
+    "index": "hostile",
+    "topic": "Hostile",
+    "category": "General",
+    "description": "A Hostile creature views you unfavorably. You have Disadvantage on an ability check to influence a Hostile creature.",
+    "keywords": ["attitude", "Disadvantage", "Influence", "NPC", "monster", "social", "enemy"]
+  },
+  {
+    "index": "hover",
+    "topic": "Hover",
+    "category": "Movement",
+    "description": "Some creatures can hover, as noted in their stat blocks, and some spells and other effects grant the ability to hover. Hovering while flying prevents you from falling in certain circumstances.",
+    "keywords": ["flying", "Fly Speed", "falling", "movement", "Incapacitated", "Prone"]
+  },
+  {
+    "index": "illusions",
+    "topic": "Illusions",
+    "category": "Spellcasting",
+    "description": "Spells and other effects sometimes create magical illusions. Such an effect defines what the illusion does and which senses or mental faculties it deceives. If an illusion manifests in space, it is insubstantial and weightless, yet it seems to be affected by the environment as if real.",
+    "keywords": ["spell", "magical effect", "Truesight", "deception", "senses", "visual", "audible"]
+  },
+  {
+    "index": "immunity",
+    "topic": "Immunity",
+    "category": "General",
+    "description": "If you have Immunity to a damage type or a condition, it doesn't affect you in any way.",
+    "keywords": ["damage type", "condition", "Resistance", "Vulnerability", "protection"]
+  },
+  {
+    "index": "improvised-weapons",
+    "topic": "Improvised Weapons",
+    "category": "Equipment",
+    "description": "An improvised weapon is an object wielded as a makeshift weapon. Rules: Don't add Proficiency Bonus to attack rolls. On a hit, deals 1d4 damage of a GM-appropriate type. If thrown: normal range 20 feet, long range 60 feet.",
+    "keywords": ["weapon", "Proficiency Bonus", "attack roll", "damage", "range", "thrown", "object"]
+  },
+  {
+    "index": "incapacitated",
+    "topic": "Incapacitated",
+    "category": "Condition",
+    "description": "While you have the Incapacitated condition, you experience the following effects. Inactive: You can't take any action, Bonus Action, or Reaction. No Concentration: Your Concentration is broken. Speechless: You can't speak. Surprised: If you're Incapacitated when you roll Initiative, you have Disadvantage on the roll.",
+    "keywords": ["condition", "action", "Bonus Action", "Reaction", "Concentration", "Initiative", "Disadvantage", "Paralyzed", "Stunned", "Unconscious", "Petrified"]
+  },
+  {
+    "index": "indifferent",
+    "topic": "Indifferent",
+    "category": "General",
+    "description": "An Indifferent creature has no desire to help or hinder you. Indifferent is the default attitude of a monster.",
+    "keywords": ["attitude", "monster", "default", "Influence", "Friendly", "Hostile"]
+  },
+  {
+    "index": "influence",
+    "topic": "Influence",
+    "category": "Action",
+    "description": "With the Influence action, you urge a monster to do something. The GM determines whether the monster feels willing, unwilling, or hesitant. Make an ability check with Charisma (Deception, Intimidation, Performance, or Persuasion) or Wisdom (Animal Handling) with a default DC equal to 15 or the monster's Intelligence score, whichever is higher.",
+    "keywords": ["action", "Charisma", "Deception", "Intimidation", "Performance", "Persuasion", "Animal Handling", "Wisdom", "DC", "Friendly", "Hostile", "Indifferent", "monster", "social"]
+  },
+  {
+    "index": "initiative",
+    "topic": "Initiative",
+    "category": "Combat",
+    "description": "Initiative determines the order of turns during combat. Your Initiative score equals 10 plus your Dexterity modifier. If you have Advantage on Initiative rolls, increase your Initiative score by 5. If you have Disadvantage on those rolls, decrease that score by 5.",
+    "keywords": ["combat", "turn order", "Dexterity", "Advantage", "Disadvantage", "score", "roll"]
+  },
+  {
+    "index": "invisible",
+    "topic": "Invisible",
+    "category": "Condition",
+    "description": "While you have the Invisible condition, you experience the following effects. Surprise: If you're Invisible when you roll Initiative, you have Advantage on the roll. Concealed: You aren't affected by any effect that requires its target to be seen. Attacks Affected: Attack rolls against you have Disadvantage, and your attack rolls have Advantage.",
+    "keywords": ["condition", "Initiative", "Advantage", "Disadvantage", "concealed", "attack roll", "Truesight", "Blindsight", "Hide"]
+  },
+  {
+    "index": "jumping",
+    "topic": "Jumping",
+    "category": "Movement",
+    "description": "When you jump, you make either a Long Jump (horizontal) or a High Jump (vertical). Each foot you jump costs a foot of movement.",
+    "keywords": ["Long Jump", "High Jump", "movement", "Speed", "Strength", "foot"]
+  },
+  {
+    "index": "knocking-out-a-creature",
+    "topic": "Knocking Out a Creature",
+    "category": "Combat",
+    "description": "When you would reduce a creature to 0 Hit Points with a melee attack, you can instead reduce the creature to 1 Hit Point. The creature then has the Unconscious condition and starts a Short Rest. The creature remains Unconscious until it regains any Hit Points or until someone uses an action to administer first aid, requiring a successful DC 10 Wisdom (Medicine) check.",
+    "keywords": ["0 Hit Points", "Unconscious", "Short Rest", "melee attack", "Wisdom", "Medicine", "DC 10", "non-lethal"]
+  },
+  {
+    "index": "lightly-obscured",
+    "topic": "Lightly Obscured",
+    "category": "General",
+    "description": "You have Disadvantage on Wisdom (Perception) checks to see something in a Lightly Obscured space.",
+    "keywords": ["Disadvantage", "Wisdom", "Perception", "Dim Light", "visibility", "exploration"]
+  },
+  {
+    "index": "line",
+    "topic": "Line",
+    "category": "Spellcasting",
+    "description": "A Line is an area of effect that extends from a point of origin in a straight path along its length and covers an area defined by its width.",
+    "keywords": ["area of effect", "spell", "point of origin", "straight", "length", "width"]
+  },
+  {
+    "index": "long-jump",
+    "topic": "Long Jump",
+    "category": "Movement",
+    "description": "When you make a Long Jump, you leap horizontally a number of feet up to your Strength score if you move at least 10 feet immediately before the jump. When making a standing Long Jump, you can leap only half that distance.",
+    "keywords": ["movement", "jump", "Strength", "score", "Difficult Terrain", "Dexterity", "Acrobatics", "Prone", "Athletics", "horizontal"]
+  },
+  {
+    "index": "long-rest",
+    "topic": "Long Rest",
+    "category": "General",
+    "description": "A Long Rest is a period of extended downtime—at least 8 hours—during which you sleep for at least 6 hours and perform no more than 2 hours of light activity. You must have at least 1 Hit Point to start. Benefits when finished: regain all lost Hit Points and all spent Hit Point Dice; restore any reduced ability scores to normal; reduce Exhaustion level by 1.",
+    "keywords": ["rest", "healing", "Hit Points", "Hit Dice", "Exhaustion", "ability scores", "8 hours", "sleep", "Unconscious", "Short Rest"]
+  },
+  {
+    "index": "magic-action",
+    "topic": "Magic",
+    "category": "Action",
+    "description": "When you take the Magic action, you cast a spell that has a casting time of an action, or use a feature or magic item that requires a Magic action to activate. If you cast a spell that has a casting time of 1 minute or longer, you must take the Magic action on each turn of that casting and must maintain Concentration while you do so.",
+    "keywords": ["action", "spell", "casting time", "Concentration", "magic item", "spell slot"]
+  },
+  {
+    "index": "magical-effect",
+    "topic": "Magical Effect",
+    "category": "Spellcasting",
+    "description": "An effect is magical if it is created by a spell, a magic item, or a phenomenon that a rule labels as magical.",
+    "keywords": ["spell", "magic item", "supernatural", "magical"]
+  },
+  {
+    "index": "malnutrition",
+    "topic": "Malnutrition",
+    "category": "General",
+    "description": "A creature needs an amount of food per day based on its size. A creature that eats but consumes less than half the required food for a day must succeed on a DC 10 Constitution saving throw or gain 1 Exhaustion level.",
+    "keywords": ["hazard", "food", "Exhaustion", "Constitution", "saving throw", "DC 10", "survival", "size", "per day"]
+  },
+  {
+    "index": "monster",
+    "topic": "Monster",
+    "category": "General",
+    "description": "A monster is a creature controlled by the GM, even if the creature is benevolent.",
+    "keywords": ["GM", "creature", "NPC", "stat block", "enemy"]
+  },
+  {
+    "index": "nonplayer-character",
+    "topic": "Nonplayer Character",
+    "category": "General",
+    "description": "A nonplayer character (NPC) is a monster that has a personal name and a distinct personality.",
+    "keywords": ["NPC", "monster", "GM", "character", "personality", "name"]
+  },
+  {
+    "index": "opportunity-attacks",
+    "topic": "Opportunity Attacks",
+    "category": "Combat",
+    "description": "You can make an Opportunity Attack when a creature that you can see leaves your reach using its action, Bonus Action, Reaction, or one of its speeds. To make the Opportunity Attack, take a Reaction to make one melee attack with a weapon or an Unarmed Strike against the provoking creature.",
+    "keywords": ["Reaction", "melee attack", "weapon", "Unarmed Strike", "reach", "movement", "Disengage", "combat"]
+  },
+  {
+    "index": "paralyzed",
+    "topic": "Paralyzed",
+    "category": "Condition",
+    "description": "While you have the Paralyzed condition, you experience the following effects. Incapacitated: You have the Incapacitated condition. Speed 0: Your Speed is 0 and can't increase. Saving Throws Affected: You automatically fail Strength and Dexterity saving throws. Attacks Affected: Attack rolls against you have Advantage. Automatic Critical Hits: Any attack roll that hits you is a Critical Hit if the attacker is within 5 feet of you.",
+    "keywords": ["condition", "Incapacitated", "Speed", "Strength", "Dexterity", "saving throw", "Advantage", "Critical Hit", "5 feet"]
+  },
+  {
+    "index": "passive-perception",
+    "topic": "Passive Perception",
+    "category": "Ability Check",
+    "description": "Passive Perception is a score that reflects a creature's general awareness of its surroundings. The GM uses this score when determining whether a creature notices something without consciously making a Wisdom (Perception) check. A creature's Passive Perception equals 10 plus the creature's Wisdom (Perception) check bonus.",
+    "keywords": ["Wisdom", "Perception", "awareness", "GM", "Advantage", "Disadvantage", "10 + bonus", "passive"]
+  },
+  {
+    "index": "per-day",
+    "topic": "Per Day",
+    "category": "General",
+    "description": "If a rule says you can use something a certain number of times per day, that means you must finish a Long Rest to use it again after you run out of uses.",
+    "keywords": ["Long Rest", "recharge", "uses", "feature", "daily limit"]
+  },
+  {
+    "index": "petrified",
+    "topic": "Petrified",
+    "category": "Condition",
+    "description": "While you have the Petrified condition, you experience the following effects. Turned to Inanimate Substance: You are transformed into a solid inanimate substance (usually stone). Incapacitated: You have the Incapacitated condition. Speed 0: Your Speed is 0 and can't increase. Resist Damage: You have Resistance to all damage. Poison Immunity: You have Immunity to the Poisoned condition.",
+    "keywords": ["condition", "stone", "Incapacitated", "Speed", "Advantage", "Strength", "Dexterity", "saving throw", "Resistance", "Immunity", "Poisoned", "aging"]
+  },
+  {
+    "index": "poisoned",
+    "topic": "Poisoned",
+    "category": "Condition",
+    "description": "While you have the Poisoned condition, you experience the following effect. Ability Checks and Attacks Affected: You have Disadvantage on attack rolls and ability checks.",
+    "keywords": ["condition", "Disadvantage", "attack roll", "ability check", "poison", "venom"]
+  },
+  {
+    "index": "proficiency",
+    "topic": "Proficiency",
+    "category": "General",
+    "description": "If you have proficiency with something, you can add your Proficiency Bonus to any D20 Test you make using that thing. A creature might have proficiency in a skill or saving throw or with a weapon or tool.",
+    "keywords": ["Proficiency Bonus", "skill", "saving throw", "weapon", "tool", "D20 Test", "Expertise"]
+  },
+  {
+    "index": "prone",
+    "topic": "Prone",
+    "category": "Condition",
+    "description": "While you have the Prone condition, you experience the following effects. Restricted Movement: Your only movement options are to crawl or to spend an amount of movement equal to half your Speed to right yourself and end the condition. Attacks Affected: You have Disadvantage on attack rolls. An attack roll against you has Advantage if the attacker is within 5 feet of you; otherwise, that attack roll has Disadvantage.",
+    "keywords": ["condition", "crawl", "Speed", "Disadvantage", "Advantage", "attack roll", "5 feet", "standing up", "falling"]
+  },
+  {
+    "index": "reach",
+    "topic": "Reach",
+    "category": "Combat",
+    "description": "A creature has a reach of 5 feet unless a rule says otherwise.",
+    "keywords": ["melee", "5 feet", "weapon", "Opportunity Attack", "distance"]
+  },
+  {
+    "index": "reaction",
+    "topic": "Reaction",
+    "category": "Combat",
+    "description": "A Reaction is a special action taken in response to a trigger defined in the Reaction's description. You can take a Reaction on another creature's turn. Once you take a Reaction, you can't take another one until the start of your next turn.",
+    "keywords": ["action", "trigger", "Opportunity Attack", "turn", "Bonus Action", "Incapacitated", "Ready"]
+  },
+  {
+    "index": "ready",
+    "topic": "Ready",
+    "category": "Action",
+    "description": "You take the Ready action to wait for a particular circumstance before you act. On your turn, you decide what perceivable circumstance will trigger your Reaction, then choose the action you will take in response or choose to move up to your Speed. When you Ready a spell, you cast it as normal but hold its energy, requiring Concentration.",
+    "keywords": ["action", "Reaction", "trigger", "Speed", "spell", "Concentration", "turn"]
+  },
+  {
+    "index": "resistance",
+    "topic": "Resistance",
+    "category": "General",
+    "description": "If you have Resistance to a damage type, damage of that type is halved against you (round down). Resistance is applied only once to an instance of damage.",
+    "keywords": ["damage type", "halved", "Immunity", "Vulnerability", "round down", "protection"]
+  },
+  {
+    "index": "restrained",
+    "topic": "Restrained",
+    "category": "Condition",
+    "description": "While you have the Restrained condition, you experience the following effects. Speed 0: Your Speed is 0 and can't increase. Attacks Affected: Attack rolls against you have Advantage, and your attack rolls have Disadvantage. Saving Throws Affected: You have Disadvantage on Dexterity saving throws.",
+    "keywords": ["condition", "Speed", "Advantage", "Disadvantage", "attack roll", "Dexterity", "saving throw", "Grappled"]
+  },
+  {
+    "index": "ritual",
+    "topic": "Ritual",
+    "category": "Spellcasting",
+    "description": "If you have a spell prepared that has the Ritual tag, you can cast that spell as a Ritual. The Ritual version of a spell takes 10 minutes longer to cast than normal. It also doesn't expend a spell slot.",
+    "keywords": ["spell", "ritual tag", "10 minutes", "spell slot", "casting", "higher level"]
+  },
+  {
+    "index": "round-down",
+    "topic": "Round Down",
+    "category": "General",
+    "description": "Whenever you divide or multiply a number in the game, round down if you end up with a fraction, even if the fraction is one-half or greater. Some rules make an exception and tell you to round up.",
+    "keywords": ["math", "fraction", "division", "multiplication", "rules", "round up"]
+  },
+  {
+    "index": "saving-throw",
+    "topic": "Saving Throw",
+    "category": "General",
+    "description": "A saving throw—also called a save—represents an attempt to avoid or resist a threat. You normally make a saving throw only when a rule requires you to do so, but you can decide to fail the save without rolling.",
+    "keywords": ["save", "D20 Test", "Difficulty Class", "DC", "ability score", "resist", "threat"]
+  },
+  {
+    "index": "search",
+    "topic": "Search",
+    "category": "Action",
+    "description": "When you take the Search action, you make a Wisdom check to discern something that isn't obvious. Applicable skills: Insight (creature's state of mind), Medicine (creature's ailment or cause of death), Perception (concealed creature or object), Survival (tracks or food).",
+    "keywords": ["action", "Wisdom", "Insight", "Medicine", "Perception", "Survival", "skill", "detect"]
+  },
+  {
+    "index": "shape-shifting",
+    "topic": "Shape-Shifting",
+    "category": "General",
+    "description": "If an effect such as Wild Shape or the Polymorph spell lets you shape-shift, its description specifies what happens to you. Unless that description says otherwise, any ongoing effects—conditions, spells, curses, and the like—carry over from one form to the other. You revert to your true form if you die.",
+    "keywords": ["Wild Shape", "Polymorph", "transformation", "form", "conditions", "spells", "curses", "death"]
+  },
+  {
+    "index": "short-rest",
+    "topic": "Short Rest",
+    "category": "General",
+    "description": "A Short Rest is a 1-hour period of downtime during which a creature does nothing more strenuous than reading, talking, eating, or standing watch. You must have at least 1 Hit Point to start. When you finish, you can spend one or more Hit Point Dice to regain Hit Points.",
+    "keywords": ["rest", "Hit Dice", "Hit Points", "Constitution", "healing", "1 hour", "Long Rest", "recharge"]
+  },
+  {
+    "index": "size",
+    "topic": "Size",
+    "category": "General",
+    "description": "A creature or an object belongs to a size category: Tiny, Small, Medium, Large, Huge, or Gargantuan. A creature's size determines how much space the creature occupies in combat.",
+    "keywords": ["Tiny", "Small", "Medium", "Large", "Huge", "Gargantuan", "space", "combat", "Hit Points", "carrying capacity"]
+  },
+  {
+    "index": "skill",
+    "topic": "Skill",
+    "category": "Ability Check",
+    "description": "A skill is an area of specialization associated with an ability check. If you have proficiency in a skill, you can add your Proficiency Bonus when you make an ability check associated with that skill.",
+    "keywords": ["proficiency", "Proficiency Bonus", "ability check", "Expertise", "Strength", "Dexterity", "Constitution", "Intelligence", "Wisdom", "Charisma"]
+  },
+  {
+    "index": "speed",
+    "topic": "Speed",
+    "category": "Movement",
+    "description": "A creature has a Speed, which is the distance in feet the creature can cover when it moves on its turn. Special speeds include Burrow Speed, Climb Speed, Fly Speed, and Swim Speed.",
+    "keywords": ["movement", "feet", "turn", "Burrow Speed", "Climb Speed", "Fly Speed", "Swim Speed", "Dash", "Difficult Terrain"]
+  },
+  {
+    "index": "spell",
+    "topic": "Spell",
+    "category": "Spellcasting",
+    "description": "A spell is a magical effect that has the characteristics described in the Spells section.",
+    "keywords": ["magic", "casting", "spell slot", "cantrip", "spell level", "concentration", "ritual"]
+  },
+  {
+    "index": "spell-attack",
+    "topic": "Spell Attack",
+    "category": "Spellcasting",
+    "description": "A spell attack is an attack roll made as part of a spell or another magical effect.",
+    "keywords": ["attack roll", "spell", "magical effect", "D20 Test", "spell attack modifier"]
+  },
+  {
+    "index": "spellcasting-focus",
+    "topic": "Spellcasting Focus",
+    "category": "Spellcasting",
+    "description": "A Spellcasting Focus is an object that certain creatures can use in place of a spell's Material components if those materials aren't consumed by the spell and don't have a cost specified.",
+    "keywords": ["spell", "Material component", "component", "arcane focus", "holy symbol", "druidic focus", "class"]
+  },
+  {
+    "index": "sphere",
+    "topic": "Sphere",
+    "category": "Spellcasting",
+    "description": "A Sphere is an area of effect that extends in straight lines from a point of origin outward in all directions. The effect that creates a Sphere specifies the distance it extends as the radius of the Sphere.",
+    "keywords": ["area of effect", "spell", "point of origin", "radius", "all directions"]
+  },
+  {
+    "index": "stable",
+    "topic": "Stable",
+    "category": "Combat",
+    "description": "A creature is Stable if it has 0 Hit Points but isn't required to make Death Saving Throws.",
+    "keywords": ["Hit Points", "0 HP", "Death Saving Throw", "dying", "Unconscious", "healing"]
+  },
+  {
+    "index": "study",
+    "topic": "Study",
+    "category": "Action",
+    "description": "When you take the Study action, you make an Intelligence check to study your memory, a book, a clue, or another source of knowledge. Applicable skills: Arcana, History, Investigation, Nature, Religion.",
+    "keywords": ["action", "Intelligence", "Arcana", "History", "Investigation", "Nature", "Religion", "skill", "knowledge"]
+  },
+  {
+    "index": "stunned",
+    "topic": "Stunned",
+    "category": "Condition",
+    "description": "While you have the Stunned condition, you experience the following effects. Incapacitated: You have the Incapacitated condition. Saving Throws Affected: You automatically fail Strength and Dexterity saving throws. Attacks Affected: Attack rolls against you have Advantage.",
+    "keywords": ["condition", "Incapacitated", "Strength", "Dexterity", "saving throw", "Advantage", "attack roll"]
+  },
+  {
+    "index": "suffocation",
+    "topic": "Suffocation",
+    "category": "General",
+    "description": "A creature can hold its breath for a number of minutes equal to 1 plus its Constitution modifier (minimum of 30 seconds) before suffocation begins. When a creature runs out of breath or is choking, it gains 1 Exhaustion level at the end of each of its turns.",
+    "keywords": ["hazard", "breath", "Constitution", "Exhaustion", "choking", "underwater", "turn"]
+  },
+  {
+    "index": "surprise",
+    "topic": "Surprise",
+    "category": "Combat",
+    "description": "If a creature is caught unawares by the start of combat, that creature is surprised, which causes it to have Disadvantage on its Initiative roll.",
+    "keywords": ["Initiative", "Disadvantage", "combat", "unaware", "ambush", "Invisible"]
+  },
+  {
+    "index": "swimming",
+    "topic": "Swimming",
+    "category": "Movement",
+    "description": "While you're swimming, each foot of movement costs 1 extra foot (2 extra feet in Difficult Terrain). You ignore this extra cost if you have a Swim Speed and use it to swim.",
+    "keywords": ["movement", "Speed", "Swim Speed", "Difficult Terrain", "Strength", "Athletics", "DC 15", "water"]
+  },
+  {
+    "index": "swim-speed",
+    "topic": "Swim Speed",
+    "category": "Movement",
+    "description": "A Swim Speed can be used to swim without expending the extra movement normally associated with swimming.",
+    "keywords": ["Speed", "swimming", "movement", "water"]
+  },
+  {
+    "index": "target",
+    "topic": "Target",
+    "category": "General",
+    "description": "A target is the creature or object targeted by an attack roll, forced to make a saving throw by an effect, or selected to receive the effects of a spell or another phenomenon.",
+    "keywords": ["attack roll", "saving throw", "spell", "creature", "object", "effect"]
+  },
+  {
+    "index": "telepathy",
+    "topic": "Telepathy",
+    "category": "General",
+    "description": "Telepathy is a magical ability that allows a creature to communicate mentally with another creature within a specified range. The contacted creature doesn't need to share a language with the telepath but must understand at least one language or be telepathic itself.",
+    "keywords": ["mental", "communication", "language", "range", "Incapacitated", "magical ability"]
+  },
+  {
+    "index": "teleportation",
+    "topic": "Teleportation",
+    "category": "Movement",
+    "description": "Teleportation is a special kind of magical transportation. If you teleport, you disappear and reappear elsewhere instantly, without moving through the intervening space. This transportation doesn't expend movement unless a rule tells you otherwise, and teleportation never provokes Opportunity Attacks.",
+    "keywords": ["magical", "instant", "movement", "Opportunity Attack", "equipment", "unoccupied space", "spell", "Misty Step", "Teleport"]
+  },
+  {
+    "index": "temporary-hit-points",
+    "topic": "Temporary Hit Points",
+    "category": "General",
+    "description": "Temporary Hit Points are granted by certain effects and act as a buffer against losing real Hit Points.",
+    "keywords": ["Hit Points", "HP", "buffer", "damage", "temporary", "healing"]
+  },
+  {
+    "index": "tremorsense",
+    "topic": "Tremorsense",
+    "category": "General",
+    "description": "A creature with Tremorsense can pinpoint the location of creatures and moving objects within a specific range, provided that the creature with Tremorsense and anything it is detecting are both in contact with the same surface or the same liquid.",
+    "keywords": ["sense", "vibration", "surface", "ground", "range", "detection", "Blindsight"]
+  },
+  {
+    "index": "truesight",
+    "topic": "Truesight",
+    "category": "General",
+    "description": "If you have Truesight, your vision is enhanced within a specified range. Within that range: you can see in normal and magical Darkness; you see creatures and objects with the Invisible condition; visual illusions appear transparent to you and you automatically succeed on saving throws against them.",
+    "keywords": ["vision", "sense", "Darkness", "Invisible", "illusion", "transformation", "Ethereal Plane", "magical", "range"]
+  },
+  {
+    "index": "unarmed-strike",
+    "topic": "Unarmed Strike",
+    "category": "Combat",
+    "description": "Instead of using a weapon to make a melee attack, you can use a punch, kick, headbutt, or similar forceful blow. Choose one of the following options: Damage (make an attack roll; on a hit, deal 1 + Strength modifier Bludgeoning damage); Grapple (target makes Strength or Dexterity save or gains Grappled condition); Shove (target makes Strength or Dexterity save or is pushed 5 feet or knocked Prone).",
+    "keywords": ["melee attack", "Strength", "Proficiency Bonus", "Bludgeoning", "Grapple", "Shove", "Prone", "Grappled", "DC 8", "hand free", "size"]
+  },
+  {
+    "index": "unconscious",
+    "topic": "Unconscious",
+    "category": "Condition",
+    "description": "While you have the Unconscious condition, you experience the following effects. Inert: You have the Incapacitated and Prone conditions, and you drop whatever you're holding. Speed 0: Your Speed is 0 and can't increase. Attacks Affected: Attack rolls against you have Advantage. Saving Throws Affected: You automatically fail Strength and Dexterity saving throws. Automatic Critical Hits: Any attack roll that hits you is a Critical Hit if the attacker is within 5 feet of you. Unaware: You're unaware of your surroundings.",
+    "keywords": ["condition", "Incapacitated", "Prone", "Speed", "Advantage", "Strength", "Dexterity", "saving throw", "Critical Hit", "5 feet", "sleeping", "knocked out", "dying"]
+  },
+  {
+    "index": "utilize",
+    "topic": "Utilize",
+    "category": "Action",
+    "description": "You normally interact with an object while doing something else, such as when you draw a sword as part of the Attack action. When an object requires an action for its use, you take the Utilize action.",
+    "keywords": ["action", "object", "interact", "use", "item", "activate"]
+  },
+  {
+    "index": "vulnerability",
+    "topic": "Vulnerability",
+    "category": "General",
+    "description": "If you have Vulnerability to a damage type, damage of that type is doubled against you. Vulnerability is applied only once to an instance of damage.",
+    "keywords": ["damage type", "doubled", "Resistance", "Immunity", "weakness"]
+  },
+  {
+    "index": "weapon",
+    "topic": "Weapon",
+    "category": "Equipment",
+    "description": "A weapon is an object that is in the Simple or Martial weapon category.",
+    "keywords": ["Simple", "Martial", "object", "attack", "melee", "ranged", "proficiency"]
+  },
+  {
+    "index": "weapon-attack",
+    "topic": "Weapon Attack",
+    "category": "Combat",
+    "description": "A weapon attack is an attack roll made with a weapon.",
+    "keywords": ["attack roll", "weapon", "melee", "ranged", "Proficiency Bonus"]
+  }
+]

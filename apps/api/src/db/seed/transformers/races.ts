@@ -109,10 +109,37 @@ export function transformRace2014(
   };
 }
 
-// ── 2024 placeholder ──────────────────────────────────────────────────────────
-// When 5e-bits/5e-database releases 5e-SRD-Species.json for the 2024 ruleset,
-// add transformSpecies2024() here. Key differences from 2014:
-//   - displayTerm: 'Species'
-//   - abilityBonuses: {} (ASIs moved to Background in 2024)
-//   - Languages may come from background rather than species
-// Example input shape: { index, name, size, speed, traits: [...], url }
+// ── 2024 ─────────────────────────────────────────────────────────────────────
+// Hand-authored from SRD 5.2.1 PDF. ASIs removed (moved to Backgrounds).
+// Some species have size_options when the player may choose Small or Medium.
+
+type RawTrait2024 = { name: string; description: string };
+
+export type RawSpecies2024 = {
+  index: string;
+  name: string;
+  size: string;
+  size_options: string[];
+  creature_type: string;
+  speed: number;
+  traits: RawTrait2024[];
+  languages: string[];
+  language_desc?: string;
+};
+
+export function transformSpecies2024(raw: RawSpecies2024) {
+  return {
+    sourceEdition: '2024' as const,
+    displayTerm: 'Species' as const,
+    name: raw.name,
+    description: null,
+    traits: raw.traits,
+    abilityBonuses: {},
+    languages: raw.languages,
+    languageDesc: raw.language_desc ?? null,
+    speed: raw.speed,
+    size: raw.size,
+    sizeOptions: raw.size_options,
+    creatureType: raw.creature_type,
+  };
+}

@@ -78,3 +78,30 @@ export function transformRuleSection2014(
     keywords: extractKeywords(raw.desc),
   };
 }
+
+// ── 2024 ─────────────────────────────────────────────────────────────────────
+// Hand-authored from SRD 5.2.1 PDF (Rules Glossary section).
+
+export type RawRule2024 = {
+  index: string;
+  topic: string;
+  category: string;
+  description: string;
+  keywords?: string[];
+};
+
+export function transformRule2024(raw: RawRule2024): {
+  sourceEdition: '2024';
+  category: string;
+  topic: string;
+  description: string;
+  keywords: string[];
+} {
+  return {
+    sourceEdition: '2024',
+    category: raw.category,
+    topic: raw.topic,
+    description: raw.description,
+    keywords: raw.keywords ?? extractKeywords(raw.description),
+  };
+}

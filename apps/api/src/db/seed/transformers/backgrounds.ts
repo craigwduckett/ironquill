@@ -84,23 +84,31 @@ export function transformBackground2024(raw: RawBackground2024) {
     .filter((p) => p.index.startsWith('tool-'))
     .map((p) => p.name.replace('Tool: ', ''));
 
-  const featDescription = raw.feat
-    ? `Starting Feat: ${raw.feat.name}${raw.feat.note ? ` (${raw.feat.note})` : ''}`
-    : '';
-
   const equipmentDesc = raw.equipment_options?.[0]?.desc ?? 'See rulebook for equipment options.';
+
+  const abilityScoreOptions = (raw.ability_scores ?? []).map((a) => a.name);
+
+  const originFeat = raw.feat
+    ? {
+        index: raw.feat.index,
+        name: raw.feat.name,
+        ...(raw.feat.note ? { note: raw.feat.note } : {}),
+      }
+    : null;
 
   return {
     sourceEdition: '2024' as const,
     name: raw.name,
-    description: raw.ability_scores
-      ? `Ability Score increases: ${raw.ability_scores.map((a) => a.name).join(', ')}`
-      : null,
+    description: null,
     skillProficiencies: skills,
     toolProficiencies: tools,
     languagesCount: 0,
     equipment: [{ desc: equipmentDesc }],
-    featureName: raw.feat?.name ?? '—',
-    featureDescription: featDescription || 'No feature description available.',
+    // Legacy 2014-only columns: set to placeholder values for 2024 rows.
+    featureName: '—',
+    featureDescription: '',
+    // 2024 structured fields:
+    abilityScoreOptions,
+    originFeat,
   };
 }

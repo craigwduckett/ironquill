@@ -135,6 +135,8 @@ export type RawEquipment2024 = {
   damage?: { damage_dice: string; damage_type?: { name: string } };
   armor_class?: { base: number; dex_bonus?: boolean };
   properties?: Array<{ index: string; name: string }>;
+  // 2024 weapon mastery property (e.g. 'Cleave', 'Nick', 'Push')
+  weapon_mastery?: { index: string; name: string } | null;
 };
 
 function mapEquipmentCategory2024(raw: RawEquipment2024): ItemCategory {
@@ -163,5 +165,7 @@ export function transformEquipment2024(raw: RawEquipment2024) {
     description: raw.description ?? '',
     rarity: null,
     requiresAttunement: false,
+    // 2024: Weapon Mastery property name, or null for non-weapons.
+    weaponMastery: raw.weapon_mastery?.name ?? null,
   };
 }
