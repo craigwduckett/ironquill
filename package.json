@@ -7,10 +7,12 @@
     "check": "biome check --write .",
     "ci:check": "biome ci .",
     "typecheck": "pnpm -r typecheck",
-    "test": "pnpm -r test"
+    "test": "pnpm -r test",
+    "prepare": "lefthook install"
   },
   "devDependencies": {
     "@biomejs/biome": "^2.4.6",
+    "lefthook": "^2.1.3",
     "typescript": "^5.9.3"
   },
   "engines": {
@@ -21,7 +23,8 @@
     "onlyBuiltDependencies": [
       "@biomejs/biome",
       "bcrypt",
-      "esbuild"
+      "esbuild",
+      "lefthook"
     ]
   }
 }
