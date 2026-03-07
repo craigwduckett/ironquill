@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
+import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import { api } from '../../../lib/api.js';
 
 // ── Types mirror the Drizzle schema inferSelect shapes ────────────────────────
@@ -199,6 +199,7 @@ export function useSrdSpells(params?: { name?: string; level?: string; school?: 
     queryKey: srdKeys.spells(params as Record<string, string> | undefined),
     queryFn: () => api.get<SrdSpell[]>(`/srd/spells${buildQuery(params)}`),
     staleTime: 1000 * 60 * 60,
+    placeholderData: keepPreviousData,
   });
 }
 
@@ -221,6 +222,7 @@ export function useSrdMonsters(params?: {
     queryKey: srdKeys.monsters(params as Record<string, string> | undefined),
     queryFn: () => api.get<SrdMonster[]>(`/srd/monsters${buildQuery(params)}`),
     staleTime: 1000 * 60 * 60,
+    placeholderData: keepPreviousData,
   });
 }
 
@@ -254,5 +256,6 @@ export function useSrdRules(params?: { q?: string; category?: string }) {
     queryKey: srdKeys.rules(params as Record<string, string> | undefined),
     queryFn: () => api.get<SrdRule[]>(`/srd/rules${buildQuery(params)}`),
     staleTime: 1000 * 60 * 60,
+    placeholderData: keepPreviousData,
   });
 }
