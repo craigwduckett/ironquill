@@ -50,6 +50,13 @@
       "when": 1772930000000,
       "tag": "0006_species_language_desc",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1772940000000,
+      "tag": "0007_srd_upsert_constraints",
+      "breakpoints": true
     }
   ]
 }
