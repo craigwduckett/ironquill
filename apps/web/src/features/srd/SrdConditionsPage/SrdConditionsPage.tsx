@@ -1,23 +1,25 @@
-import { Link } from '@tanstack/react-router';
-import clsx from 'clsx';
-import { useMemo, useState } from 'react';
-import { Badge, EmptyState, Spinner } from '../../../components/ui/index.js';
-import { type SrdCondition, useSrdConditions } from '../hooks/useSrd.js';
-import { NoviceBox } from '../SrdHelpers.js';
-import styles from '../SrdListPage.module.css';
-import { SrdMarkdown } from '../SrdMarkdown/SrdMarkdown.js';
+import { Link } from "@tanstack/react-router";
+import clsx from "clsx";
+import { useMemo, useState } from "react";
+import { Badge, EmptyState, Spinner } from "../../../components/ui/index.js";
+import { type SrdCondition, useSrdConditions } from "../hooks/useSrd.js";
+import { NoviceBox } from "../SrdHelpers.js";
+import styles from "../SrdListPage.module.css";
+import { SrdMarkdown } from "../SrdMarkdown/SrdMarkdown.js";
 
-const EDITION_LABELS: Record<string, string> = { '2014': '5.1', '2024': '5.2' };
+const EDITION_LABELS: Record<string, string> = { "2014": "5.1", "2024": "5.2" };
 
 export function SrdConditionsPage() {
   const { data, isLoading, isError } = useSrdConditions();
-  const [search, setSearch] = useState('');
-  const [editionFilter, setEditionFilter] = useState('All');
+  const [search, setSearch] = useState("");
+  const [editionFilter, setEditionFilter] = useState("All");
   const [selected, setSelected] = useState<SrdCondition | null>(null);
 
   const filtered = useMemo(() => {
     return (data ?? [])
-      .filter((c) => editionFilter === 'All' || c.sourceEdition === editionFilter)
+      .filter(
+        (c) => editionFilter === "All" || c.sourceEdition === editionFilter,
+      )
       .filter((c) => c.name.toLowerCase().includes(search.toLowerCase()))
       .sort((a, b) => a.name.localeCompare(b.name));
   }, [data, editionFilter, search]);
@@ -55,14 +57,17 @@ export function SrdConditionsPage() {
             onChange={(e) => setSearch(e.target.value)}
           />
           <div className={styles.chips}>
-            {['All', '2014', '2024'].map((ed) => (
+            {["All", "2014", "2024"].map((ed) => (
               <button
                 key={ed}
                 type="button"
-                className={clsx(styles.chip, editionFilter === ed && styles.chipActive)}
+                className={clsx(
+                  styles.chip,
+                  editionFilter === ed && styles.chipActive,
+                )}
                 onClick={() => setEditionFilter(ed)}
               >
-                {ed === 'All' ? 'All' : `SRD ${EDITION_LABELS[ed] ?? ed}`}
+                {ed === "All" ? "All" : `SRD ${EDITION_LABELS[ed] ?? ed}`}
               </button>
             ))}
           </div>
@@ -77,14 +82,19 @@ export function SrdConditionsPage() {
             <button
               key={c.id}
               type="button"
-              className={clsx(styles.listRow, selected?.id === c.id && styles.listRowActive)}
+              className={clsx(
+                styles.listRow,
+                selected?.id === c.id && styles.listRowActive,
+              )}
               onClick={() => setSelected(c)}
             >
               <span
                 className={styles.rowDot}
                 style={{
                   background:
-                    c.sourceEdition === '2024' ? 'var(--color-info)' : 'var(--color-warning)',
+                    c.sourceEdition === "2024"
+                      ? "var(--color-info)"
+                      : "var(--color-warning)",
                 }}
               />
               <span className={styles.rowName}>{c.name}</span>
@@ -100,7 +110,7 @@ export function SrdConditionsPage() {
       </div>
 
       {/* ── Detail pane ── */}
-      <div className={styles.detail}>
+      <div key={selected?.id ?? "empty"} className={styles.detail}>
         {!selected ? (
           <div className={styles.emptyDetail}>
             <span className={styles.emptyDetailIcon}>⚠️</span>
@@ -115,17 +125,21 @@ export function SrdConditionsPage() {
               <div className={styles.cardMeta}>
                 <Badge variant="warning">Status Condition</Badge>
                 <Badge variant="info">
-                  SRD {EDITION_LABELS[selected.sourceEdition] ?? selected.sourceEdition}
+                  SRD{" "}
+                  {EDITION_LABELS[selected.sourceEdition] ??
+                    selected.sourceEdition}
                 </Badge>
               </div>
             </div>
 
             <NoviceBox>
-              <strong>What is a Condition?</strong> Conditions are temporary status effects that
-              change what a character can do. They can be inflicted by spells, monster abilities, or
-              other events. For example, a <em>Paralyzed</em> character can't move or take actions —
-              a very bad situation in a fight! Most conditions end when a spell expires, a saving
-              throw succeeds, or another condition removes them.
+              <strong>What is a Condition?</strong> Conditions are temporary
+              status effects that change what a character can do. They can be
+              inflicted by spells, monster abilities, or other events. For
+              example, a <em>Paralyzed</em> character can't move or take actions
+              — a very bad situation in a fight! Most conditions end when a
+              spell expires, a saving throw succeeds, or another condition
+              removes them.
             </NoviceBox>
 
             <div className={styles.detailSection}>
@@ -134,18 +148,20 @@ export function SrdConditionsPage() {
 
             {selected.mechanicalEffects.length > 0 && (
               <div className={styles.detailSection}>
-                <div className={styles.detailSectionLabel}>Mechanical Effects</div>
+                <div className={styles.detailSectionLabel}>
+                  Mechanical Effects
+                </div>
                 <ul
                   style={{
-                    paddingLeft: 'var(--space-5)',
-                    marginTop: 'var(--space-2)',
+                    paddingLeft: "var(--space-5)",
+                    marginTop: "var(--space-2)",
                   }}
                 >
                   {selected.mechanicalEffects.map((e) => (
                     <li
                       key={e}
                       className={styles.detailText}
-                      style={{ marginBottom: 'var(--space-2)' }}
+                      style={{ marginBottom: "var(--space-2)" }}
                     >
                       {e}
                     </li>
