@@ -49,3 +49,12 @@ export async function verifyCredentials(input: LoginInput) {
 
   return { id: user.id, email: user.email, displayName: user.displayName };
 }
+
+export async function getUserById(id: string) {
+  const user = await db.query.users.findFirst({
+    where: eq(users.id, id),
+    columns: { id: true, email: true, displayName: true },
+  });
+  if (!user) throw AppError.unauthorized();
+  return user;
+}

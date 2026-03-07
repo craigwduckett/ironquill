@@ -21,6 +21,7 @@ declare module 'fastify' {
 export default fp(async function authPlugin(app: FastifyInstance) {
   await app.register(fastifyCookie);
 
+  // Access token verification — 15-minute short-lived tokens
   await app.register(fastifyJwt, {
     secret: env.JWT_SECRET,
   });
