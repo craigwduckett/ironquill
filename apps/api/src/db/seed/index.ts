@@ -18,24 +18,16 @@
  *   3. Add the 2024 seeding block below
  *   4. Re-run `pnpm db:seed`
  *
- * The script is idempotent: it truncates all srd_* tables before inserting,
- * so re-running it always produces a clean, consistent state.
+ * The script is idempotent: it upserts all SRD rows by name + source_edition.
+ * User data (characters, etc.) is NEVER deleted — the seed only touches srd_*
+ * tables and uses ON CONFLICT DO UPDATE so existing FK references stay intact.
  */
 
 import { readFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { db } from '../client.js';
-import {
-  srdBackgrounds,
-  srdClasses,
-  srdConditions,
-  srdItems,
-  srdMonsters,
-  srdRules,
-  srdSpecies,
-  srdSpells,
-} from '../schema/srd.js';
+import postgres from 'postgres';
+import { logger } from '../../lib/logger.js';
 import {
   type RawBackground2014,
   type RawBackground2024,
@@ -60,7 +52,7 @@ import {
 } from './transformers/items.js';
 import type { RawMonster2014 } from './transformers/monsters.js';
 import { transformMonster2014 } from './transformers/monsters.js';
-import type { RawRace2014 } from './transformers/races.js';
+import type { LanguageLookup, RawRace2014, TraitLookup } from './transformers/races.js';
 import { transformRace2014 as transformSpecies2014 } from './transformers/races.js';
 import {
   type RawRule2014,
@@ -82,31 +74,99 @@ function loadJson<T>(filePath: string): T {
 
 const BATCH_SIZE = 100;
 
-async function batchInsert<T extends Record<string, unknown>>(
-  table: Parameters<typeof db.insert>[0],
+function toSnakeCase(camel: string): string {
+  return camel.replace(/[A-Z]/g, (c) => `_${c.toLowerCase()}`);
+}
+
+// Own postgres.js connection for raw upserts — same DATABASE_URL as the app.
+const pgClient = postgres(process.env.DATABASE_URL ?? '', { max: 3 });
+
+/**
+ * Batch upsert using ON CONFLICT ON CONSTRAINT.
+ *
+ * We use postgres.js directly (via pgClient.unsafe) because Drizzle's
+ * onConflictDoUpdate() requires actual PgColumn references, not constraint
+ * names. This raw-SQL path is only used by the seed script.
+ *
+ * All values are passed as parameterised inputs via postgres.js — no
+ * string interpolation of user/data values occurs.
+ */
+async function batchUpsert<T extends Record<string, unknown>>(
+  tableName: string,
   rows: T[],
+  conflictConstraint: string,
 ) {
+  if (rows.length === 0) return;
+  const keys = Object.keys(rows[0] ?? {});
+  const colNames = keys.map((k) => `"${toSnakeCase(k)}"`).join(', ');
+  const nonIdKeys = keys.filter((k) => k !== 'id');
+  const setClauses = nonIdKeys
+    .map((k) => `"${toSnakeCase(k)}" = EXCLUDED."${toSnakeCase(k)}"`)
+    .join(', ');
+
   for (let i = 0; i < rows.length; i += BATCH_SIZE) {
-    await db.insert(table).values(rows.slice(i, i + BATCH_SIZE));
+    const batch = rows.slice(i, i + BATCH_SIZE);
+    const values = batch.flatMap((row) =>
+      keys.map((k) => {
+        const v = row[k];
+        return typeof v === 'object' && v !== null && !Array.isArray(v) ? JSON.stringify(v) : v;
+      }),
+    );
+    const colCount = keys.length;
+    const rowPlaceholders = batch
+      .map((_, ri) => `(${keys.map((_, ci) => `$${ri * colCount + ci + 1}`).join(', ')})`)
+      .join(', ');
+
+    await pgClient.unsafe(
+      `INSERT INTO "${tableName}" (${colNames}) VALUES ${rowPlaceholders} ON CONFLICT ON CONSTRAINT "${conflictConstraint}" DO UPDATE SET ${setClauses}`,
+      values as Parameters<typeof pgClient.unsafe>[1],
+    );
   }
 }
 
 // ── Seed functions ────────────────────────────────────────────────────────────
 
+type RawTraitData = { index: string; name: string; desc: string };
+type RawLanguageData = {
+  index: string;
+  name: string;
+  desc: string;
+  type: string;
+  script: string;
+  typical_speakers: string[];
+};
+
 async function seedSpecies() {
   // 2014 data uses the term "Race"; 2024 will use "Species".
   // The transformer sets displayTerm accordingly on each row.
   const raw = loadJson<RawRace2014[]>(join(dataDir, 'races.json'));
-  const rows = raw.map(transformSpecies2014);
-  await batchInsert(srdSpecies, rows);
-  console.log(`  species: inserted ${rows.length} rows (2014, displayTerm='Race')`);
+
+  const rawTraits = loadJson<RawTraitData[]>(join(dataDir, 'traits.json'));
+  const traitLookup: TraitLookup = new Map(rawTraits.map((t) => [t.index, t.desc]));
+
+  const rawLanguages = loadJson<RawLanguageData[]>(join(dataDir, 'languages.json'));
+  const languageLookup: LanguageLookup = new Map(
+    rawLanguages.map((l) => [
+      l.index,
+      {
+        desc: l.desc,
+        type: l.type,
+        script: l.script,
+        typicalSpeakers: l.typical_speakers,
+      },
+    ]),
+  );
+
+  const rows = raw.map((r) => transformSpecies2014(r, traitLookup, languageLookup));
+  await batchUpsert('srd_species', rows, 'srd_species_name_edition_uq');
+  logger.info(`species: upserted ${rows.length} rows (2014, displayTerm='Race')`);
 }
 
 async function seedClasses() {
   const raw = loadJson<RawClass2014[]>(join(dataDir, 'classes.json'));
   const rows = raw.map(transformClass2014);
-  await batchInsert(srdClasses, rows);
-  console.log(`  classes: inserted ${rows.length} rows (2014)`);
+  await batchUpsert('srd_classes', rows, 'srd_classes_name_edition_uq');
+  logger.info(`classes: upserted ${rows.length} rows (2014)`);
 }
 
 async function seedBackgrounds() {
@@ -117,24 +177,24 @@ async function seedBackgrounds() {
   const rows2024 = raw2024.map(transformBackground2024);
   const all = [...rows2014, ...rows2024];
 
-  await batchInsert(srdBackgrounds, all);
-  console.log(
-    `  backgrounds: inserted ${rows2014.length} (2014) + ${rows2024.length} (2024) = ${all.length} rows`,
+  await batchUpsert('srd_backgrounds', all, 'srd_backgrounds_name_edition_uq');
+  logger.info(
+    `backgrounds: upserted ${rows2014.length} (2014) + ${rows2024.length} (2024) = ${all.length} rows`,
   );
 }
 
 async function seedSpells() {
   const raw = loadJson<RawSpell2014[]>(join(dataDir, 'spells.json'));
   const rows = raw.map(transformSpell2014);
-  await batchInsert(srdSpells, rows);
-  console.log(`  spells: inserted ${rows.length} rows (2014)`);
+  await batchUpsert('srd_spells', rows, 'srd_spells_name_edition_uq');
+  logger.info(`spells: upserted ${rows.length} rows (2014)`);
 }
 
 async function seedMonsters() {
   const raw = loadJson<RawMonster2014[]>(join(dataDir, 'monsters.json'));
   const rows = raw.map(transformMonster2014);
-  await batchInsert(srdMonsters, rows);
-  console.log(`  monsters: inserted ${rows.length} rows (2014)`);
+  await batchUpsert('srd_monsters', rows, 'srd_monsters_name_edition_uq');
+  logger.info(`monsters: upserted ${rows.length} rows (2014)`);
 }
 
 async function seedItems() {
@@ -147,9 +207,9 @@ async function seedItems() {
   const rows2024 = equipment2024.map(transformEquipment2024);
   const all = [...rows2014Eq, ...rows2014Magic, ...rows2024];
 
-  await batchInsert(srdItems, all);
-  console.log(
-    `  items: inserted ${rows2014Eq.length} equipment (2014) + ${rows2014Magic.length} magic items (2014) + ${rows2024.length} equipment (2024) = ${all.length} rows`,
+  await batchUpsert('srd_items', all, 'srd_items_name_edition_uq');
+  logger.info(
+    `items: upserted ${rows2014Eq.length} equipment (2014) + ${rows2014Magic.length} magic items (2014) + ${rows2024.length} equipment (2024) = ${all.length} rows`,
   );
 }
 
@@ -161,9 +221,9 @@ async function seedConditions() {
   const rows2024 = raw2024.map(transformCondition2024);
   const all = [...rows2014, ...rows2024];
 
-  await batchInsert(srdConditions, all);
-  console.log(
-    `  conditions: inserted ${rows2014.length} (2014) + ${rows2024.length} (2024) = ${all.length} rows`,
+  await batchUpsert('srd_conditions', all, 'srd_conditions_name_edition_uq');
+  logger.info(
+    `conditions: upserted ${rows2014.length} (2014) + ${rows2024.length} (2024) = ${all.length} rows`,
   );
 }
 
@@ -185,28 +245,17 @@ async function seedRules() {
   );
   const all = [...categoryRows, ...sectionRows];
 
-  await batchInsert(srdRules, all);
-  console.log(
-    `  rules: inserted ${categoryRows.length} categories + ${sectionRows.length} sections = ${all.length} rows (2014)`,
+  await batchUpsert('srd_rules', all, 'srd_rules_topic_edition_uq');
+  logger.info(
+    `rules: upserted ${categoryRows.length} categories + ${sectionRows.length} sections = ${all.length} rows (2014)`,
   );
 }
 
-// ── Truncate + seed ───────────────────────────────────────────────────────────
+// ── Upsert seed ───────────────────────────────────────────────────────────────
 
 async function main() {
-  console.log('Seeding SRD data…\n');
-
-  // Truncate all SRD tables in dependency-safe order
-  await db.delete(srdRules);
-  await db.delete(srdConditions);
-  await db.delete(srdItems);
-  await db.delete(srdMonsters);
-  await db.delete(srdSpells);
-  await db.delete(srdBackgrounds);
-  await db.delete(srdClasses);
-  await db.delete(srdSpecies);
-
-  console.log('Tables cleared. Inserting SRD data…\n');
+  logger.info('Seeding SRD data…');
+  logger.info('Strategy: upsert on (name, source_edition) — user data is never touched.');
 
   await seedSpecies();
   await seedClasses();
@@ -217,11 +266,11 @@ async function main() {
   await seedConditions();
   await seedRules();
 
-  console.log('\nSRD seed complete.');
+  logger.info('SRD seed complete.');
   process.exit(0);
 }
 
 main().catch((err) => {
-  console.error('Seed failed:', err);
+  logger.error({ err }, 'Seed failed');
   process.exit(1);
 });

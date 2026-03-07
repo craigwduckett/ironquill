@@ -95,9 +95,22 @@ function parseAttunement(raw: RawMagicItem2014): boolean {
 }
 
 export function transformMagicItem2014(raw: RawMagicItem2014) {
+  // Some entries share a display name but have different indices (e.g.
+  // "Potion of Healing" appears as both "potion-of-healing" and
+  // "potion-of-healing-common"). Deduplicate by appending a qualifier
+  // only when the index diverges from the normalised name.
+  const normalisedIndex = raw.name
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-|-$/g, '');
+  const disambiguatedName =
+    raw.index !== normalisedIndex
+      ? `${raw.name} (${raw.index.split('-').slice(normalisedIndex.split('-').length).join(' ')})`
+      : raw.name;
+
   return {
     sourceEdition: '2014' as const,
-    name: raw.name,
+    name: disambiguatedName,
     category: 'magic_item' as const,
     cost: null,
     weight: null,

@@ -34,3 +34,8 @@
   background: rgba(92, 158, 224, 0.15);
   color: var(--color-info);
 }
+
+.badge--sm {
+  font-size: 10px;
+  padding: 1px var(--space-1);
+}

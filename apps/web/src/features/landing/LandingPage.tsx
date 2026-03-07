@@ -6,7 +6,7 @@ export function LandingPage() {
     <main className={styles.page}>
       <h1 className={styles.title}>IronQuill</h1>
       <p className={styles.subtitle}>
-        Your D&amp;D adventure companion. Run better sessions, build richer worlds.
+        Your D&D adventure companion. Run better sessions, build richer worlds.
       </p>
       <div className={styles.actions}>
         <Link to="/register" className={styles.ctaPrimary}>

@@ -6,12 +6,22 @@ type BadgeVariant = 'default' | 'accent' | 'success' | 'warning' | 'danger' | 'i
 
 type BadgeProps = {
   variant?: BadgeVariant;
+  size?: 'sm' | 'md';
   children: ReactNode;
   className?: string;
 };
 
-export function Badge({ variant = 'default', children, className }: BadgeProps) {
+export function Badge({ variant = 'default', size, children, className }: BadgeProps) {
   return (
-    <span className={clsx(styles.badge, styles[`badge--${variant}`], className)}>{children}</span>
+    <span
+      className={clsx(
+        styles.badge,
+        styles[`badge--${variant}`],
+        size === 'sm' && styles['badge--sm'],
+        className,
+      )}
+    >
+      {children}
+    </span>
   );
 }
