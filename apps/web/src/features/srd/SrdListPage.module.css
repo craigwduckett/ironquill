@@ -275,6 +275,21 @@
   margin-bottom: var(--space-2);
 }
 
+/* Nested item inside a section — e.g. individual traits, features, actions.
+   Smaller gap and a subtle left border to visually group under the parent. */
+.detailSubsection {
+  margin-top: var(--space-4);
+  padding-left: var(--space-4);
+  border-left: 2px solid var(--color-border);
+}
+
+.detailSubsectionName {
+  font-size: var(--text-sm);
+  font-weight: var(--font-semibold);
+  color: var(--color-text-primary);
+  margin-bottom: var(--space-1);
+}
+
 .detailText {
   font-size: var(--text-sm);
   color: var(--color-text-secondary);
@@ -343,7 +358,7 @@
 
 /* Small arrow pointing down toward the trigger */
 .tooltipBox::after {
-  content: '';
+  content: "";
   position: absolute;
   top: 100%;
   left: 50%;

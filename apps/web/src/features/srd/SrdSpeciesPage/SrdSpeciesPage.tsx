@@ -194,8 +194,8 @@ export function SrdSpeciesPage() {
                   <Tip text="Special abilities your character gets just from being this species — no training required. Every member of the species has these." />
                 </div>
                 {selected.traits.map((t) => (
-                  <div key={t.name} className={styles.detailSection}>
-                    <div className={styles.detailSectionLabel}>{t.name}</div>
+                  <div key={t.name} className={styles.detailSubsection}>
+                    <div className={styles.detailSubsectionName}>{t.name}</div>
                     <SrdMarkdown content={t.description} />
                   </div>
                 ))}

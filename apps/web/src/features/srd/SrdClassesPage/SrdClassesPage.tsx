@@ -229,8 +229,8 @@ export function SrdClassesPage() {
                   <Tip text="These are the special abilities you get immediately when you start playing this class. You'll gain more features as you level up." />
                 </div>
                 {(selected.featuresByLevel.find((f) => f.level === 1)?.features ?? []).map((f) => (
-                  <div key={f.name} className={styles.detailSection}>
-                    <div className={styles.detailSectionLabel}>{f.name}</div>
+                  <div key={f.name} className={styles.detailSubsection}>
+                    <div className={styles.detailSubsectionName}>{f.name}</div>
                     <SrdMarkdown content={f.description} />
                   </div>
                 ))}

@@ -393,8 +393,8 @@ export function SrdMonstersPage() {
                   <Tip text="Passive traits that are always active, or abilities the monster can use during its turn beyond normal attacks." />
                 </div>
                 {selected.specialAbilities.map((a) => (
-                  <div key={String(a.name)} className={styles.detailSection}>
-                    <div className={styles.detailSectionLabel}>{String(a.name)}</div>
+                  <div key={String(a.name)} className={styles.detailSubsection}>
+                    <div className={styles.detailSubsectionName}>{String(a.name)}</div>
                     <SrdMarkdown content={String(a.desc)} />
                   </div>
                 ))}
@@ -408,8 +408,8 @@ export function SrdMonstersPage() {
                   <Tip text="Things the monster can do on its turn. Most actions are attacks. Each round, a monster usually gets one action." />
                 </div>
                 {selected.actions.map((a) => (
-                  <div key={String(a.name)} className={styles.detailSection}>
-                    <div className={styles.detailSectionLabel}>{String(a.name)}</div>
+                  <div key={String(a.name)} className={styles.detailSubsection}>
+                    <div className={styles.detailSubsectionName}>{String(a.name)}</div>
                     <SrdMarkdown content={String(a.desc)} />
                   </div>
                 ))}
