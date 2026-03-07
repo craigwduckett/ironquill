@@ -8,7 +8,7 @@
     "ci:check": "biome ci .",
     "typecheck": "pnpm -r typecheck",
     "test": "pnpm -r test",
-    "prepare": "lefthook install"
+    "prepare": "[ -d .git ] && lefthook install || true"
   },
   "devDependencies": {
     "@biomejs/biome": "^2.4.6",
