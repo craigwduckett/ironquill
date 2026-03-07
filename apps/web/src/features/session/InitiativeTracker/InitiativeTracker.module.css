@@ -1,0 +1,101 @@
+.tracker {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  padding: 1rem;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+}
+
+.title {
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.advanceBtn {
+  padding: 0.3rem 0.75rem;
+  background: var(--color-primary);
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+
+.advanceBtn:hover {
+  opacity: 0.9;
+}
+
+.endBtn {
+  padding: 0.3rem 0.75rem;
+  background: transparent;
+  color: var(--color-danger, #c0392b);
+  border: 1px solid var(--color-danger, #c0392b);
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+
+.endBtn:hover {
+  background: var(--color-danger, #c0392b);
+  color: #fff;
+}
+
+.list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.entry {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: 6px;
+  background: var(--color-bg);
+  border: 1px solid transparent;
+  transition: border-color 0.15s;
+}
+
+.entry.current {
+  border-color: var(--color-primary);
+  background: color-mix(in srgb, var(--color-primary) 8%, transparent);
+}
+
+.initiative {
+  font-weight: 700;
+  font-size: 1.1rem;
+  min-width: 2.5rem;
+  text-align: center;
+  color: var(--color-primary);
+}
+
+.label {
+  flex: 1;
+  font-size: 0.95rem;
+}
+
+.badge {
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 0.15rem 0.5rem;
+  background: var(--color-primary);
+  color: #fff;
+  border-radius: 999px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}

@@ -1,0 +1,15 @@
+[build]
+builder = "DOCKERFILE"
+dockerfilePath = "Dockerfile"
+
+[deploy]
+startCommand = "node apps/api/dist/index.js"
+healthcheckPath = "/health"
+healthcheckTimeout = 30
+restartPolicyType = "ON_FAILURE"
+restartPolicyMaxRetries = 3
+
+# Run migrations before each deploy via Railway's deploy hooks.
+# Set this in the Railway dashboard as a pre-deploy command:
+#   node apps/api/dist/db/migrate.js
+# or use the tsx-compiled version if the dist includes it.

@@ -1,0 +1,75 @@
+import type { Readable } from 'node:stream';
+import {
+  DeleteObjectCommand,
+  GetObjectCommand,
+  PutObjectCommand,
+  S3Client,
+} from '@aws-sdk/client-s3';
+import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
+import { env } from './env.js';
+
+const s3 = new S3Client({
+  endpoint: env.STORAGE_ENDPOINT,
+  region: 'auto',
+  credentials: {
+    accessKeyId: env.STORAGE_ACCESS_KEY,
+    secretAccessKey: env.STORAGE_SECRET_KEY,
+  },
+  forcePathStyle: true,
+});
+
+export async function uploadFile(
+  key: string,
+  body: Buffer | Readable | Uint8Array,
+  contentType: string,
+): Promise<string> {
+  await s3.send(
+    new PutObjectCommand({
+      Bucket: env.STORAGE_BUCKET,
+      Key: key,
+      Body: body,
+      ContentType: contentType,
+    }),
+  );
+  return `${env.STORAGE_PUBLIC_URL}/${key}`;
+}
+
+export async function deleteFile(key: string): Promise<void> {
+  await s3.send(
+    new DeleteObjectCommand({
+      Bucket: env.STORAGE_BUCKET,
+      Key: key,
+    }),
+  );
+}
+
+export async function getPresignedUploadUrl(
+  key: string,
+  contentType: string,
+  expiresIn = 300,
+): Promise<string> {
+  return getSignedUrl(
+    s3,
+    new PutObjectCommand({
+      Bucket: env.STORAGE_BUCKET,
+      Key: key,
+      ContentType: contentType,
+    }),
+    { expiresIn },
+  );
+}
+
+export async function getPresignedDownloadUrl(key: string, expiresIn = 3600): Promise<string> {
+  return getSignedUrl(
+    s3,
+    new GetObjectCommand({
+      Bucket: env.STORAGE_BUCKET,
+      Key: key,
+    }),
+    { expiresIn },
+  );
+}
+
+export function portraitKey(userId: string, characterId: string, ext: string): string {
+  return `portraits/${userId}/${characterId}.${ext}`;
+}

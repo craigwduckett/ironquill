@@ -2,21 +2,29 @@ import {
   createRootRoute,
   createRoute,
   createRouter,
-  Link,
   Outlet,
   redirect,
 } from '@tanstack/react-router';
 import { lazy } from 'react';
 import { AppShell } from './components/layout/AppShell/AppShell.js';
+import { AdventureNewPage } from './features/adventure/AdventureNewPage/index.js';
+import { AdventureOverviewPage } from './features/adventure/AdventureOverviewPage/index.js';
+import { AdventureSettingsPage } from './features/adventure/AdventureSettingsPage/index.js';
+import { ScenesPage } from './features/adventure/ScenesPage/index.js';
 import { LoginPage } from './features/auth/LoginPage/LoginPage.js';
 import { RegisterPage } from './features/auth/RegisterPage/RegisterPage.js';
 import { CharacterSheet } from './features/character/CharacterSheet/index.js';
 import { CharacterWizard } from './features/character/CharacterWizard/index.js';
 import { DashboardPage } from './features/character/DashboardPage/index.js';
+import { LevelUpPage } from './features/character/LevelUpPage/index.js';
+import { LandingPage } from './features/landing/LandingPage.js';
 import { LegalPage } from './features/legal/LegalPage/index.js';
 import { PrivacyPage } from './features/legal/PrivacyPage/index.js';
 import { SrdAttributionsPage } from './features/legal/SrdAttributionsPage/index.js';
 import { TermsPage } from './features/legal/TermsPage/index.js';
+import { DmSessionPage } from './features/session/DmSessionPage/index.js';
+import { PlayerSessionPage } from './features/session/PlayerSessionPage/index.js';
+import { SessionLobbyPage } from './features/session/SessionLobbyPage/index.js';
 import { SrdBackgroundsPage } from './features/srd/SrdBackgroundsPage/SrdBackgroundsPage.js';
 import { SrdClassesPage } from './features/srd/SrdClassesPage/SrdClassesPage.js';
 import { SrdConditionsPage } from './features/srd/SrdConditionsPage/SrdConditionsPage.js';
@@ -76,70 +84,7 @@ function requireAuth() {
 const indexRoute = createRoute({
   getParentRoute: () => shellRoute,
   path: '/',
-  component: () => (
-    <main
-      style={{
-        maxWidth: 'var(--content-max-width)',
-        margin: '0 auto',
-        padding: 'var(--space-20) var(--space-6)',
-        textAlign: 'center',
-      }}
-    >
-      <h1
-        style={{
-          fontFamily: 'var(--font-display)',
-          fontSize: 'var(--text-4xl)',
-          color: 'var(--color-accent)',
-          marginBottom: 'var(--space-4)',
-        }}
-      >
-        IronQuill
-      </h1>
-      <p
-        style={{
-          color: 'var(--color-text-secondary)',
-          fontSize: 'var(--text-lg)',
-          marginBottom: 'var(--space-8)',
-        }}
-      >
-        Your D&amp;D adventure companion. Run better sessions, build richer worlds.
-      </p>
-      <div
-        style={{
-          display: 'flex',
-          gap: 'var(--space-4)',
-          justifyContent: 'center',
-        }}
-      >
-        <Link
-          to="/register"
-          style={{
-            padding: 'var(--space-3) var(--space-8)',
-            background: 'var(--color-accent)',
-            color: 'var(--color-text-inverse)',
-            borderRadius: 'var(--radius-md)',
-            textDecoration: 'none',
-            fontWeight: 'var(--font-semibold)',
-          }}
-        >
-          Get started
-        </Link>
-        <Link
-          to="/srd"
-          style={{
-            padding: 'var(--space-3) var(--space-8)',
-            background: 'var(--color-surface-raised)',
-            color: 'var(--color-text-primary)',
-            borderRadius: 'var(--radius-md)',
-            border: '1px solid var(--color-border)',
-            textDecoration: 'none',
-          }}
-        >
-          Browse SRD
-        </Link>
-      </div>
-    </main>
-  ),
+  component: LandingPage,
 });
 
 // ── Auth routes (no AppShell — full-screen layout) ────────────────────────────
@@ -179,6 +124,88 @@ const characterDetailRoute = createRoute({
   component: function CharacterSheetRoute() {
     const { id } = characterDetailRoute.useParams();
     return <CharacterSheet characterId={id} />;
+  },
+});
+
+const characterLevelUpRoute = createRoute({
+  getParentRoute: () => shellRoute,
+  path: '/characters/$id/levelup',
+  beforeLoad: requireAuth,
+  component: function LevelUpRoute() {
+    const { id } = characterLevelUpRoute.useParams();
+    return <LevelUpPage characterId={id} />;
+  },
+});
+
+// ── Adventure routes ──────────────────────────────────────────────────────────
+
+const adventureNewRoute = createRoute({
+  getParentRoute: () => shellRoute,
+  path: '/adventures/new',
+  beforeLoad: requireAuth,
+  component: AdventureNewPage,
+});
+
+const adventureDetailRoute = createRoute({
+  getParentRoute: () => shellRoute,
+  path: '/adventures/$id',
+  beforeLoad: requireAuth,
+  component: function AdventureDetailRoute() {
+    const { id } = adventureDetailRoute.useParams();
+    return <AdventureOverviewPage adventureId={id} />;
+  },
+});
+
+const adventureScenesRoute = createRoute({
+  getParentRoute: () => shellRoute,
+  path: '/adventures/$id/scenes',
+  beforeLoad: requireAuth,
+  component: function AdventureScenesRoute() {
+    const { id } = adventureScenesRoute.useParams();
+    return <ScenesPage adventureId={id} />;
+  },
+});
+
+const adventureSettingsRoute = createRoute({
+  getParentRoute: () => shellRoute,
+  path: '/adventures/$id/settings',
+  beforeLoad: requireAuth,
+  component: function AdventureSettingsRoute() {
+    const { id } = adventureSettingsRoute.useParams();
+    return <AdventureSettingsPage adventureId={id} />;
+  },
+});
+
+// ── Session routes ────────────────────────────────────────────────────────────
+
+const adventureSessionsRoute = createRoute({
+  getParentRoute: () => shellRoute,
+  path: '/adventures/$id/sessions',
+  beforeLoad: requireAuth,
+  component: function AdventureSessionsRoute() {
+    const { id } = adventureSessionsRoute.useParams();
+    return <SessionLobbyPage adventureId={id} />;
+  },
+});
+
+const dmSessionRoute = createRoute({
+  getParentRoute: () => shellRoute,
+  path: '/sessions/$id/dm',
+  beforeLoad: requireAuth,
+  component: function DmSessionRoute() {
+    const { id } = dmSessionRoute.useParams();
+    return <DmSessionPage sessionId={id} />;
+  },
+});
+
+const playerSessionRoute = createRoute({
+  getParentRoute: () => shellRoute,
+  path: '/sessions/$id/play',
+  beforeLoad: requireAuth,
+  component: function PlayerSessionRoute() {
+    const { id } = playerSessionRoute.useParams();
+    // characterId passed via search param; default to empty string
+    return <PlayerSessionPage sessionId={id} characterId="" />;
   },
 });
 
@@ -274,6 +301,14 @@ const routeTree = rootRoute.addChildren([
     dashboardRoute,
     characterNewRoute,
     characterDetailRoute,
+    characterLevelUpRoute,
+    adventureNewRoute,
+    adventureDetailRoute,
+    adventureScenesRoute,
+    adventureSettingsRoute,
+    adventureSessionsRoute,
+    dmSessionRoute,
+    playerSessionRoute,
     srdRoute,
     srdSpeciesRoute,
     srdClassesRoute,

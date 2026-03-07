@@ -40,6 +40,13 @@ const RulesQuerySchema = z.object({
 const srdRoutes: FastifyPluginAsync = async (fastify) => {
   const app = fastify.withTypeProvider<ZodTypeProvider>();
 
+  // SRD data is seeded and read-only at the application level.
+  // Cache for 1 hour at CDN/browser level to avoid redundant Postgres hits.
+  app.addHook('onSend', (_request, reply, _payload, done) => {
+    reply.header('Cache-Control', 'public, max-age=3600');
+    done();
+  });
+
   // ── Species ───────────────────────────────────────────────────────────────
   // Response includes `displayTerm` ('Race' | 'Species') so the UI can label
   // this concept correctly per edition without branching on the URL.

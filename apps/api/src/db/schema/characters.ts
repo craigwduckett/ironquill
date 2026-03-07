@@ -10,7 +10,7 @@ import {
   uuid,
   varchar,
 } from 'drizzle-orm/pg-core';
-import { srdClasses, srdSpecies } from './srd';
+import { srdBackgrounds, srdClasses, srdSpecies, srdSpells } from './srd';
 import { users } from './users';
 
 export const managedByEnum = pgEnum('managed_by', ['self', 'dm']);
@@ -23,7 +23,7 @@ export const characters = pgTable('characters', {
   name: varchar('name', { length: 100 }).notNull(),
   speciesId: uuid('species_id').references(() => srdSpecies.id),
   classId: uuid('class_id').references(() => srdClasses.id),
-  backgroundId: uuid('background_id'),
+  backgroundId: uuid('background_id').references(() => srdBackgrounds.id),
   level: integer('level').notNull().default(1),
   xp: integer('xp').notNull().default(0),
   alignment: varchar('alignment', { length: 30 }),
@@ -60,7 +60,9 @@ export const characterSpells = pgTable('character_spells', {
   characterId: uuid('character_id')
     .notNull()
     .references(() => characters.id, { onDelete: 'cascade' }),
-  spellId: uuid('spell_id').notNull(),
+  spellId: uuid('spell_id')
+    .notNull()
+    .references(() => srdSpells.id),
   prepared: boolean('prepared').notNull().default(false),
 });
 

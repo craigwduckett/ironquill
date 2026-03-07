@@ -38,8 +38,13 @@ export const CharacterCreateSchema = z.object({
 
 export const CharacterUpdateSchema = CharacterCreateSchema.partial().extend({
   hpCurrent: z.number().int().min(0).optional(),
+  hpMax: z.number().int().min(0).optional(),
   hpTemp: z.number().int().min(0).optional(),
   xp: z.number().int().min(0).optional(),
+  ac: z.number().int().min(0).optional(),
+  speed: z.number().int().min(0).optional(),
+  proficiencyBonus: z.number().int().min(1).max(6).optional(),
+  skillProficiencies: z.array(z.string()).optional(),
 });
 
 export type AbilityScores = z.infer<typeof AbilityScoresSchema>;

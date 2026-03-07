@@ -75,3 +75,12 @@ export async function remove(id: string, userId: string) {
 
   await db.delete(characters).where(eq(characters.id, id));
 }
+
+export async function assertOwner(id: string, userId: string): Promise<void> {
+  const [existing] = await db
+    .select({ id: characters.id })
+    .from(characters)
+    .where(and(eq(characters.id, id), eq(characters.userId, userId)))
+    .limit(1);
+  if (!existing) throw AppError.forbidden();
+}

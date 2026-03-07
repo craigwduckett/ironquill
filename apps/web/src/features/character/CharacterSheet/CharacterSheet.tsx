@@ -298,9 +298,18 @@ export function CharacterSheet({ characterId }: Props) {
               </Button>
             </>
           ) : (
-            <Button variant="ghost" size="sm" onClick={() => setConfirmDelete(true)}>
-              Delete
-            </Button>
+            <>
+              {character.level < 20 && (
+                <Link to="/characters/$id/levelup" params={{ id: characterId }}>
+                  <Button variant="secondary" size="sm">
+                    Level Up
+                  </Button>
+                </Link>
+              )}
+              <Button variant="ghost" size="sm" onClick={() => setConfirmDelete(true)}>
+                Delete
+              </Button>
+            </>
           )}
         </div>
       </div>

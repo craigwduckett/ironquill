@@ -5,6 +5,7 @@ import type { ZodTypeProvider } from 'fastify-type-provider-zod';
 import { AppError } from '../../lib/errors.js';
 import { refreshTokens } from '../../lib/refreshToken.js';
 import * as authService from '../../services/auth.js';
+import * as nonceService from '../../services/nonce.js';
 
 const REFRESH_TOKEN_MAX_AGE = 7 * 24 * 60 * 60;
 const ACCESS_TOKEN_TTL = '15m';
@@ -27,7 +28,8 @@ function buildAccessToken(
 }
 
 async function setRefreshCookie(reply: FastifyReply, payload: TokenPayload) {
-  const refreshToken = await refreshTokens.sign(payload);
+  const nonce = await nonceService.issueNonce(payload.sub);
+  const refreshToken = await refreshTokens.sign({ ...payload, nonce });
   reply.setCookie(REFRESH_COOKIE_NAME, refreshToken, {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
@@ -69,18 +71,24 @@ const authRoutes: FastifyPluginAsync = async (fastify) => {
   });
 
   // Consumes the httpOnly refresh cookie and issues a new access token.
-  // Signed with JWT_REFRESH_SECRET — separate secret from access tokens.
-  // Rotates the refresh cookie on every successful call.
+  // Verifies the nonce in the token against the DB row — invalidated on logout.
+  // Rotates both the refresh cookie and the DB nonce on every successful call.
   app.post('/refresh', async (request, reply) => {
     const token = request.cookies[REFRESH_COOKIE_NAME];
     if (!token) throw AppError.unauthorized('No refresh token');
 
-    let refreshPayload: TokenPayload;
+    let refreshPayload: TokenPayload & { nonce: string };
     try {
       refreshPayload = await refreshTokens.verify(token);
     } catch {
       reply.clearCookie(REFRESH_COOKIE_NAME, { path: REFRESH_COOKIE_PATH });
       throw AppError.unauthorized('Invalid or expired refresh token');
+    }
+
+    const nonceValid = await nonceService.verifyNonce(refreshPayload.sub, refreshPayload.nonce);
+    if (!nonceValid) {
+      reply.clearCookie(REFRESH_COOKIE_NAME, { path: REFRESH_COOKIE_PATH });
+      throw AppError.unauthorized('Refresh token has been revoked');
     }
 
     const user = await authService.getUserById(refreshPayload.sub);
@@ -94,10 +102,16 @@ const authRoutes: FastifyPluginAsync = async (fastify) => {
     const token = request.cookies[REFRESH_COOKIE_NAME];
     if (!token) throw AppError.unauthorized();
 
-    let refreshPayload: TokenPayload;
+    let refreshPayload: TokenPayload & { nonce: string };
     try {
       refreshPayload = await refreshTokens.verify(token);
     } catch {
+      reply.clearCookie(REFRESH_COOKIE_NAME, { path: REFRESH_COOKIE_PATH });
+      throw AppError.unauthorized();
+    }
+
+    const nonceValid = await nonceService.verifyNonce(refreshPayload.sub, refreshPayload.nonce);
+    if (!nonceValid) {
       reply.clearCookie(REFRESH_COOKIE_NAME, { path: REFRESH_COOKIE_PATH });
       throw AppError.unauthorized();
     }
@@ -109,9 +123,11 @@ const authRoutes: FastifyPluginAsync = async (fastify) => {
   });
 
   // Requires a valid access token — prevents CSRF-driven logouts.
-  app.post('/logout', { preHandler: [app.authenticate] }, async (_request, reply) => {
+  // Revokes the nonce so the refresh cookie is immediately invalid.
+  app.post('/logout', { preHandler: [app.authenticate] }, async (request, reply) => {
+    await nonceService.revokeNonce(request.user.sub);
     reply.clearCookie(REFRESH_COOKIE_NAME, { path: REFRESH_COOKIE_PATH });
-    return reply.send({ success: true });
+    return reply.code(204).send();
   });
 };
 

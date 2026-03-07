@@ -6,11 +6,28 @@ alwaysApply: false
 
 # Testing Standards
 
+## Coverage Requirement
+
+**Every new feature or bug fix must include unit tests achieving ≥ 80% line and branch coverage for the changed files.**
+
+- Run `pnpm test:coverage` in the relevant app before opening a PR
+- Coverage is checked per-file, not just the overall total — a new file at 0% fails the bar even if the aggregate looks healthy
+- PRs that drop an existing file below 80% must include a justification
+
 ## Tools
 
-- **Frontend:** Vitest + React Testing Library
+- **Frontend:** Vitest + React Testing Library + `@testing-library/jest-dom`
 - **Backend:** Vitest + Fastify's `inject()` for route testing
 - Test files colocated with source: `CharacterCard.test.tsx`, `character.service.test.ts`
+
+## When to Write Tests
+
+Write tests **before or alongside** the implementation — not after:
+
+1. **New component or hook** → test user-visible behaviour and all meaningful states (loading, error, empty, populated)
+2. **New service or utility function** → unit-test every branch, including error paths
+3. **New API route** → integration-test via `app.inject()` covering happy path + each error code
+4. **Bug fix** → add a test that would have caught the bug before fixing it
 
 ## Naming
 
@@ -36,7 +53,21 @@ it('renders with isActive=false prop')
 
 - Test user-visible behaviour, not internal state
 - Query by role, label, or text — not by CSS class or test ID unless necessary
-- Mock API calls via MSW (Mock Service Worker)
+- Mock hooks and API calls at the boundary (vi.mock) — do not hit real network
+- Cover: happy path, loading state, error state, empty state, and edge-case inputs
+
+```typescript
+// ✅ Mock at the hook boundary — never mock fetch directly
+vi.mock('../hooks/useCharacters.js', () => ({
+  useDeleteCharacter: () => ({ mutate: vi.fn(), isPending: false }),
+}));
+
+// ✅ Query by role or label
+const btn = screen.getByRole('button', { name: /delete legolas/i });
+
+// ❌ Never query by class or data-testid unless no accessible selector exists
+const btn = container.querySelector('.deleteBtn');
+```
 
 ## Backend Tests
 
@@ -54,3 +85,35 @@ it('returns 404 when character does not exist', async () => {
   expect(res.json().code).toBe('CHARACTER_NOT_FOUND');
 });
 ```
+
+## Verification Checklist
+
+After writing or modifying any source file **or** test file, run these in order:
+
+```bash
+# 1. Lint and format (applies to test files too — they are not exempt)
+pnpm biome check --write <path/to/changed/files>
+
+# 2. Run tests with coverage for the affected app
+pnpm --filter @ironquill/web test:coverage   # frontend
+pnpm --filter @ironquill/api test:coverage   # backend
+```
+
+Both steps are mandatory. A test file with lint violations is a failing test file.
+
+## Lint Rules That Apply to Test Files
+
+Test files must follow the same Biome rules as production code:
+
+- Single quotes for strings
+- No unused imports — remove them after refactoring mocks
+- Accessible JSX in test stubs — mock `Link` components with valid `href` values, not `href="#"`
+- No `any` — type mock return values explicitly or use `vi.fn<Parameters, Return>()`
+
+## Coverage Commands
+
+| App | Command |
+|-----|---------|
+| Frontend | `pnpm --filter @ironquill/web test:coverage` |
+| Backend | `pnpm --filter @ironquill/api test:coverage` |
+| All | `pnpm test:coverage` from repo root |

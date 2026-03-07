@@ -5,6 +5,7 @@ export type RefreshPayload = {
   sub: string;
   email: string;
   displayName: string;
+  nonce: string;
 };
 
 const secret = new TextEncoder().encode(env.JWT_REFRESH_SECRET);
@@ -24,15 +25,17 @@ export const refreshTokens = {
     if (
       typeof payload.sub !== 'string' ||
       typeof payload.email !== 'string' ||
-      typeof payload.displayName !== 'string'
+      typeof payload.displayName !== 'string' ||
+      typeof payload.nonce !== 'string'
     ) {
       throw new Error('Invalid refresh token payload');
     }
 
     return {
       sub: payload.sub,
-      email: payload.email as string,
-      displayName: payload.displayName as string,
+      email: payload.email,
+      displayName: payload.displayName,
+      nonce: payload.nonce,
     };
   },
 };
