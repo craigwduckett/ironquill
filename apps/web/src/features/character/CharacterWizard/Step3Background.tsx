@@ -26,7 +26,21 @@ type Props = {
 };
 
 export function Step3Background({ draft, onChange }: Props) {
-  const { data: backgrounds, isLoading } = useSrdBackgrounds();
+  const { data: allBackgrounds, isLoading } = useSrdBackgrounds();
+
+  // Show only one entry per background name — prefer 2014 (feature-based),
+  // which maps cleanly to the wizard. 2024 backgrounds have a different
+  // structure (ability boosts + feats) and will be surfaced separately later.
+  const backgrounds = allBackgrounds
+    ? [
+        ...new Map(
+          [...allBackgrounds]
+            .sort((a, _b) => (a.sourceEdition === '2014' ? -1 : 1))
+            .map((b) => [b.name, b]),
+        ).values(),
+      ]
+    : undefined;
+
   const selected = backgrounds?.find((b) => b.id === draft.backgroundId) ?? null;
 
   if (isLoading) {
