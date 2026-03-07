@@ -1,4 +1,3 @@
-import 'dotenv/config';
 import cors from '@fastify/cors';
 import Fastify from 'fastify';
 import { serializerCompiler, validatorCompiler } from 'fastify-type-provider-zod';

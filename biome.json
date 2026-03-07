@@ -1,5 +1,5 @@
 {
-  "$schema": "https://biomejs.dev/schemas/1.9.4/schema.json",
+  "$schema": "https://biomejs.dev/schemas/2.4.6/schema.json",
   "vcs": {
     "enabled": true,
     "clientKind": "git",
@@ -7,7 +7,7 @@
   },
   "files": {
     "ignoreUnknown": false,
-    "ignore": ["**/node_modules", "**/dist", "**/build", "**/.cache", "**/migrations"]
+    "includes": ["**", "!**/node_modules", "!**/dist", "!**/build", "!**/.cache", "!**/migrations"]
   },
   "formatter": {
     "enabled": true,
@@ -25,11 +25,11 @@
       },
       "suspicious": {
         "noExplicitAny": "error",
-        "noConsoleLog": "warn"
+        "noConsole": { "level": "warn", "options": { "allow": ["log"] } },
+        "noVar": "error"
       },
       "style": {
-        "useConst": "error",
-        "noVar": "error"
+        "useConst": "error"
       }
     }
   },
@@ -42,11 +42,11 @@
   },
   "overrides": [
     {
-      "include": ["**/*.test.ts", "**/*.test.tsx"],
+      "includes": ["**/*.test.ts", "**/*.test.tsx"],
       "linter": {
         "rules": {
           "suspicious": {
-            "noConsoleLog": "off"
+            "noConsole": { "level": "off", "options": { "allow": ["log"] } }
           }
         }
       }

@@ -11,28 +11,28 @@
     "test": "vitest run"
   },
   "dependencies": {
+    "@hookform/resolvers": "^5.2.2",
     "@ironquill/shared": "workspace:*",
-    "@tanstack/react-query": "^5.66.0",
-    "@tanstack/react-router": "^1.114.3",
+    "@tanstack/react-query": "^5.90.21",
+    "@tanstack/react-router": "^1.166.2",
     "clsx": "^2.1.1",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
-    "react-hook-form": "^7.54.2",
-    "socket.io-client": "^4.8.1",
-    "zod": "^3.24.1",
-    "zustand": "^5.0.3",
-    "@hookform/resolvers": "^3.9.1"
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
+    "react-hook-form": "^7.71.2",
+    "socket.io-client": "^4.8.3",
+    "zod": "^4.3.6",
+    "zustand": "^5.0.11"
   },
   "devDependencies": {
-    "@tanstack/router-devtools": "^1.114.3",
-    "@tanstack/react-query-devtools": "^5.66.0",
-    "@types/react": "^19.0.7",
-    "@types/react-dom": "^19.0.3",
-    "@vitejs/plugin-react": "^4.3.4",
-    "typescript": "^5.7.2",
-    "vite": "^6.1.0",
-    "vitest": "^2.1.8",
-    "@testing-library/react": "^16.2.0",
-    "@testing-library/user-event": "^14.6.0"
+    "@tanstack/react-query-devtools": "^5.91.3",
+    "@tanstack/router-devtools": "^1.166.2",
+    "@testing-library/react": "^16.3.2",
+    "@testing-library/user-event": "^14.6.1",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^5.1.4",
+    "typescript": "^5.9.3",
+    "vite": "^7.3.1",
+    "vitest": "^4.0.18"
   }
 }

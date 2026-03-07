@@ -1,5 +1,4 @@
-import { createRootRoute, createRoute, createRouter } from '@tanstack/react-router';
-import { Outlet } from '@tanstack/react-router';
+import { createRootRoute, createRoute, createRouter, Outlet } from '@tanstack/react-router';
 import { lazy } from 'react';
 import { AppShell } from './components/layout/AppShell/AppShell.js';
 import { useAuthStore } from './stores/auth.js';

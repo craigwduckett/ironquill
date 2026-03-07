@@ -1,8 +1,17 @@
 import type { AbilityScores, Appearance, Personality } from '@ironquill/shared';
-import { boolean, integer, jsonb, pgEnum, pgTable, text, uuid, varchar } from 'drizzle-orm/pg-core';
-import { timestamp } from 'drizzle-orm/pg-core';
-import { srdClasses, srdRaces } from './srd.js';
-import { users } from './users.js';
+import {
+  boolean,
+  integer,
+  jsonb,
+  pgEnum,
+  pgTable,
+  text,
+  timestamp,
+  uuid,
+  varchar,
+} from 'drizzle-orm/pg-core';
+import { srdClasses, srdRaces } from './srd';
+import { users } from './users';
 
 export const managedByEnum = pgEnum('managed_by', ['self', 'dm']);
 
