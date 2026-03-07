@@ -1,25 +1,23 @@
-import { Link } from "@tanstack/react-router";
-import clsx from "clsx";
-import { useMemo, useState } from "react";
-import { Badge, EmptyState, Spinner } from "../../../components/ui/index.js";
-import { type SrdBackground, useSrdBackgrounds } from "../hooks/useSrd.js";
-import { NoviceBox, Tip } from "../SrdHelpers.js";
-import styles from "../SrdListPage.module.css";
-import { SrdMarkdown } from "../SrdMarkdown/SrdMarkdown.js";
+import { Link } from '@tanstack/react-router';
+import clsx from 'clsx';
+import { useMemo, useState } from 'react';
+import { Badge, EmptyState, Spinner } from '../../../components/ui/index.js';
+import { type SrdBackground, useSrdBackgrounds } from '../hooks/useSrd.js';
+import { NoviceBox, Tip } from '../SrdHelpers.js';
+import styles from '../SrdListPage.module.css';
+import { SrdMarkdown } from '../SrdMarkdown/SrdMarkdown.js';
 
-const EDITION_LABELS: Record<string, string> = { "2014": "5.1", "2024": "5.2" };
+const EDITION_LABELS: Record<string, string> = { '2014': '5.1', '2024': '5.2' };
 
 export function SrdBackgroundsPage() {
   const { data, isLoading, isError } = useSrdBackgrounds();
-  const [search, setSearch] = useState("");
-  const [editionFilter, setEditionFilter] = useState("All");
+  const [search, setSearch] = useState('');
+  const [editionFilter, setEditionFilter] = useState('All');
   const [selected, setSelected] = useState<SrdBackground | null>(null);
 
   const filtered = useMemo(() => {
     return (data ?? [])
-      .filter(
-        (b) => editionFilter === "All" || b.sourceEdition === editionFilter,
-      )
+      .filter((b) => editionFilter === 'All' || b.sourceEdition === editionFilter)
       .filter((b) => b.name.toLowerCase().includes(search.toLowerCase()))
       .sort((a, b) => a.name.localeCompare(b.name));
   }, [data, editionFilter, search]);
@@ -57,17 +55,14 @@ export function SrdBackgroundsPage() {
             onChange={(e) => setSearch(e.target.value)}
           />
           <div className={styles.chips}>
-            {["All", "2014", "2024"].map((ed) => (
+            {['All', '2014', '2024'].map((ed) => (
               <button
                 key={ed}
                 type="button"
-                className={clsx(
-                  styles.chip,
-                  editionFilter === ed && styles.chipActive,
-                )}
+                className={clsx(styles.chip, editionFilter === ed && styles.chipActive)}
                 onClick={() => setEditionFilter(ed)}
               >
-                {ed === "All" ? "All" : `SRD ${EDITION_LABELS[ed] ?? ed}`}
+                {ed === 'All' ? 'All' : `SRD ${EDITION_LABELS[ed] ?? ed}`}
               </button>
             ))}
           </div>
@@ -82,19 +77,14 @@ export function SrdBackgroundsPage() {
             <button
               key={b.id}
               type="button"
-              className={clsx(
-                styles.listRow,
-                selected?.id === b.id && styles.listRowActive,
-              )}
+              className={clsx(styles.listRow, selected?.id === b.id && styles.listRowActive)}
               onClick={() => setSelected(b)}
             >
               <span
                 className={styles.rowDot}
                 style={{
                   background:
-                    b.sourceEdition === "2024"
-                      ? "var(--color-info)"
-                      : "var(--color-accent)",
+                    b.sourceEdition === '2024' ? 'var(--color-info)' : 'var(--color-accent)',
                 }}
               />
               <span className={styles.rowName}>{b.name}</span>
@@ -107,23 +97,18 @@ export function SrdBackgroundsPage() {
             </button>
           ))}
           {filtered.length === 0 && (
-            <EmptyState
-              icon="📜"
-              title="No results"
-              description="Try a different search."
-            />
+            <EmptyState icon="📜" title="No results" description="Try a different search." />
           )}
         </div>
       </div>
 
       {/* ── Detail pane ── */}
-      <div key={selected?.id ?? "empty"} className={styles.detail}>
+      <div key={selected?.id ?? 'empty'} className={styles.detail}>
         {!selected ? (
           <div className={styles.emptyDetail}>
             <span className={styles.emptyDetailIcon}>📜</span>
             <p className={styles.emptyDetailText}>
-              Select a background to learn about your character's life before
-              adventuring.
+              Select a background to learn about your character's life before adventuring.
             </p>
           </div>
         ) : (
@@ -132,20 +117,17 @@ export function SrdBackgroundsPage() {
               <h1 className={styles.detailTitle}>{selected.name}</h1>
               <div className={styles.cardMeta}>
                 <Badge variant="info">
-                  SRD{" "}
-                  {EDITION_LABELS[selected.sourceEdition] ??
-                    selected.sourceEdition}
+                  SRD {EDITION_LABELS[selected.sourceEdition] ?? selected.sourceEdition}
                 </Badge>
               </div>
             </div>
 
             <NoviceBox>
-              <strong>What is a Background?</strong> Your background represents
-              what your character did before becoming an adventurer — their job,
-              upbringing, or life experience. It gives you extra skills,
-              equipment, and a special feature that reflects your past. A{" "}
-              <em>Soldier</em> background might give you military contacts; a{" "}
-              <em>Sage</em> might know where to find ancient lore.
+              <strong>What is a Background?</strong> Your background represents what your character
+              did before becoming an adventurer — their job, upbringing, or life experience. It
+              gives you extra skills, equipment, and a special feature that reflects your past. A{' '}
+              <em>Soldier</em> background might give you military contacts; a <em>Sage</em> might
+              know where to find ancient lore.
             </NoviceBox>
 
             {selected.skillProficiencies.length > 0 && (

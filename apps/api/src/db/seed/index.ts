@@ -27,6 +27,7 @@ import { readFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import postgres from 'postgres';
+import { logger } from '../../lib/logger.js';
 import {
   type RawBackground2014,
   type RawBackground2024,
@@ -158,14 +159,14 @@ async function seedSpecies() {
 
   const rows = raw.map((r) => transformSpecies2014(r, traitLookup, languageLookup));
   await batchUpsert('srd_species', rows, 'srd_species_name_edition_uq');
-  console.log(`  species: upserted ${rows.length} rows (2014, displayTerm='Race')`);
+  logger.info(`species: upserted ${rows.length} rows (2014, displayTerm='Race')`);
 }
 
 async function seedClasses() {
   const raw = loadJson<RawClass2014[]>(join(dataDir, 'classes.json'));
   const rows = raw.map(transformClass2014);
   await batchUpsert('srd_classes', rows, 'srd_classes_name_edition_uq');
-  console.log(`  classes: upserted ${rows.length} rows (2014)`);
+  logger.info(`classes: upserted ${rows.length} rows (2014)`);
 }
 
 async function seedBackgrounds() {
@@ -177,8 +178,8 @@ async function seedBackgrounds() {
   const all = [...rows2014, ...rows2024];
 
   await batchUpsert('srd_backgrounds', all, 'srd_backgrounds_name_edition_uq');
-  console.log(
-    `  backgrounds: upserted ${rows2014.length} (2014) + ${rows2024.length} (2024) = ${all.length} rows`,
+  logger.info(
+    `backgrounds: upserted ${rows2014.length} (2014) + ${rows2024.length} (2024) = ${all.length} rows`,
   );
 }
 
@@ -186,14 +187,14 @@ async function seedSpells() {
   const raw = loadJson<RawSpell2014[]>(join(dataDir, 'spells.json'));
   const rows = raw.map(transformSpell2014);
   await batchUpsert('srd_spells', rows, 'srd_spells_name_edition_uq');
-  console.log(`  spells: upserted ${rows.length} rows (2014)`);
+  logger.info(`spells: upserted ${rows.length} rows (2014)`);
 }
 
 async function seedMonsters() {
   const raw = loadJson<RawMonster2014[]>(join(dataDir, 'monsters.json'));
   const rows = raw.map(transformMonster2014);
   await batchUpsert('srd_monsters', rows, 'srd_monsters_name_edition_uq');
-  console.log(`  monsters: upserted ${rows.length} rows (2014)`);
+  logger.info(`monsters: upserted ${rows.length} rows (2014)`);
 }
 
 async function seedItems() {
@@ -207,8 +208,8 @@ async function seedItems() {
   const all = [...rows2014Eq, ...rows2014Magic, ...rows2024];
 
   await batchUpsert('srd_items', all, 'srd_items_name_edition_uq');
-  console.log(
-    `  items: upserted ${rows2014Eq.length} equipment (2014) + ${rows2014Magic.length} magic items (2014) + ${rows2024.length} equipment (2024) = ${all.length} rows`,
+  logger.info(
+    `items: upserted ${rows2014Eq.length} equipment (2014) + ${rows2014Magic.length} magic items (2014) + ${rows2024.length} equipment (2024) = ${all.length} rows`,
   );
 }
 
@@ -221,8 +222,8 @@ async function seedConditions() {
   const all = [...rows2014, ...rows2024];
 
   await batchUpsert('srd_conditions', all, 'srd_conditions_name_edition_uq');
-  console.log(
-    `  conditions: upserted ${rows2014.length} (2014) + ${rows2024.length} (2024) = ${all.length} rows`,
+  logger.info(
+    `conditions: upserted ${rows2014.length} (2014) + ${rows2024.length} (2024) = ${all.length} rows`,
   );
 }
 
@@ -245,16 +246,16 @@ async function seedRules() {
   const all = [...categoryRows, ...sectionRows];
 
   await batchUpsert('srd_rules', all, 'srd_rules_topic_edition_uq');
-  console.log(
-    `  rules: upserted ${categoryRows.length} categories + ${sectionRows.length} sections = ${all.length} rows (2014)`,
+  logger.info(
+    `rules: upserted ${categoryRows.length} categories + ${sectionRows.length} sections = ${all.length} rows (2014)`,
   );
 }
 
 // ── Upsert seed ───────────────────────────────────────────────────────────────
 
 async function main() {
-  console.log('Seeding SRD data…\n');
-  console.log('Strategy: upsert on (name, source_edition) — user data is never touched.\n');
+  logger.info('Seeding SRD data…');
+  logger.info('Strategy: upsert on (name, source_edition) — user data is never touched.');
 
   await seedSpecies();
   await seedClasses();
@@ -265,11 +266,11 @@ async function main() {
   await seedConditions();
   await seedRules();
 
-  console.log('\nSRD seed complete.');
+  logger.info('SRD seed complete.');
   process.exit(0);
 }
 
 main().catch((err) => {
-  console.error('Seed failed:', err);
+  logger.error({ err }, 'Seed failed');
   process.exit(1);
 });

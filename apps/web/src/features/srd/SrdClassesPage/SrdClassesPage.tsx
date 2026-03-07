@@ -1,30 +1,30 @@
-import { Link } from "@tanstack/react-router";
-import clsx from "clsx";
-import { useMemo, useState } from "react";
-import { Badge, EmptyState, Spinner } from "../../../components/ui/index.js";
-import { type SrdClass, useSrdClasses } from "../hooks/useSrd.js";
-import { NoviceBox, Tip } from "../SrdHelpers.js";
-import styles from "../SrdListPage.module.css";
-import { SrdMarkdown } from "../SrdMarkdown/SrdMarkdown.js";
+import { Link } from '@tanstack/react-router';
+import clsx from 'clsx';
+import { useMemo, useState } from 'react';
+import { Badge, EmptyState, Spinner } from '../../../components/ui/index.js';
+import { type SrdClass, useSrdClasses } from '../hooks/useSrd.js';
+import { NoviceBox, Tip } from '../SrdHelpers.js';
+import styles from '../SrdListPage.module.css';
+import { SrdMarkdown } from '../SrdMarkdown/SrdMarkdown.js';
 
 const CLASS_DOTS: Record<string, string> = {
-  Barbarian: "#e05c5c",
-  Bard: "#9b59b6",
-  Cleric: "#f1c40f",
-  Druid: "#5cb87a",
-  Fighter: "#e09d3c",
-  Monk: "#1abc9c",
-  Paladin: "#f39c12",
-  Ranger: "#27ae60",
-  Rogue: "#7f8c8d",
-  Sorcerer: "#e74c3c",
-  Warlock: "#8e44ad",
-  Wizard: "#2980b9",
+  Barbarian: '#e05c5c',
+  Bard: '#9b59b6',
+  Cleric: '#f1c40f',
+  Druid: '#5cb87a',
+  Fighter: '#e09d3c',
+  Monk: '#1abc9c',
+  Paladin: '#f39c12',
+  Ranger: '#27ae60',
+  Rogue: '#7f8c8d',
+  Sorcerer: '#e74c3c',
+  Warlock: '#8e44ad',
+  Wizard: '#2980b9',
 };
 
 export function SrdClassesPage() {
   const { data, isLoading, isError } = useSrdClasses();
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState('');
   const [selected, setSelected] = useState<SrdClass | null>(null);
 
   const filtered = useMemo(() => {
@@ -76,16 +76,13 @@ export function SrdClassesPage() {
             <button
               key={c.id}
               type="button"
-              className={clsx(
-                styles.listRow,
-                selected?.id === c.id && styles.listRowActive,
-              )}
+              className={clsx(styles.listRow, selected?.id === c.id && styles.listRowActive)}
               onClick={() => setSelected(c)}
             >
               <span
                 className={styles.rowDot}
                 style={{
-                  background: CLASS_DOTS[c.name] ?? "var(--color-accent)",
+                  background: CLASS_DOTS[c.name] ?? 'var(--color-accent)',
                 }}
               />
               <span className={styles.rowName}>{c.name}</span>
@@ -98,17 +95,13 @@ export function SrdClassesPage() {
             </button>
           ))}
           {filtered.length === 0 && (
-            <EmptyState
-              icon="⚔️"
-              title="No results"
-              description="Try a different search."
-            />
+            <EmptyState icon="⚔️" title="No results" description="Try a different search." />
           )}
         </div>
       </div>
 
       {/* ── Detail pane ── */}
-      <div key={selected?.id ?? "empty"} className={styles.detail}>
+      <div key={selected?.id ?? 'empty'} className={styles.detail}>
         {!selected ? (
           <div className={styles.emptyDetail}>
             <span className={styles.emptyDetailIcon}>⚔️</span>
@@ -131,11 +124,10 @@ export function SrdClassesPage() {
             </div>
 
             <NoviceBox>
-              <strong>What is a Class?</strong> Your class is your character's
-              job or calling — it shapes how you fight, what magic you can use,
-              and what special abilities you gain as you level up. Every class
-              plays differently: Fighters are tough melee warriors, Wizards
-              study arcane magic, Rogues are stealthy and skilled, and so on.
+              <strong>What is a Class?</strong> Your class is your character's job or calling — it
+              shapes how you fight, what magic you can use, and what special abilities you gain as
+              you level up. Every class plays differently: Fighters are tough melee warriors,
+              Wizards study arcane magic, Rogues are stealthy and skilled, and so on.
             </NoviceBox>
 
             {selected.description && (
@@ -217,9 +209,7 @@ export function SrdClassesPage() {
 
             {selected.startingEquipment.length > 0 && (
               <div className={styles.detailSection}>
-                <div className={styles.detailSectionLabel}>
-                  Starting Equipment
-                </div>
+                <div className={styles.detailSectionLabel}>Starting Equipment</div>
                 <ul className={styles.detailList}>
                   {selected.startingEquipment.map((e) => (
                     <li key={`${String(e.name)}-eq`}>
@@ -238,10 +228,7 @@ export function SrdClassesPage() {
                   Level 1 Features
                   <Tip text="These are the special abilities you get immediately when you start playing this class. You'll gain more features as you level up." />
                 </div>
-                {(
-                  selected.featuresByLevel.find((f) => f.level === 1)
-                    ?.features ?? []
-                ).map((f) => (
+                {(selected.featuresByLevel.find((f) => f.level === 1)?.features ?? []).map((f) => (
                   <div key={f.name} className={styles.detailSubsection}>
                     <div className={styles.detailSubsectionName}>{f.name}</div>
                     <SrdMarkdown content={f.description} />

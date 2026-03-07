@@ -311,7 +311,7 @@ export function DmSessionPage({ sessionId }: Props) {
               </div>
             )}
 
-            {combat && combat.isActive ? (
+            {combat?.isActive ? (
               <InitiativeTracker
                 entries={combat.initiativeOrder}
                 round={combat.round}

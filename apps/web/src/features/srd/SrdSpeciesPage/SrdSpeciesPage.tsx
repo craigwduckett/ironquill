@@ -1,42 +1,40 @@
-import { Link } from "@tanstack/react-router";
-import clsx from "clsx";
-import { useMemo, useState } from "react";
-import { Badge, EmptyState, Spinner } from "../../../components/ui/index.js";
-import { type SrdSpecies, useSrdSpecies } from "../hooks/useSrd.js";
-import { NoviceBox, Tip } from "../SrdHelpers.js";
-import styles from "../SrdListPage.module.css";
-import { SrdMarkdown } from "../SrdMarkdown/SrdMarkdown.js";
+import { Link } from '@tanstack/react-router';
+import clsx from 'clsx';
+import { useMemo, useState } from 'react';
+import { Badge, EmptyState, Spinner } from '../../../components/ui/index.js';
+import { type SrdSpecies, useSrdSpecies } from '../hooks/useSrd.js';
+import { NoviceBox, Tip } from '../SrdHelpers.js';
+import styles from '../SrdListPage.module.css';
+import { SrdMarkdown } from '../SrdMarkdown/SrdMarkdown.js';
 
 const SIZE_COLORS: Record<string, string> = {
-  Tiny: "#5c9ee0",
-  Small: "#5cb87a",
-  Medium: "#c8a96e",
-  Large: "#e09d3c",
-  Huge: "#e05c5c",
-  Gargantuan: "#b05ce0",
+  Tiny: '#5c9ee0',
+  Small: '#5cb87a',
+  Medium: '#c8a96e',
+  Large: '#e09d3c',
+  Huge: '#e05c5c',
+  Gargantuan: '#b05ce0',
 };
 
 const EDITION_LABELS: Record<string, string> = {
-  "2014": "5.1",
-  "2024": "5.2",
+  '2014': '5.1',
+  '2024': '5.2',
 };
 
 export function SrdSpeciesPage() {
   const { data, isLoading, isError } = useSrdSpecies();
-  const [search, setSearch] = useState("");
-  const [editionFilter, setEditionFilter] = useState("All");
+  const [search, setSearch] = useState('');
+  const [editionFilter, setEditionFilter] = useState('All');
   const [selected, setSelected] = useState<SrdSpecies | null>(null);
 
   const editions = useMemo(() => {
     const vals = [...new Set((data ?? []).map((s) => s.sourceEdition))].sort();
-    return ["All", ...vals];
+    return ['All', ...vals];
   }, [data]);
 
   const filtered = useMemo(() => {
     return (data ?? [])
-      .filter(
-        (s) => editionFilter === "All" || s.sourceEdition === editionFilter,
-      )
+      .filter((s) => editionFilter === 'All' || s.sourceEdition === editionFilter)
       .filter((s) => s.name.toLowerCase().includes(search.toLowerCase()))
       .sort((a, b) => a.name.localeCompare(b.name));
   }, [data, editionFilter, search]);
@@ -82,13 +80,10 @@ export function SrdSpeciesPage() {
               <button
                 key={ed}
                 type="button"
-                className={clsx(
-                  styles.chip,
-                  editionFilter === ed && styles.chipActive,
-                )}
+                className={clsx(styles.chip, editionFilter === ed && styles.chipActive)}
                 onClick={() => setEditionFilter(ed)}
               >
-                {ed === "All" ? "All" : `SRD ${EDITION_LABELS[ed] ?? ed}`}
+                {ed === 'All' ? 'All' : `SRD ${EDITION_LABELS[ed] ?? ed}`}
               </button>
             ))}
           </div>
@@ -103,16 +98,13 @@ export function SrdSpeciesPage() {
             <button
               key={s.id}
               type="button"
-              className={clsx(
-                styles.listRow,
-                selected?.id === s.id && styles.listRowActive,
-              )}
+              className={clsx(styles.listRow, selected?.id === s.id && styles.listRowActive)}
               onClick={() => setSelected(s)}
             >
               <span
                 className={styles.rowDot}
                 style={{
-                  background: SIZE_COLORS[s.size] ?? "var(--color-border)",
+                  background: SIZE_COLORS[s.size] ?? 'var(--color-border)',
                 }}
               />
               <span className={styles.rowName}>{s.name}</span>
@@ -125,17 +117,13 @@ export function SrdSpeciesPage() {
             </button>
           ))}
           {filtered.length === 0 && (
-            <EmptyState
-              icon="🧝"
-              title="No results"
-              description="Try a different search."
-            />
+            <EmptyState icon="🧝" title="No results" description="Try a different search." />
           )}
         </div>
       </div>
 
       {/* ── Detail pane ── */}
-      <div key={selected?.id ?? "empty"} className={styles.detail}>
+      <div key={selected?.id ?? 'empty'} className={styles.detail}>
         {!selected ? (
           <div className={styles.emptyDetail}>
             <span className={styles.emptyDetailIcon}>🧬</span>
@@ -152,25 +140,20 @@ export function SrdSpeciesPage() {
                 <Badge>{selected.size}</Badge>
                 <Badge>Speed {selected.speed} ft.</Badge>
                 <Badge variant="info">
-                  SRD{" "}
-                  {EDITION_LABELS[selected.sourceEdition] ??
-                    selected.sourceEdition}
+                  SRD {EDITION_LABELS[selected.sourceEdition] ?? selected.sourceEdition}
                 </Badge>
               </div>
             </div>
 
             <NoviceBox>
-              <strong>What is a Species / Race?</strong> In D&amp;D your
-              character's species determines their physical appearance, innate
-              abilities, and some of their personality. It's one of the first
-              choices you make. The <em>display term</em> just tells you which
-              rulebook edition named them this way — "Race" (older books) or
-              "Species" (newer books).
+              <strong>What is a Species / Race?</strong> In D&amp;D your character's species
+              determines their physical appearance, innate abilities, and some of their personality.
+              It's one of the first choices you make. The <em>display term</em> just tells you which
+              rulebook edition named them this way — "Race" (older books) or "Species" (newer
+              books).
             </NoviceBox>
 
-            {selected.description && (
-              <SrdMarkdown content={selected.description} />
-            )}
+            {selected.description && <SrdMarkdown content={selected.description} />}
 
             {Object.keys(selected.abilityBonuses).length > 0 && (
               <div className={styles.detailSection}>
@@ -179,15 +162,13 @@ export function SrdSpeciesPage() {
                   <Tip text="These numbers are added to your ability scores when you create your character. A +2 to STR means you are naturally stronger than average for your species." />
                 </div>
                 <ul className={styles.detailList}>
-                  {Object.entries(selected.abilityBonuses).map(
-                    ([ability, bonus]) => (
-                      <li key={ability}>
-                        <Badge variant="success">
-                          {ability} +{bonus}
-                        </Badge>
-                      </li>
-                    ),
-                  )}
+                  {Object.entries(selected.abilityBonuses).map(([ability, bonus]) => (
+                    <li key={ability}>
+                      <Badge variant="success">
+                        {ability} +{bonus}
+                      </Badge>
+                    </li>
+                  ))}
                 </ul>
               </div>
             )}
@@ -230,21 +211,13 @@ export function SrdSpeciesPage() {
                 <ul className={styles.detailList}>
                   {selected.languages.map((l) => {
                     // Stored as "Name (Type) — script: X"
-                    const namePart = l.split(" (")[0] ?? l;
+                    const namePart = l.split(' (')[0] ?? l;
                     const scriptMatch = l.match(/script: ([^)]+)/);
                     const typePart = l.match(/\(([^)]+)\)/)?.[1];
-                    const fullLabel = [namePart, typePart]
-                      .filter(Boolean)
-                      .join(" · ");
+                    const fullLabel = [namePart, typePart].filter(Boolean).join(' · ');
                     return (
                       <li key={l}>
-                        <span
-                          title={
-                            scriptMatch
-                              ? `Script: ${scriptMatch[1]}`
-                              : undefined
-                          }
-                        >
+                        <span title={scriptMatch ? `Script: ${scriptMatch[1]}` : undefined}>
                           <Badge>{fullLabel}</Badge>
                         </span>
                       </li>
@@ -252,10 +225,7 @@ export function SrdSpeciesPage() {
                   })}
                 </ul>
                 {selected.languageDesc && (
-                  <p
-                    className={styles.detailText}
-                    style={{ marginTop: "var(--space-2)" }}
-                  >
+                  <p className={styles.detailText} style={{ marginTop: 'var(--space-2)' }}>
                     {selected.languageDesc}
                   </p>
                 )}
