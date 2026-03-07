@@ -127,3 +127,21 @@ jobs:
 
       - name: Build web
         run: pnpm --filter @ironquill/web build
+
+  # ── Gate ──────────────────────────────────────────────────────────────────
+  # Single required status check for branch protection.
+  # Add "CI / ci-gate" as the only required check in:
+  #   GitHub → Settings → Branches → main → Require status checks to pass
+  ci-gate:
+    name: CI gate
+    runs-on: ubuntu-latest
+    needs: [lint, typecheck, test, docker-build, build]
+    if: always()
+    steps:
+      - name: All jobs passed
+        run: |
+          if [[ "${{ contains(needs.*.result, 'failure') }}" == "true" || "${{ contains(needs.*.result, 'cancelled') }}" == "true" ]]; then
+            echo "One or more required jobs failed or were cancelled."
+            exit 1
+          fi
+          echo "All jobs passed."
