@@ -24,7 +24,7 @@ export const AppearanceSchema = z.object({
 
 export const CharacterCreateSchema = z.object({
   name: z.string().min(1).max(100),
-  raceId: z.string().uuid(),
+  speciesId: z.string().uuid(),
   classId: z.string().uuid(),
   backgroundId: z.string().uuid().optional(),
   level: z.number().int().min(1).max(20).default(1),

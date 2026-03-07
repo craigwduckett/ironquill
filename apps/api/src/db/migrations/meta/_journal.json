@@ -8,6 +8,20 @@
       "when": 1772864873558,
       "tag": "0000_curly_rocket_raccoon",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1772866322532,
+      "tag": "0001_broken_fixer",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1772868000000,
+      "tag": "0002_species_rename",
+      "breakpoints": true
     }
   ]
 }

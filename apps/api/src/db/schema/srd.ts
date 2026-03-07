@@ -10,16 +10,32 @@ import {
   varchar,
 } from 'drizzle-orm/pg-core';
 
-// ── Races ────────────────────────────────────────────────────────────────────
+// ── Edition tracking ──────────────────────────────────────────────────────────
+// '2014' = SRD 5.1 (OGL), '2024' = SRD 5.2 (CC-BY-4.0)
+// When 2024 data becomes available for a table the row is inserted with '2024'
+// and the corresponding '2014' rows can be removed to avoid duplicates.
 
-export const srdRaces = pgTable('srd_races', {
+export const srdEditionEnum = pgEnum('srd_edition', ['2014', '2024']);
+
+// ── Species (formerly Races) ──────────────────────────────────────────────────
+// 2014 SRD called these "Races" (displayTerm = 'Race').
+// 2024 SRD renamed them "Species" (displayTerm = 'Species') and removed fixed
+// ability score bonuses — those moved to Backgrounds. The abilityBonuses column
+// is kept for 2014 compatibility but will always be empty for 2024 rows.
+
+export const srdSpeciesDisplayTermEnum = pgEnum('srd_species_display_term', ['Race', 'Species']);
+
+export const srdSpecies = pgTable('srd_species', {
   id: uuid('id').primaryKey().defaultRandom(),
+  sourceEdition: srdEditionEnum('source_edition').notNull().default('2014'),
+  displayTerm: srdSpeciesDisplayTermEnum('display_term').notNull().default('Race'),
   name: varchar('name', { length: 100 }).notNull(),
   description: text('description'),
   traits: jsonb('traits')
     .$type<Array<{ name: string; description: string }>>()
     .notNull()
     .default([]),
+  // Populated for 2014 rows only. Always {} for 2024 Species (ASIs come from Background).
   abilityBonuses: jsonb('ability_bonuses')
     .$type<Partial<Record<string, number>>>()
     .notNull()
@@ -33,6 +49,7 @@ export const srdRaces = pgTable('srd_races', {
 
 export const srdClasses = pgTable('srd_classes', {
   id: uuid('id').primaryKey().defaultRandom(),
+  sourceEdition: srdEditionEnum('source_edition').notNull().default('2014'),
   name: varchar('name', { length: 100 }).notNull(),
   description: text('description'),
   hitDie: varchar('hit_die', { length: 5 }).notNull(),
@@ -64,6 +81,7 @@ export const srdClasses = pgTable('srd_classes', {
 
 export const srdBackgrounds = pgTable('srd_backgrounds', {
   id: uuid('id').primaryKey().defaultRandom(),
+  sourceEdition: srdEditionEnum('source_edition').notNull().default('2014'),
   name: varchar('name', { length: 100 }).notNull(),
   description: text('description'),
   skillProficiencies: text('skill_proficiencies').array().notNull().default([]),
@@ -78,6 +96,7 @@ export const srdBackgrounds = pgTable('srd_backgrounds', {
 
 export const srdSpells = pgTable('srd_spells', {
   id: uuid('id').primaryKey().defaultRandom(),
+  sourceEdition: srdEditionEnum('source_edition').notNull().default('2014'),
   name: varchar('name', { length: 200 }).notNull(),
   level: integer('level').notNull(),
   school: varchar('school', { length: 50 }).notNull(),
@@ -98,6 +117,7 @@ export const srdSpells = pgTable('srd_spells', {
 
 export const srdMonsters = pgTable('srd_monsters', {
   id: uuid('id').primaryKey().defaultRandom(),
+  sourceEdition: srdEditionEnum('source_edition').notNull().default('2014'),
   name: varchar('name', { length: 200 }).notNull(),
   size: varchar('size', { length: 20 }).notNull(),
   type: varchar('type', { length: 50 }).notNull(),
@@ -134,6 +154,7 @@ export const itemCategoryEnum = pgEnum('item_category', [
 
 export const srdItems = pgTable('srd_items', {
   id: uuid('id').primaryKey().defaultRandom(),
+  sourceEdition: srdEditionEnum('source_edition').notNull().default('2014'),
   name: varchar('name', { length: 200 }).notNull(),
   category: itemCategoryEnum('category').notNull(),
   cost: jsonb('cost').$type<{ amount: number; unit: string } | null>(),
@@ -148,6 +169,7 @@ export const srdItems = pgTable('srd_items', {
 
 export const srdConditions = pgTable('srd_conditions', {
   id: uuid('id').primaryKey().defaultRandom(),
+  sourceEdition: srdEditionEnum('source_edition').notNull().default('2014'),
   name: varchar('name', { length: 100 }).notNull(),
   description: text('description').notNull(),
   mechanicalEffects: text('mechanical_effects').array().notNull().default([]),
@@ -157,6 +179,7 @@ export const srdConditions = pgTable('srd_conditions', {
 
 export const srdRules = pgTable('srd_rules', {
   id: uuid('id').primaryKey().defaultRandom(),
+  sourceEdition: srdEditionEnum('source_edition').notNull().default('2014'),
   category: varchar('category', { length: 100 }).notNull(),
   topic: varchar('topic', { length: 200 }).notNull(),
   description: text('description').notNull(),
@@ -165,7 +188,7 @@ export const srdRules = pgTable('srd_rules', {
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
-export type SrdRace = typeof srdRaces.$inferSelect;
+export type SrdSpecies = typeof srdSpecies.$inferSelect;
 export type SrdClass = typeof srdClasses.$inferSelect;
 export type SrdBackground = typeof srdBackgrounds.$inferSelect;
 export type SrdSpell = typeof srdSpells.$inferSelect;

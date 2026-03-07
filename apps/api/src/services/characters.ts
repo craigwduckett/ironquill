@@ -33,7 +33,7 @@ export async function create(userId: string, input: CharacterCreateInput) {
     .values({
       userId,
       name: input.name,
-      raceId: input.raceId,
+      speciesId: input.speciesId,
       classId: input.classId,
       backgroundId: input.backgroundId,
       level: input.level,

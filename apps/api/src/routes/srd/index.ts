@@ -9,8 +9,8 @@ import {
   srdConditions,
   srdItems,
   srdMonsters,
-  srdRaces,
   srdRules,
+  srdSpecies,
   srdSpells,
 } from '../../db/schema/srd.js';
 
@@ -40,11 +40,13 @@ const RulesQuerySchema = z.object({
 const srdRoutes: FastifyPluginAsync = async (fastify) => {
   const app = fastify.withTypeProvider<ZodTypeProvider>();
 
-  // ── Races ────────────────────────────────────────────────────────────────
-  app.get('/races', async () => db.select().from(srdRaces).orderBy(srdRaces.name));
+  // ── Species ───────────────────────────────────────────────────────────────
+  // Response includes `displayTerm` ('Race' | 'Species') so the UI can label
+  // this concept correctly per edition without branching on the URL.
+  app.get('/species', async () => db.select().from(srdSpecies).orderBy(srdSpecies.name));
 
-  app.get('/races/:id', { schema: { params: IdParamSchema } }, async (request) => {
-    const rows = await db.select().from(srdRaces).where(eq(srdRaces.id, request.params.id));
+  app.get('/species/:id', { schema: { params: IdParamSchema } }, async (request) => {
+    const rows = await db.select().from(srdSpecies).where(eq(srdSpecies.id, request.params.id));
     return rows[0] ?? null;
   });
 

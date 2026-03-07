@@ -10,7 +10,7 @@ import {
   uuid,
   varchar,
 } from 'drizzle-orm/pg-core';
-import { srdClasses, srdRaces } from './srd';
+import { srdClasses, srdSpecies } from './srd';
 import { users } from './users';
 
 export const managedByEnum = pgEnum('managed_by', ['self', 'dm']);
@@ -21,7 +21,7 @@ export const characters = pgTable('characters', {
   managedBy: managedByEnum('managed_by').notNull().default('self'),
   presetSourceId: uuid('preset_source_id'),
   name: varchar('name', { length: 100 }).notNull(),
-  raceId: uuid('race_id').references(() => srdRaces.id),
+  speciesId: uuid('species_id').references(() => srdSpecies.id),
   classId: uuid('class_id').references(() => srdClasses.id),
   backgroundId: uuid('background_id'),
   level: integer('level').notNull().default(1),

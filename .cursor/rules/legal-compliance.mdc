@@ -1,0 +1,112 @@
+---
+description: Legal compliance — SRD licensing, IP attribution, privacy, and policy requirements for IronQuill
+alwaysApply: true
+---
+
+# Legal Compliance
+
+IronQuill uses D&D 5e SRD content under two separate licenses. Every code change that touches SRD data, user-facing text, UI, or policies must follow the rules below.
+
+## D&D Brand Restrictions — Always Enforced
+
+- **Never** use "Dungeons & Dragons" or "D&D" as a product name in UI copy, page titles, or meta tags
+- **Never** use the D&D logo, ampersand logo, or any Wizards of the Coast / Hasbro trademark
+- **Always** refer to the content as "D&D 5e SRD", "fifth-edition SRD", or "SRD 5.x content"
+- **Never** imply affiliation with or endorsement by Wizards of the Coast or Hasbro
+- The required disclaimer must appear on every page that renders SRD content: `"Not affiliated with Wizards of the Coast"`
+- **Acceptable:** "IronQuill — a fifth-edition SRD adventure companion"
+- **Not acceptable:** "IronQuill — a D&D adventure manager"
+
+## SRD 5.1 (2014) — OGL 1.0a Obligations
+
+All content seeded from `data/` (excluding `data/2024/`) is under the Open Game License v1.0a.
+
+- The full OGL 1.0a text **must** be publicly accessible at `/legal/srd`
+- The Section 15 copyright chain **must** appear verbatim:
+  > System Reference Document 5.1 Copyright 2016, Wizards of the Coast, Inc.; Authors Mike Mearls, Jeremy Crawford, Chris Perkins, Rodney Thompson, Peter Lee, James Wyatt, Robert J. Schwalb, Bruce R. Cordell, Chris Sims, and Steve Townshend, based on original material by E. Gary Gygax and Dave Arneson.
+- The OGL "Open Game Content" declaration **must** accompany the license text
+- Do NOT add OGL content to the Section 15 notice chain without legal review
+
+## SRD 5.2 (2024) — CC-BY-4.0 Obligations
+
+All content seeded from `data/2024/` is under Creative Commons Attribution 4.0 International.
+
+- The following attribution **must** appear verbatim at `/legal/srd`:
+  > This work includes material taken from the System Reference Document 5.2 ("SRD 5.2") by Wizards of the Coast LLC and available at https://www.dndbeyond.com/srd. The SRD 5.2 is licensed under the Creative Commons Attribution 4.0 International License available at https://creativecommons.org/licenses/by/4.0/legalcode.
+- Any modification of 2024 SRD content must be indicated (e.g., "adapted for Kids Mode")
+- Do NOT remove or alter this attribution when displaying 2024 content
+
+## Data Source Attribution
+
+SRD seed data originates from `5e-bits/5e-database` (MIT License).
+
+- This attribution must appear in `/legal/srd` and in the seed file headers:
+  > SRD data sourced from 5e-database by 5e-bits (MIT License), derived from the D&D 5e System Reference Document.
+
+## Source Edition Tagging
+
+- Every SRD database row carries `source_edition: '2014' | '2024'`
+- When displaying SRD content in the UI, the correct license applies based on `source_edition`
+- Never mix 2014 OGL content and 2024 CC-BY content without correct per-row attribution
+
+## User-Generated Content
+
+- Adventures, characters, scenes, and session notes are user-owned content
+- IronQuill holds a limited license to store and display this content solely to operate the service
+- On account deletion, user content must be deleted or fully anonymised
+- The ToS at `/legal/terms` must spell out this ownership arrangement
+
+## Kids Mode — Elevated Privacy Obligations
+
+- The platform is **not directed at children under 13**
+- Kids Mode is a DM (adult) feature for managing children's game characters — children do not create accounts
+- No personal data is collected directly from children
+- Any UI copy related to Kids Mode must reinforce that the DM (adult) is the account holder and data controller for kids characters
+- Privacy policy at `/legal/privacy` must explicitly state the minimum age requirement and Kids Mode data handling
+
+## Cookies and Tracking
+
+- The refresh token `httpOnly` cookie is **strictly necessary** — no consent banner required
+- If any analytics, error tracking, or non-essential cookies are added, a consent mechanism is required before those cookies are set
+- Never add third-party tracking scripts (Google Analytics, Meta Pixel, etc.) without updating the privacy policy and adding a cookie consent mechanism
+
+## Required Routes
+
+The following routes must exist and be publicly accessible (no auth required):
+
+| Route | Contents |
+|---|---|
+| `/legal` | Hub page linking to all policies |
+| `/legal/terms` | Terms of Service |
+| `/legal/privacy` | Privacy Policy |
+| `/legal/srd` | SRD attributions: OGL 1.0a full text + Section 15, CC-BY-4.0 attribution, 5e-database attribution |
+
+## Required Footer
+
+Every page rendered inside `AppShell` must include a footer with:
+
+```
+SRD content used under OGL 1.0a and CC-BY-4.0 · Not affiliated with Wizards of the Coast · Terms · Privacy · Legal
+```
+
+Where "Terms", "Privacy", and "Legal" are links to the corresponding routes.
+
+## Seed File Headers
+
+Every file in `apps/api/src/db/seed/` must carry a file-level comment identifying the source license:
+
+```typescript
+/**
+ * Source: 5e-bits/5e-database (MIT)
+ * SRD 5.1 content © 2016 Wizards of the Coast LLC, used under OGL 1.0a
+ * SRD 5.2 content © 2024 Wizards of the Coast LLC, used under CC-BY-4.0
+ */
+```
+
+## Artwork and Assets
+
+- Every image in the curated art library must have a documented source and license
+- Maintain `apps/web/public/assets/ATTRIBUTION.md` listing each asset, its source, and license
+- Only use: CC0, CC-BY, purchased royalty-free with commercial license, or commissioned with explicit license grant
+- AI-generated images: verify the provider's commercial terms before using (e.g., Midjourney requires a Pro plan for commercial use)
+- Never use images scraped from the web without verified licensing

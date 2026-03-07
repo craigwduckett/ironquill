@@ -16,7 +16,7 @@ const dashboardRoutes: FastifyPluginAsync = async (app) => {
         hpMax: characters.hpMax,
         ac: characters.ac,
         portraitId: characters.portraitId,
-        raceId: characters.raceId,
+        speciesId: characters.speciesId,
         classId: characters.classId,
       })
       .from(characters)
