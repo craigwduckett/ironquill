@@ -109,5 +109,52 @@ export function transformClass2014(raw: RawClass2014) {
       name: se.equipment.name,
       quantity: se.quantity,
     })),
+    // 2014 rows don't have 2024 additions — default to empty.
+    subclasses: [],
+    weaponMasteries: [],
+  };
+}
+
+// ── 2024 ─────────────────────────────────────────────────────────────────────
+// Hand-authored from SRD 5.2.1 PDF. Includes subclasses and weapon masteries.
+
+type RawFeature2024 = { name: string; description: string };
+type RawFeatureLevel2024 = { level: number; features: RawFeature2024[] };
+type RawSubclass2024 = { name: string; gainedAtLevel: number };
+type RawSkillChoice2024 = { choose: number; from: string[] };
+
+export type RawClass2024 = {
+  index: string;
+  name: string;
+  hit_die: number;
+  primary_abilities: string[];
+  saving_throws: string[];
+  armor_proficiencies: string[];
+  weapon_proficiencies: string[];
+  tool_proficiencies: string[];
+  skill_choices: RawSkillChoice2024;
+  starting_equipment: Array<Record<string, unknown>>;
+  subclasses: RawSubclass2024[];
+  weapon_masteries: string[];
+  features_by_level: RawFeatureLevel2024[];
+  spellcasting_info: Record<string, unknown> | null;
+};
+
+export function transformClass2024(raw: RawClass2024) {
+  return {
+    sourceEdition: '2024' as const,
+    name: raw.name,
+    description: null,
+    hitDie: `d${raw.hit_die}`,
+    primaryAbilities: raw.primary_abilities,
+    savingThrows: raw.saving_throws,
+    armorProficiencies: raw.armor_proficiencies,
+    weaponProficiencies: raw.weapon_proficiencies,
+    skillChoices: raw.skill_choices,
+    featuresByLevel: raw.features_by_level,
+    spellcastingInfo: raw.spellcasting_info,
+    startingEquipment: raw.starting_equipment,
+    subclasses: raw.subclasses,
+    weaponMasteries: raw.weapon_masteries,
   };
 }

@@ -127,3 +127,71 @@ export function transformMonster2014(raw: RawMonster2014) {
       : null,
   };
 }
+
+// ── 2024 ─────────────────────────────────────────────────────────────────────
+// Hand-authored from SRD 5.2.1 PDF. Same DB shape as 2014 except sourceEdition.
+
+export type RawMonster2024 = {
+  index: string;
+  name: string;
+  size: string;
+  type: string;
+  alignment: string;
+  ac: number;
+  ac_type?: string | null;
+  hp: number;
+  hp_formula: string;
+  speed: Record<string, number | string>;
+  ability_scores: {
+    STR: number;
+    DEX: number;
+    CON: number;
+    INT: number;
+    WIS: number;
+    CHA: number;
+  };
+  saving_throws?: Record<string, number>;
+  skills?: Record<string, number>;
+  damage_resistances?: string[];
+  damage_immunities?: string[];
+  condition_immunities?: string[];
+  senses: string;
+  languages: string;
+  cr: number;
+  xp: number;
+  actions?: Array<Record<string, unknown>>;
+  legendary_actions?: Array<Record<string, unknown>>;
+  special_abilities?: Array<Record<string, unknown>>;
+};
+
+export function transformMonster2024(raw: RawMonster2024) {
+  return {
+    sourceEdition: '2024' as const,
+    name: raw.name,
+    size: raw.size,
+    type: raw.type,
+    alignment: raw.alignment,
+    ac: raw.ac,
+    acType: raw.ac_type ?? null,
+    hp: raw.hp,
+    hpFormula: raw.hp_formula,
+    speed: raw.speed,
+    abilityScores: raw.ability_scores,
+    savingThrows: raw.saving_throws ?? null,
+    skills: raw.skills ?? null,
+    damageResistances: raw.damage_resistances?.length ? raw.damage_resistances : null,
+    damageImmunities: raw.damage_immunities?.length ? raw.damage_immunities : null,
+    conditionImmunities: raw.condition_immunities?.length ? raw.condition_immunities : null,
+    senses: raw.senses,
+    languages: raw.languages || '—',
+    cr: raw.cr,
+    xp: raw.xp,
+    actions: (raw.actions ?? []) as Array<Record<string, unknown>>,
+    legendaryActions: raw.legendary_actions?.length
+      ? (raw.legendary_actions as Array<Record<string, unknown>>)
+      : null,
+    specialAbilities: raw.special_abilities?.length
+      ? (raw.special_abilities as Array<Record<string, unknown>>)
+      : null,
+  };
+}

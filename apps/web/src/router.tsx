@@ -28,6 +28,7 @@ import { SessionLobbyPage } from './features/session/SessionLobbyPage/index.js';
 import { SrdBackgroundsPage } from './features/srd/SrdBackgroundsPage/SrdBackgroundsPage.js';
 import { SrdClassesPage } from './features/srd/SrdClassesPage/SrdClassesPage.js';
 import { SrdConditionsPage } from './features/srd/SrdConditionsPage/SrdConditionsPage.js';
+import { SrdFeatsPage } from './features/srd/SrdFeatsPage/index.js';
 import { SrdIndexPage } from './features/srd/SrdIndexPage/SrdIndexPage.js';
 import { SrdItemsPage } from './features/srd/SrdItemsPage/SrdItemsPage.js';
 import { SrdMonstersPage } from './features/srd/SrdMonstersPage/SrdMonstersPage.js';
@@ -265,6 +266,12 @@ const srdRulesRoute = createRoute({
   component: SrdRulesPage,
 });
 
+const srdFeatsRoute = createRoute({
+  getParentRoute: () => shellRoute,
+  path: '/srd/feats',
+  component: SrdFeatsPage,
+});
+
 // ── Legal routes ──────────────────────────────────────────────────────────────
 
 const legalRoute = createRoute({
@@ -318,6 +325,7 @@ const routeTree = rootRoute.addChildren([
     srdItemsRoute,
     srdConditionsRoute,
     srdRulesRoute,
+    srdFeatsRoute,
     legalRoute,
     legalTermsRoute,
     legalPrivacyRoute,

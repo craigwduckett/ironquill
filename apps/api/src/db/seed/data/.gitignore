@@ -1,0 +1,3 @@
+# SRD PDF files — large binary, not tracked in git
+*.pdf
+*.pdf:Zone.Identifier

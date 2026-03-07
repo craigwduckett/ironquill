@@ -6,6 +6,7 @@ import {
   pgTable,
   real,
   text,
+  timestamp,
   unique,
   uuid,
   varchar,
@@ -22,7 +23,8 @@ export const srdEditionEnum = pgEnum('srd_edition', ['2014', '2024']);
 // 2014 SRD called these "Races" (displayTerm = 'Race').
 // 2024 SRD renamed them "Species" (displayTerm = 'Species') and removed fixed
 // ability score bonuses — those moved to Backgrounds. The abilityBonuses column
-// is kept for 2014 compatibility but will always be empty for 2024 rows.
+// is kept for 2014 compatibility but will always be empty ({}) for 2024 rows.
+// 2024 adds: sizeOptions (some species choose Small or Medium) and creatureType.
 
 export const srdSpeciesDisplayTermEnum = pgEnum('srd_species_display_term', ['Race', 'Species']);
 
@@ -48,11 +50,17 @@ export const srdSpecies = pgTable(
     languageDesc: text('language_desc'),
     speed: integer('speed').notNull().default(30),
     size: varchar('size', { length: 20 }).notNull().default('Medium'),
+    // 2024: some species choose their size (e.g. ['Small', 'Medium']). Empty = fixed to `size`.
+    sizeOptions: text('size_options').array().notNull().default([]),
+    // 2024: explicitly declared creature type. 2014 rows default to 'Humanoid'.
+    creatureType: varchar('creature_type', { length: 50 }).notNull().default('Humanoid'),
   },
   (t) => [unique('srd_species_name_edition_uq').on(t.name, t.sourceEdition)],
 );
 
 // ── Classes ───────────────────────────────────────────────────────────────────
+// 2024 adds: subclasses (listed at class level with gain level) and
+// weaponMasteries (which Mastery properties the class can use).
 
 export const srdClasses = pgTable(
   'srd_classes',
@@ -84,11 +92,22 @@ export const srdClasses = pgTable(
       .$type<Array<Record<string, unknown>>>()
       .notNull()
       .default([]),
+    // 2024: subclasses listed at class level with the level they are gained.
+    subclasses: jsonb('subclasses')
+      .$type<Array<{ name: string; gainedAtLevel: number }>>()
+      .notNull()
+      .default([]),
+    // 2024: Weapon Mastery properties available to this class.
+    weaponMasteries: text('weapon_masteries').array().notNull().default([]),
   },
   (t) => [unique('srd_classes_name_edition_uq').on(t.name, t.sourceEdition)],
 );
 
 // ── Backgrounds ───────────────────────────────────────────────────────────────
+// 2014: narrative Feature (featureName / featureDescription).
+// 2024: Origin Feat (originFeat) + 3 ability score options (abilityScoreOptions).
+// featureName and featureDescription are kept for 2014 rows; 2024 rows set
+// featureName to '—' and featureDescription to '' (legacy columns).
 
 export const srdBackgrounds = pgTable(
   'srd_backgrounds',
@@ -101,8 +120,20 @@ export const srdBackgrounds = pgTable(
     toolProficiencies: text('tool_proficiencies').array().notNull().default([]),
     languagesCount: integer('languages_count').notNull().default(0),
     equipment: jsonb('equipment').$type<Array<Record<string, unknown>>>().notNull().default([]),
+    // 2014-only: narrative feature name (e.g. "Shelter of the Faithful").
     featureName: varchar('feature_name', { length: 100 }).notNull(),
+    // 2014-only: narrative feature description.
     featureDescription: text('feature_description').notNull(),
+    // 2024: ability score options — player picks 2 of these 3 for +2/+1 or +1/+1/+1.
+    abilityScoreOptions: text('ability_score_options').array().notNull().default([]),
+    // 2024: the Origin Feat granted by this Background.
+    originFeat: jsonb('origin_feat')
+      .$type<{
+        index: string;
+        name: string;
+        note?: string;
+      } | null>()
+      .default(null),
   },
   (t) => [unique('srd_backgrounds_name_edition_uq').on(t.name, t.sourceEdition)],
 );
@@ -166,6 +197,8 @@ export const srdMonsters = pgTable(
 );
 
 // ── Items ─────────────────────────────────────────────────────────────────────
+// 2024 adds: weaponMastery — every 2024 weapon has exactly one Mastery property
+// (e.g. 'Cleave', 'Nick', 'Push'). Null for non-weapons and all 2014 rows.
 
 export const itemCategoryEnum = pgEnum('item_category', [
   'weapon',
@@ -188,6 +221,8 @@ export const srdItems = pgTable(
     description: text('description').notNull(),
     rarity: varchar('rarity', { length: 50 }),
     requiresAttunement: boolean('requires_attunement').notNull().default(false),
+    // 2024: Weapon Mastery property (e.g. 'Topple', 'Nick', 'Cleave'). Null for 2014 rows.
+    weaponMastery: varchar('weapon_mastery', { length: 50 }),
   },
   (t) => [unique('srd_items_name_edition_uq').on(t.name, t.sourceEdition)],
 );
@@ -222,6 +257,39 @@ export const srdRules = pgTable(
   (t) => [unique('srd_rules_topic_edition_uq').on(t.topic, t.sourceEdition)],
 );
 
+// ── Feats ─────────────────────────────────────────────────────────────────────
+// 2024 SRD introduces typed feats: origin (granted by Background), general,
+// fighting-style, and epic-boon. Origin feats are mandatory — every Background
+// grants one. The others are gained via class features or Ability Score Improvement.
+
+export const srdFeatTypeEnum = pgEnum('srd_feat_type', [
+  'origin',
+  'general',
+  'fighting-style',
+  'epic-boon',
+]);
+
+export const srdFeats = pgTable(
+  'srd_feats',
+  {
+    id: uuid('id').primaryKey().defaultRandom(),
+    sourceEdition: srdEditionEnum('source_edition').notNull().default('2024'),
+    name: varchar('name', { length: 100 }).notNull(),
+    description: text('description').notNull(),
+    type: srdFeatTypeEnum('type').notNull(),
+    prerequisites: jsonb('prerequisites')
+      .$type<{
+        minimumLevel?: number;
+        featureNamed?: string;
+        abilityScore?: { name: string; minimum: number };
+      } | null>()
+      .default(null),
+    repeatable: text('repeatable'),
+    createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => [unique('srd_feats_name_edition_uq').on(t.name, t.sourceEdition)],
+);
+
 // ── Types ─────────────────────────────────────────────────────────────────────
 
 export type SrdSpecies = typeof srdSpecies.$inferSelect;
@@ -232,3 +300,4 @@ export type SrdMonster = typeof srdMonsters.$inferSelect;
 export type SrdItem = typeof srdItems.$inferSelect;
 export type SrdCondition = typeof srdConditions.$inferSelect;
 export type SrdRule = typeof srdRules.$inferSelect;
+export type SrdFeat = typeof srdFeats.$inferSelect;

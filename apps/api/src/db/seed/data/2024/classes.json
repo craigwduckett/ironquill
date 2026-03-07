@@ -1,0 +1,410 @@
+[
+  {
+    "index": "barbarian",
+    "name": "Barbarian",
+    "hit_die": 12,
+    "primary_abilities": ["Strength"],
+    "saving_throws": ["Strength", "Constitution"],
+    "armor_proficiencies": ["Light armor", "Medium armor", "Shields"],
+    "weapon_proficiencies": ["Simple weapons", "Martial weapons"],
+    "tool_proficiencies": [],
+    "skill_choices": {
+      "choose": 2,
+      "from": ["Animal Handling", "Athletics", "Intimidation", "Nature", "Perception", "Survival"]
+    },
+    "starting_equipment": [
+      { "desc": "Choose A or B: (A) Greataxe, 4 Handaxes, Explorer's Pack, and 15 GP; or (B) 75 GP" }
+    ],
+    "subclasses": [
+      { "name": "Path of the Berserker", "gainedAtLevel": 3 }
+    ],
+    "weapon_masteries": ["Any 2 weapon types of your choice with which you have proficiency"],
+    "features_by_level": [
+      { "level": 1, "features": [{ "name": "Rage", "description": "Enter a rage as a Bonus Action. While raging, you gain bonus damage, resistance to Bludgeoning/Piercing/Slashing damage, and Advantage on Strength checks/saves. You can't cast spells." }, { "name": "Unarmored Defense", "description": "While not wearing armor, your AC equals 10 + Dexterity modifier + Constitution modifier." }, { "name": "Weapon Mastery", "description": "Use the mastery properties of 2 kinds of Simple or Martial melee weapons you're proficient with. Change the weapons chosen on a Long Rest." }] },
+      { "level": 2, "features": [{ "name": "Danger Sense", "description": "Advantage on Dexterity saving throws against effects you can see, while not Blinded, Deafened, or Incapacitated." }, { "name": "Reckless Attack", "description": "Before making an attack with a Strength-based weapon, choose to attack recklessly. Advantage on all attacks this turn using Strength, but attack rolls against you have Advantage until your next turn." }] },
+      { "level": 3, "features": [{ "name": "Barbarian Subclass", "description": "Choose a Barbarian subclass. The Path of the Berserker is detailed in the SRD." }, { "name": "Primal Knowledge", "description": "Choose one skill from the Barbarian skill list. You gain proficiency in it, or Expertise if you already have proficiency." }] },
+      { "level": 4, "features": [{ "name": "Ability Score Improvement", "description": "Gain the Ability Score Improvement feat or another feat of your choice for which you qualify." }] },
+      { "level": 5, "features": [{ "name": "Extra Attack", "description": "Attack twice instead of once when you take the Attack action." }, { "name": "Fast Movement", "description": "Your Speed increases by 10 feet while you aren't wearing Heavy armor." }] },
+      { "level": 7, "features": [{ "name": "Feral Instinct", "description": "Advantage on Initiative rolls. If surprised at combat start, you can act normally if you enter Rage before doing anything else on your first turn." }, { "name": "Instinctive Pounce", "description": "As part of the Bonus Action to enter Rage, you can move up to half your Speed." }] },
+      { "level": 9, "features": [{ "name": "Brutal Strike", "description": "When you use Reckless Attack, you can forgo Advantage on one attack to add a Brutal Strike effect (Forceful Blow or Hamstring Blow) if you hit." }] },
+      { "level": 11, "features": [{ "name": "Relentless Rage", "description": "If you drop to 0 HP while raging and don't die outright, make a DC 10 Constitution save (DC increases by 5 each time). On success, drop to 1 HP instead." }] },
+      { "level": 13, "features": [{ "name": "Improved Brutal Strike", "description": "You can use two Brutal Strike effects instead of one. Each effect is applied once." }] },
+      { "level": 15, "features": [{ "name": "Persistent Rage", "description": "Your Rage can now last its full duration without requiring attacks or damage." }] },
+      { "level": 17, "features": [{ "name": "Improved Brutal Strike (upgrade)", "description": "The damage bonus of your Brutal Strike effects increases to +2d10." }] },
+      { "level": 18, "features": [{ "name": "Indomitable Might", "description": "If a Strength check is lower than your Strength score, use your Strength score instead." }] },
+      { "level": 19, "features": [{ "name": "Epic Boon", "description": "Gain an Epic Boon feat or another feat of your choice for which you qualify. Boon of Irresistible Offense is recommended." }] },
+      { "level": 20, "features": [{ "name": "Primal Champion", "description": "Your Strength and Constitution scores each increase by 4; their maximums each increase by 4." }] }
+    ],
+    "spellcasting_info": null
+  },
+  {
+    "index": "bard",
+    "name": "Bard",
+    "hit_die": 8,
+    "primary_abilities": ["Charisma"],
+    "saving_throws": ["Dexterity", "Charisma"],
+    "armor_proficiencies": ["Light armor"],
+    "weapon_proficiencies": ["Simple weapons"],
+    "tool_proficiencies": ["Three Musical Instruments of your choice"],
+    "skill_choices": {
+      "choose": 3,
+      "from": ["Any skill"]
+    },
+    "starting_equipment": [
+      { "desc": "Choose A or B: (A) Leather Armor, 2 Daggers, Musical Instrument of your choice, Entertainer's Pack, and 19 GP; or (B) 90 GP" }
+    ],
+    "subclasses": [
+      { "name": "College of Lore", "gainedAtLevel": 3 }
+    ],
+    "weapon_masteries": [],
+    "features_by_level": [
+      { "level": 1, "features": [{ "name": "Bardic Inspiration", "description": "As a Bonus Action, give a creature within 60 ft. a Bardic Inspiration die (d6, scaling up as you level). The creature can add it to one ability check, attack roll, or saving throw. One use per creature per Long Rest. Number of uses = Charisma modifier." }, { "name": "Spellcasting", "description": "Full spellcaster using Charisma. Knows cantrips and prepares spells from the Bard list. Regains all slots on Long Rest." }] },
+      { "level": 2, "features": [{ "name": "Expertise", "description": "Choose 2 skill proficiencies. Gain Expertise in those skills." }, { "name": "Jack of All Trades", "description": "Add half your Proficiency Bonus (rounded down) to any ability check that doesn't already include your Proficiency Bonus." }] },
+      { "level": 3, "features": [{ "name": "Bard Subclass", "description": "Choose a Bard subclass. The College of Lore is detailed in the SRD." }] },
+      { "level": 4, "features": [{ "name": "Ability Score Improvement", "description": "Gain the Ability Score Improvement feat or another feat of your choice for which you qualify." }] },
+      { "level": 5, "features": [{ "name": "Font of Inspiration", "description": "You now regain one Bardic Inspiration use when you finish a Short Rest." }] },
+      { "level": 7, "features": [{ "name": "Countercharm", "description": "As a Magic action, start a performance that lasts until the end of your next turn. During that time, allies within 30 ft. have Advantage on saves to avoid or end the Charmed or Frightened conditions." }] },
+      { "level": 9, "features": [{ "name": "Expertise", "description": "Choose 2 more skill proficiencies. Gain Expertise in those skills." }] },
+      { "level": 10, "features": [{ "name": "Magical Secrets", "description": "You've gleaned magical knowledge from a wide range of disciplines. Choose two spells from any class's spell list. These count as Bard spells for you." }] },
+      { "level": 18, "features": [{ "name": "Superior Inspiration", "description": "When you roll Initiative and have no Bardic Inspiration uses left, you regain one." }] },
+      { "level": 19, "features": [{ "name": "Epic Boon", "description": "Gain an Epic Boon feat or another feat of your choice for which you qualify. Boon of Spell Recall is recommended." }] },
+      { "level": 20, "features": [{ "name": "Words of Creation", "description": "You master the primal Words of Creation. You always have Power Word Heal and Power Word Kill prepared. When you cast either spell, you can cast it as a Bonus Action using a spell slot. Once you cast either spell using this feature, you can't do so again until you finish a Long Rest." }] }
+    ],
+    "spellcasting_info": { "ability": "Charisma", "focus": "Musical instrument or other spellcasting focus", "max_spell_level": 9 }
+  },
+  {
+    "index": "cleric",
+    "name": "Cleric",
+    "hit_die": 8,
+    "primary_abilities": ["Wisdom"],
+    "saving_throws": ["Wisdom", "Charisma"],
+    "armor_proficiencies": ["Light armor", "Medium armor", "Shields"],
+    "weapon_proficiencies": ["Simple weapons"],
+    "tool_proficiencies": [],
+    "skill_choices": {
+      "choose": 2,
+      "from": ["History", "Insight", "Medicine", "Persuasion", "Religion"]
+    },
+    "starting_equipment": [
+      { "desc": "Choose A or B: (A) Chain Shirt, Shield, Mace, Holy Symbol, Priest's Pack, and 7 GP; or (B) 110 GP" }
+    ],
+    "subclasses": [
+      { "name": "Life Domain", "gainedAtLevel": 3 }
+    ],
+    "weapon_masteries": [],
+    "features_by_level": [
+      { "level": 1, "features": [{ "name": "Spellcasting", "description": "Full spellcaster using Wisdom. Prepares spells from the Cleric list. Regains all slots on Long Rest." }, { "name": "Divine Order", "description": "Choose Protector (Martial weapons + Heavy armor proficiency) or Thaumaturge (extra cantrip + Wisdom modifier bonus to Arcana/Religion checks)." }] },
+      { "level": 2, "features": [{ "name": "Channel Divinity", "description": "Channel divine energy to fuel Divine Spark and Turn Undead. 2 uses; regain one on Short Rest, all on Long Rest." }] },
+      { "level": 3, "features": [{ "name": "Cleric Subclass", "description": "Choose a Cleric subclass. The Life Domain is detailed in the SRD." }] },
+      { "level": 4, "features": [{ "name": "Ability Score Improvement", "description": "Gain the Ability Score Improvement feat or another feat of your choice." }] },
+      { "level": 5, "features": [{ "name": "Sear Undead", "description": "When you use Turn Undead, roll Wisdom modifier d8s and deal that Radiant damage to undead that fail the save." }] },
+      { "level": 7, "features": [{ "name": "Blessed Strikes", "description": "Choose Divine Strike (extra 1d8 Necrotic or Radiant on weapon hit once per turn) or Potent Spellcasting (add Wisdom modifier to Cleric cantrip damage)." }] },
+      { "level": 10, "features": [{ "name": "Divine Intervention", "description": "As a Magic action, cast any level 5 or lower Cleric spell without a spell slot or material components. Can't use again until Long Rest." }] },
+      { "level": 14, "features": [{ "name": "Improved Blessed Strikes", "description": "Divine Strike damage increases to 2d8; Potent Spellcasting also grants Temporary Hit Points to yourself or another within 60 ft." }] },
+      { "level": 19, "features": [{ "name": "Epic Boon", "description": "Gain an Epic Boon feat. Boon of Fate is recommended." }] },
+      { "level": 20, "features": [{ "name": "Greater Divine Intervention", "description": "Your Divine Intervention can now select Wish. If you do, you can't use Divine Intervention again until you finish 2d4 Long Rests." }] }
+    ],
+    "spellcasting_info": { "ability": "Wisdom", "focus": "Holy Symbol", "max_spell_level": 9 }
+  },
+  {
+    "index": "druid",
+    "name": "Druid",
+    "hit_die": 8,
+    "primary_abilities": ["Wisdom"],
+    "saving_throws": ["Intelligence", "Wisdom"],
+    "armor_proficiencies": ["Light armor", "Shields"],
+    "weapon_proficiencies": ["Simple weapons"],
+    "tool_proficiencies": ["Herbalism Kit"],
+    "skill_choices": {
+      "choose": 2,
+      "from": ["Animal Handling", "Arcana", "Insight", "Medicine", "Nature", "Perception", "Religion", "Survival"]
+    },
+    "starting_equipment": [
+      { "desc": "Choose A or B: (A) Leather Armor, Shield, Sickle, Druidic Focus (Quarterstaff), Explorer's Pack, Herbalism Kit, and 9 GP; or (B) 50 GP" }
+    ],
+    "subclasses": [
+      { "name": "Circle of the Land", "gainedAtLevel": 3 }
+    ],
+    "weapon_masteries": [],
+    "features_by_level": [
+      { "level": 1, "features": [{ "name": "Spellcasting", "description": "Full spellcaster using Wisdom. Prepares spells from the Druid list. Regains all slots on Long Rest." }, { "name": "Druidic", "description": "Know the secret language Druidic. Also always have Speak with Animals prepared." }, { "name": "Primal Order", "description": "Choose Magician (extra cantrip + Wisdom modifier bonus to Arcana/Nature checks) or Warden (Martial weapons + Medium armor proficiency)." }] },
+      { "level": 2, "features": [{ "name": "Wild Shape", "description": "As a Bonus Action, shapeshift into a known Beast form for half your Druid level in hours. 2 uses; regain one on Short Rest, all on Long Rest." }, { "name": "Wild Companion", "description": "Expend a spell slot or Wild Shape use to cast Find Familiar without Material components. The familiar is Fey and disappears on Long Rest." }] },
+      { "level": 3, "features": [{ "name": "Druid Subclass", "description": "Choose a Druid subclass. The Circle of the Land is detailed in the SRD." }] },
+      { "level": 4, "features": [{ "name": "Ability Score Improvement", "description": "Gain the Ability Score Improvement feat or another feat of your choice." }] },
+      { "level": 5, "features": [{ "name": "Wild Resurgence", "description": "Once per turn, if you have no Wild Shape uses, expend a spell slot to gain one. Also, expend a Wild Shape use to gain a level 1 spell slot (once per Long Rest)." }] },
+      { "level": 7, "features": [{ "name": "Elemental Fury", "description": "Choose Potent Spellcasting (add Wisdom modifier to Druid cantrip damage) or Primal Strike (once per turn, deal extra 1d8 elemental damage on weapon or Wild Shape hit)." }] },
+      { "level": 15, "features": [{ "name": "Improved Elemental Fury", "description": "Potent Spellcasting range increases by 300 ft.; Primal Strike damage increases to 2d8." }] },
+      { "level": 18, "features": [{ "name": "Beast Spells", "description": "While in Wild Shape, you can cast spells in Beast form (except those with costly or consumed Material components)." }] },
+      { "level": 19, "features": [{ "name": "Epic Boon", "description": "Gain an Epic Boon feat. Boon of Dimensional Travel is recommended." }] },
+      { "level": 20, "features": [{ "name": "Archdruid", "description": "Evergreen Wild Shape: regain one Wild Shape use when you roll Initiative with none remaining. Nature Magician: convert Wild Shape uses into spell slots." }] }
+    ],
+    "spellcasting_info": { "ability": "Wisdom", "focus": "Druidic Focus", "max_spell_level": 9 }
+  },
+  {
+    "index": "fighter",
+    "name": "Fighter",
+    "hit_die": 10,
+    "primary_abilities": ["Strength", "Dexterity"],
+    "saving_throws": ["Strength", "Constitution"],
+    "armor_proficiencies": ["Light armor", "Medium armor", "Heavy armor", "Shields"],
+    "weapon_proficiencies": ["Simple weapons", "Martial weapons"],
+    "tool_proficiencies": [],
+    "skill_choices": {
+      "choose": 2,
+      "from": ["Acrobatics", "Animal Handling", "Athletics", "History", "Insight", "Intimidation", "Perception", "Persuasion", "Survival"]
+    },
+    "starting_equipment": [
+      { "desc": "Choose A, B, or C: (A) Chain Mail, Greatsword, Flail, 8 Javelins, Dungeoneer's Pack, and 4 GP; (B) Studded Leather Armor, Scimitar, Shortsword, Longbow, 20 Arrows, Quiver, Dungeoneer's Pack, and 11 GP; or (C) 155 GP" }
+    ],
+    "subclasses": [
+      { "name": "Champion", "gainedAtLevel": 3 }
+    ],
+    "weapon_masteries": ["Any 3 weapon types of your choice with which you have proficiency (scales to 6 at level 20)"],
+    "features_by_level": [
+      { "level": 1, "features": [{ "name": "Fighting Style", "description": "Choose a Fighting Style feat." }, { "name": "Second Wind", "description": "Bonus Action: heal 1d10 + Fighter level HP. 2 uses; regain on Short or Long Rest." }, { "name": "Weapon Mastery", "description": "Use mastery properties of 3 Simple or Martial weapons you're proficient with. Change chosen weapons on Long Rest." }] },
+      { "level": 2, "features": [{ "name": "Action Surge", "description": "Take one additional action on your turn. 1 use; regain on Short or Long Rest." }, { "name": "Tactical Mind", "description": "When you fail an ability check, expend a Second Wind use to add 1d10 to the roll." }] },
+      { "level": 3, "features": [{ "name": "Fighter Subclass", "description": "Choose a Fighter subclass. The Champion is detailed in the SRD." }] },
+      { "level": 5, "features": [{ "name": "Extra Attack", "description": "Attack twice instead of once when you take the Attack action." }, { "name": "Tactical Shift", "description": "When you activate Second Wind, you can move up to half your Speed without provoking Opportunity Attacks." }] },
+      { "level": 9, "features": [{ "name": "Indomitable", "description": "Reroll a failed saving throw. 1 use per Long Rest (scales to 3 at level 17)." }, { "name": "Tactical Master", "description": "When you use a weapon with a mastery property, you can substitute that property for Push, Sap, or Slow if the weapon qualifies." }] },
+      { "level": 11, "features": [{ "name": "Two Extra Attacks", "description": "Attack three times instead of twice when you take the Attack action." }] },
+      { "level": 13, "features": [{ "name": "Studied Attacks", "description": "When you miss an attack, gain Advantage on your next attack against the same target before the end of your next turn." }] },
+      { "level": 19, "features": [{ "name": "Epic Boon", "description": "Gain an Epic Boon feat. Boon of Combat Prowess is recommended." }] },
+      { "level": 20, "features": [{ "name": "Three Extra Attacks", "description": "Attack four times instead of three when you take the Attack action." }] }
+    ],
+    "spellcasting_info": null
+  },
+  {
+    "index": "monk",
+    "name": "Monk",
+    "hit_die": 8,
+    "primary_abilities": ["Dexterity", "Wisdom"],
+    "saving_throws": ["Strength", "Dexterity"],
+    "armor_proficiencies": [],
+    "weapon_proficiencies": ["Simple weapons", "Martial weapons with the Light property"],
+    "tool_proficiencies": ["Choose one Artisan's Tools or Musical Instrument"],
+    "skill_choices": {
+      "choose": 2,
+      "from": ["Acrobatics", "Athletics", "History", "Insight", "Religion", "Stealth"]
+    },
+    "starting_equipment": [
+      { "desc": "Choose A or B: (A) Spear, 5 Daggers, Artisan's Tools or Musical Instrument, Explorer's Pack, and 11 GP; or (B) 50 GP" }
+    ],
+    "subclasses": [
+      { "name": "Warrior of the Open Hand", "gainedAtLevel": 3 }
+    ],
+    "weapon_masteries": [],
+    "features_by_level": [
+      { "level": 1, "features": [{ "name": "Martial Arts", "description": "Use Dexterity for unarmed strikes and Monk weapons. Unarmed strike damage is 1d6 (scaling to 1d12 at level 17). When you attack with a Monk weapon or unarmed strike, you can make one unarmed strike as a Bonus Action." }, { "name": "Unarmored Defense", "description": "While not wearing armor, your AC equals 10 + Dexterity modifier + Wisdom modifier." }] },
+      { "level": 2, "features": [{ "name": "Monk's Focus", "description": "Spend Focus Points to fuel monk abilities. You have 2 (scaling to 20 at level 20), regaining all on Short or Long Rest." }, { "name": "Unarmored Movement", "description": "Speed increases by 10 feet while not wearing armor or carrying a Shield (scales to +30 ft. at level 18)." }, { "name": "Uncanny Metabolism", "description": "When you roll Initiative, regain Focus Points equal to Proficiency Bonus. Also, restore 1 HP per Monk level with a Bonus Action (once per Long Rest)." }] },
+      { "level": 3, "features": [{ "name": "Deflect Attacks", "description": "Reaction: reduce damage from an attack by 1d10 + Dexterity + Monk level. If reduced to 0, you can catch/redirect the attack." }, { "name": "Monk Subclass", "description": "Choose a Monk subclass. The Warrior of the Open Hand is detailed in the SRD." }] },
+      { "level": 4, "features": [{ "name": "Ability Score Improvement", "description": "Gain the Ability Score Improvement feat or another feat of your choice." }, { "name": "Slow Fall", "description": "Reaction: reduce falling damage by 5 times your Monk level." }] },
+      { "level": 5, "features": [{ "name": "Extra Attack", "description": "Attack twice instead of once when you take the Attack action." }, { "name": "Stunning Strike", "description": "When you hit a creature with a Monk weapon or unarmed strike, spend 1 Focus Point to force a Constitution save (DC = 8 + Prof + WIS). On fail, target is Stunned until start of your next turn." }] },
+      { "level": 6, "features": [{ "name": "Empowered Strikes", "description": "Your unarmed strikes count as magical for purposes of overcoming resistance and immunity." }] },
+      { "level": 7, "features": [{ "name": "Evasion", "description": "When a Dexterity save would deal half damage, you take no damage on success and half on failure." }] },
+      { "level": 18, "features": [{ "name": "Superior Defense", "description": "At the start of your turn, spend 3 Focus Points to gain Resistance to all damage except Force until the start of your next turn." }] },
+      { "level": 19, "features": [{ "name": "Epic Boon", "description": "Gain an Epic Boon feat. Boon of Irresistible Offense is recommended." }] },
+      { "level": 20, "features": [{ "name": "Body and Mind", "description": "Your Dexterity and Wisdom scores each increase by 4; their maximums each increase by 4." }] }
+    ],
+    "spellcasting_info": null
+  },
+  {
+    "index": "paladin",
+    "name": "Paladin",
+    "hit_die": 10,
+    "primary_abilities": ["Strength", "Charisma"],
+    "saving_throws": ["Wisdom", "Charisma"],
+    "armor_proficiencies": ["Light armor", "Medium armor", "Heavy armor", "Shields"],
+    "weapon_proficiencies": ["Simple weapons", "Martial weapons"],
+    "tool_proficiencies": [],
+    "skill_choices": {
+      "choose": 2,
+      "from": ["Athletics", "Insight", "Intimidation", "Medicine", "Persuasion", "Religion"]
+    },
+    "starting_equipment": [
+      { "desc": "Choose A or B: (A) Chain Mail, Shield, Longsword, 6 Javelins, Holy Symbol, Priest's Pack, and 9 GP; or (B) 150 GP" }
+    ],
+    "subclasses": [
+      { "name": "Oath of Devotion", "gainedAtLevel": 3 }
+    ],
+    "weapon_masteries": ["Any 2 weapon types of your choice with which you have proficiency"],
+    "features_by_level": [
+      { "level": 1, "features": [{ "name": "Lay On Hands", "description": "Pool of HP equal to 5 × Paladin level. As a Bonus Action, touch a creature to restore HP from the pool or expend 5 HP to cure one disease or neutralize one poison." }, { "name": "Spellcasting", "description": "Half-caster using Charisma. Prepares spells from the Paladin list. Regains all slots on Long Rest." }, { "name": "Weapon Mastery", "description": "Use mastery properties of 2 Simple or Martial weapons you're proficient with. Change chosen weapons on Long Rest." }] },
+      { "level": 2, "features": [{ "name": "Fighting Style", "description": "Choose a Fighting Style feat." }, { "name": "Paladin's Smite", "description": "Always have Divine Smite prepared. You can cast it without expending a spell slot a number of times equal to your Charisma modifier (minimum once), regaining all uses on Long Rest." }] },
+      { "level": 3, "features": [{ "name": "Channel Divinity", "description": "Use channel divinity effects. 2 uses; regain all on Long Rest." }, { "name": "Paladin Subclass", "description": "Choose a Paladin subclass. The Oath of Devotion is detailed in the SRD." }] },
+      { "level": 5, "features": [{ "name": "Extra Attack", "description": "Attack twice instead of once when you take the Attack action." }, { "name": "Faithful Steed", "description": "Always have Find Steed prepared. Cast it without a spell slot, regaining the ability on Long Rest." }] },
+      { "level": 6, "features": [{ "name": "Aura of Protection", "description": "Add Charisma modifier to all saving throws for yourself and allies within 10 feet (25 ft. at level 18)." }] },
+      { "level": 9, "features": [{ "name": "Abjure Foes", "description": "As a Magic action, present Holy Symbol. Up to Charisma modifier creatures within 60 ft. make a Wisdom save or are Frightened and Incapacitated for 1 minute. Uses = Proficiency Bonus per Long Rest." }] },
+      { "level": 10, "features": [{ "name": "Aura of Courage", "description": "You and allies within 10 feet (25 ft. at level 18) can't be Frightened while you're conscious." }] },
+      { "level": 11, "features": [{ "name": "Radiant Strikes", "description": "Weapon attacks deal extra 1d8 Radiant damage once per turn." }] },
+      { "level": 14, "features": [{ "name": "Restoring Touch", "description": "When you use Lay On Hands, remove all conditions caused by disease/spell/charm/fear/paralysis/poison (instead of expending 5 HP)." }] },
+      { "level": 19, "features": [{ "name": "Epic Boon", "description": "Gain an Epic Boon feat. Boon of Truesight is recommended." }] }
+    ],
+    "spellcasting_info": { "ability": "Charisma", "focus": "Holy Symbol", "max_spell_level": 5 }
+  },
+  {
+    "index": "ranger",
+    "name": "Ranger",
+    "hit_die": 10,
+    "primary_abilities": ["Dexterity", "Wisdom"],
+    "saving_throws": ["Strength", "Dexterity"],
+    "armor_proficiencies": ["Light armor", "Medium armor", "Shields"],
+    "weapon_proficiencies": ["Simple weapons", "Martial weapons"],
+    "tool_proficiencies": [],
+    "skill_choices": {
+      "choose": 3,
+      "from": ["Animal Handling", "Athletics", "Insight", "Investigation", "Nature", "Perception", "Stealth", "Survival"]
+    },
+    "starting_equipment": [
+      { "desc": "Choose A or B: (A) Studded Leather Armor, Scimitar, Shortsword, Longbow, 20 Arrows, Quiver, Dungeoneer's Pack, and 7 GP; or (B) 150 GP" }
+    ],
+    "subclasses": [
+      { "name": "Hunter", "gainedAtLevel": 3 }
+    ],
+    "weapon_masteries": ["Any 2 weapon types of your choice with which you have proficiency"],
+    "features_by_level": [
+      { "level": 1, "features": [{ "name": "Spellcasting", "description": "Half-caster using Wisdom. Prepares Ranger spells. Regains all slots on Long Rest." }, { "name": "Favored Enemy", "description": "Always have Hunter's Mark prepared. Cast it without a spell slot (number of times = Proficiency Bonus per Long Rest)." }, { "name": "Weapon Mastery", "description": "Use mastery properties of 2 Simple or Martial weapons you're proficient with. Change chosen weapons on Long Rest." }] },
+      { "level": 2, "features": [{ "name": "Deft Explorer", "description": "Gain Expertise in one skill and learn two languages." }, { "name": "Fighting Style", "description": "Choose a Fighting Style feat, or choose Druidic Warrior (learn 2 Druid cantrips)." }] },
+      { "level": 3, "features": [{ "name": "Ranger Subclass", "description": "Choose a Ranger subclass. The Hunter is detailed in the SRD." }] },
+      { "level": 5, "features": [{ "name": "Extra Attack", "description": "Attack twice instead of once when you take the Attack action." }] },
+      { "level": 6, "features": [{ "name": "Roving", "description": "Speed increases by 10 ft. while not wearing Heavy armor. Gain Climb Speed and Swim Speed equal to Speed." }] },
+      { "level": 9, "features": [{ "name": "Expertise", "description": "Gain Expertise in two more skill proficiencies." }] },
+      { "level": 10, "features": [{ "name": "Tireless", "description": "Gain Temporary HP as Magic Action (1d8 + WIS modifier, uses = WIS modifier per Long Rest). Finish Short Rest to reduce Exhaustion by 1." }] },
+      { "level": 13, "features": [{ "name": "Relentless Hunter", "description": "Damage can't break your Concentration on Hunter's Mark." }] },
+      { "level": 14, "features": [{ "name": "Nature's Veil", "description": "Bonus Action: give yourself the Invisible condition until end of your next turn. Uses = WIS modifier per Long Rest." }] },
+      { "level": 17, "features": [{ "name": "Precise Hunter", "description": "Advantage on attack rolls against the creature marked by your Hunter's Mark." }] },
+      { "level": 18, "features": [{ "name": "Feral Senses", "description": "Gain Blindsight with a range of 30 feet." }] },
+      { "level": 19, "features": [{ "name": "Epic Boon", "description": "Gain an Epic Boon feat. Boon of Dimensional Travel is recommended." }] },
+      { "level": 20, "features": [{ "name": "Foe Slayer", "description": "The damage die of your Hunter's Mark is a d10 rather than a d6." }] }
+    ],
+    "spellcasting_info": { "ability": "Wisdom", "focus": "Druidic Focus", "max_spell_level": 5 }
+  },
+  {
+    "index": "rogue",
+    "name": "Rogue",
+    "hit_die": 8,
+    "primary_abilities": ["Dexterity"],
+    "saving_throws": ["Dexterity", "Intelligence"],
+    "armor_proficiencies": ["Light armor"],
+    "weapon_proficiencies": ["Simple weapons", "Martial weapons with the Finesse or Light property"],
+    "tool_proficiencies": ["Thieves' Tools"],
+    "skill_choices": {
+      "choose": 4,
+      "from": ["Acrobatics", "Athletics", "Deception", "Insight", "Intimidation", "Investigation", "Perception", "Persuasion", "Sleight of Hand", "Stealth"]
+    },
+    "starting_equipment": [
+      { "desc": "Choose A or B: (A) Leather Armor, 2 Daggers, Shortsword, Shortbow, 20 Arrows, Quiver, Thieves' Tools, Burglar's Pack, and 8 GP; or (B) 100 GP" }
+    ],
+    "subclasses": [
+      { "name": "Thief", "gainedAtLevel": 3 }
+    ],
+    "weapon_masteries": ["Any 2 weapon types of your choice with which you have proficiency"],
+    "features_by_level": [
+      { "level": 1, "features": [{ "name": "Expertise", "description": "Choose 2 skill proficiencies. Gain Expertise in those skills (choose 2 more at level 6)." }, { "name": "Sneak Attack", "description": "Once per turn, deal extra 1d6 damage when you have Advantage or an ally is adjacent to the target and you use a Finesse or Ranged weapon. Scales to 10d6 at level 19." }, { "name": "Thieves' Cant", "description": "You know Thieves' Cant and one other language of your choice." }, { "name": "Weapon Mastery", "description": "Use mastery properties of 2 Simple or Martial weapons you're proficient with. Change chosen weapons on Long Rest." }] },
+      { "level": 2, "features": [{ "name": "Cunning Action", "description": "Bonus Action: take the Dash, Disengage, or Hide action." }] },
+      { "level": 3, "features": [{ "name": "Rogue Subclass", "description": "Choose a Rogue subclass. The Thief is detailed in the SRD." }, { "name": "Steady Aim", "description": "Bonus Action: give yourself Advantage on your next attack this turn (can't have moved this turn; Speed becomes 0 after using it)." }] },
+      { "level": 5, "features": [{ "name": "Cunning Strike", "description": "When you deal Sneak Attack damage, add a Cunning Strike effect (Poison, Trip, or Withdraw) by forgoing 1d6 of Sneak Attack damage." }, { "name": "Uncanny Dodge", "description": "Reaction: halve the damage from an attack by an attacker you can see." }] },
+      { "level": 7, "features": [{ "name": "Evasion", "description": "Dexterity saves for half damage deal no damage on success, half on failure." }, { "name": "Reliable Talent", "description": "Treat a d20 roll of 9 or lower as 10 for ability checks using skill or tool proficiencies." }] },
+      { "level": 11, "features": [{ "name": "Improved Cunning Strike", "description": "Use up to two Cunning Strike effects when you deal Sneak Attack damage." }] },
+      { "level": 14, "features": [{ "name": "Devious Strikes", "description": "New Cunning Strike options: Daze (2d6 cost), Knock Out (6d6 cost), Obscure (3d6 cost)." }] },
+      { "level": 15, "features": [{ "name": "Slippery Mind", "description": "Gain proficiency in Wisdom and Charisma saving throws." }] },
+      { "level": 18, "features": [{ "name": "Elusive", "description": "No attack roll can have Advantage against you unless you have the Incapacitated condition." }] },
+      { "level": 19, "features": [{ "name": "Epic Boon", "description": "Gain an Epic Boon feat. Boon of the Night Spirit is recommended." }] },
+      { "level": 20, "features": [{ "name": "Stroke of Luck", "description": "If you fail a D20 Test, turn the roll into a 20. Recharges on Short or Long Rest." }] }
+    ],
+    "spellcasting_info": null
+  },
+  {
+    "index": "sorcerer",
+    "name": "Sorcerer",
+    "hit_die": 6,
+    "primary_abilities": ["Charisma"],
+    "saving_throws": ["Constitution", "Charisma"],
+    "armor_proficiencies": [],
+    "weapon_proficiencies": ["Simple weapons"],
+    "tool_proficiencies": [],
+    "skill_choices": {
+      "choose": 2,
+      "from": ["Arcana", "Deception", "Insight", "Intimidation", "Persuasion", "Religion"]
+    },
+    "starting_equipment": [
+      { "desc": "Choose A or B: (A) Spear, 2 Daggers, Arcane Focus (crystal), Dungeoneer's Pack, and 28 GP; or (B) 50 GP" }
+    ],
+    "subclasses": [
+      { "name": "Draconic Sorcery", "gainedAtLevel": 3 }
+    ],
+    "weapon_masteries": [],
+    "features_by_level": [
+      { "level": 1, "features": [{ "name": "Spellcasting", "description": "Full spellcaster using Charisma. Knows spells from the Sorcerer list (known spells, not prepared). Regains all slots on Long Rest." }, { "name": "Innate Sorcery", "description": "As a Bonus Action, activate Innate Sorcery for 1 minute. Your spell save DC increases by 1, and you have Advantage on attack rolls for spells you cast. Can use a number of times = Proficiency Bonus per Long Rest." }] },
+      { "level": 2, "features": [{ "name": "Font of Magic", "description": "Gain a number of Sorcery Points equal to your Sorcerer level. Spend them to create spell slots or fuel Metamagic." }, { "name": "Metamagic", "description": "Choose 2 Metamagic options. Gain more at levels 7, 10, and 17." }] },
+      { "level": 3, "features": [{ "name": "Sorcerer Subclass", "description": "Choose a Sorcerer subclass. The Draconic Sorcery subclass is detailed in the SRD." }] },
+      { "level": 4, "features": [{ "name": "Ability Score Improvement", "description": "Gain the Ability Score Improvement feat or another feat of your choice." }] },
+      { "level": 5, "features": [{ "name": "Sorcerous Restoration", "description": "When you finish a Short Rest with no Sorcery Points, regain 4 Sorcery Points." }] },
+      { "level": 19, "features": [{ "name": "Epic Boon", "description": "Gain an Epic Boon feat. Boon of Dimensional Travel is recommended." }] },
+      { "level": 20, "features": [{ "name": "Arcane Apotheosis", "description": "While Innate Sorcery is active, you can use one Metamagic option on each of your spells without expending Sorcery Points." }] }
+    ],
+    "spellcasting_info": { "ability": "Charisma", "focus": "Arcane Focus", "max_spell_level": 9 }
+  },
+  {
+    "index": "warlock",
+    "name": "Warlock",
+    "hit_die": 8,
+    "primary_abilities": ["Charisma"],
+    "saving_throws": ["Wisdom", "Charisma"],
+    "armor_proficiencies": ["Light armor"],
+    "weapon_proficiencies": ["Simple weapons"],
+    "tool_proficiencies": [],
+    "skill_choices": {
+      "choose": 2,
+      "from": ["Arcana", "Deception", "History", "Intimidation", "Investigation", "Nature", "Religion"]
+    },
+    "starting_equipment": [
+      { "desc": "Choose A or B: (A) Leather Armor, Sickle, 2 Daggers, Arcane Focus (orb), Book of Shadows, Dungeoneer's Pack, and 15 GP; or (B) 100 GP" }
+    ],
+    "subclasses": [
+      { "name": "Fiend Patron", "gainedAtLevel": 3 }
+    ],
+    "weapon_masteries": [],
+    "features_by_level": [
+      { "level": 1, "features": [{ "name": "Eldritch Invocations", "description": "Choose 1 Eldritch Invocation option. Gain more at levels 3, 5, 7, 9, 11, 12, 15, 17, and 19." }, { "name": "Pact Magic", "description": "Spellcaster using Charisma. Short-rest spell slots (1–2 slots, all the same level, scaling with level). All slots regain on Short or Long Rest." }] },
+      { "level": 2, "features": [{ "name": "Magical Cunning", "description": "As a Magic action, expend half your Pact Magic spell slots (rounded up) to regain the other half (once per Long Rest)." }] },
+      { "level": 3, "features": [{ "name": "Warlock Subclass", "description": "Choose a Warlock subclass. The Fiend Patron is detailed in the SRD." }] },
+      { "level": 4, "features": [{ "name": "Ability Score Improvement", "description": "Gain the Ability Score Improvement feat or another feat of your choice." }] },
+      { "level": 9, "features": [{ "name": "Contact Patron", "description": "As a Magic action, magically contact your patron to get information (uses Speak with Dead or Commune rules depending on patron). Uses = Proficiency Bonus per Long Rest." }] },
+      { "level": 19, "features": [{ "name": "Epic Boon", "description": "Gain an Epic Boon feat. Boon of Fate is recommended." }] },
+      { "level": 20, "features": [{ "name": "Eldritch Master", "description": "Once per Long Rest, as a Bonus Action, regain all your Pact Magic spell slots." }] }
+    ],
+    "spellcasting_info": { "ability": "Charisma", "focus": "Arcane Focus", "max_spell_level": 5, "slots_regain_on": "Short Rest" }
+  },
+  {
+    "index": "wizard",
+    "name": "Wizard",
+    "hit_die": 6,
+    "primary_abilities": ["Intelligence"],
+    "saving_throws": ["Intelligence", "Wisdom"],
+    "armor_proficiencies": [],
+    "weapon_proficiencies": ["Simple weapons"],
+    "tool_proficiencies": [],
+    "skill_choices": {
+      "choose": 2,
+      "from": ["Arcana", "History", "Insight", "Investigation", "Medicine", "Religion"]
+    },
+    "starting_equipment": [
+      { "desc": "Choose A or B: (A) 2 Daggers, Arcane Focus (Quarterstaff), Robe, Spellbook, Scholar's Pack, and 5 GP; or (B) 55 GP" }
+    ],
+    "subclasses": [
+      { "name": "Evoker", "gainedAtLevel": 3 }
+    ],
+    "weapon_masteries": [],
+    "features_by_level": [
+      { "level": 1, "features": [{ "name": "Spellcasting", "description": "Full spellcaster using Intelligence. Spells recorded in a spellbook; prepare spells each day. Regains all slots on Long Rest." }, { "name": "Arcane Recovery", "description": "Once per day after a Short Rest, regain spell slots with total level ≤ half your Wizard level (rounded up). Slots can be no higher than level 6." }] },
+      { "level": 2, "features": [{ "name": "Scholar", "description": "Choose Arcana or History. You have Expertise in the chosen skill. Whenever you make a History check related to magic items, spells, or other magical phenomena, add double your Proficiency Bonus." }] },
+      { "level": 3, "features": [{ "name": "Wizard Subclass", "description": "Choose a Wizard subclass. The Evoker is detailed in the SRD." }] },
+      { "level": 4, "features": [{ "name": "Ability Score Improvement", "description": "Gain the Ability Score Improvement feat or another feat of your choice." }] },
+      { "level": 5, "features": [{ "name": "Memorize Spell", "description": "Once per Long Rest when you finish a Short Rest, choose one level 1+ Wizard spell from your spellbook. It is prepared for you until you use this feature again." }] },
+      { "level": 18, "features": [{ "name": "Spell Mastery", "description": "Choose one level 1 and one level 2 Wizard spell in your spellbook. You always have these prepared and can cast them at their lowest levels without expending spell slots." }] },
+      { "level": 19, "features": [{ "name": "Epic Boon", "description": "Gain an Epic Boon feat. Boon of Spell Recall is recommended." }] },
+      { "level": 20, "features": [{ "name": "Signature Spells", "description": "Choose two level 3 Wizard spells in your spellbook. They are always prepared and each can be cast once per Short Rest without expending a spell slot." }] }
+    ],
+    "spellcasting_info": { "ability": "Intelligence", "focus": "Arcane Focus or Spellbook", "max_spell_level": 9 }
+  }
+]

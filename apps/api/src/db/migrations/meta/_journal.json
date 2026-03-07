@@ -57,6 +57,13 @@
       "when": 1772940000000,
       "tag": "0007_srd_upsert_constraints",
       "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1772950000000,
+      "tag": "0008_srd_2024_schema",
+      "breakpoints": true
     }
   ]
 }

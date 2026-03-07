@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { SrdEditionSchema } from './srd.js';
 
 export const AdventureTypeSchema = z.enum(['campaign', 'one_shot']);
 export const RulesetSchema = z.enum(['standard', 'kids', 'custom']);
@@ -24,6 +25,8 @@ export const AdventureCreateSchema = z.object({
   rulesetOverrides: RulesetOverridesSchema.optional(),
   playerCapacityMin: z.number().int().min(1).default(1),
   playerCapacityMax: z.number().int().min(1).max(10).default(6),
+  // Which SRD edition to use for character creation in this adventure.
+  preferredEdition: SrdEditionSchema.default('2024').optional(),
 });
 
 export const AdventureUpdateSchema = AdventureCreateSchema.partial().extend({

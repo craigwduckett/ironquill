@@ -8,15 +8,10 @@
 /**
  * SRD seed script — populates all srd_* tables with data from:
  *   - 2014: 5e-bits/5e-database src/2014 (SRD 5.1, OGL)
- *   - 2024: 5e-bits/5e-database src/2024 (SRD 5.2, CC-BY-4.0)
+ *   - 2024: 5e-bits/5e-database src/2024 + hand-authored JSON from SRD 5.2.1 PDF
  *
  * Each SRD table row carries a source_edition column ('2014' | '2024') so the
- * app can filter content by ruleset version. When 2024 data becomes available
- * for a missing category (classes, spells, monsters, species) simply:
- *   1. Add the JSON file to data/2024/
- *   2. Write/update the transformer in transformers/
- *   3. Add the 2024 seeding block below
- *   4. Re-run `pnpm db:seed`
+ * app can filter content by ruleset version. The UI defaults to 2024.
  *
  * The script is idempotent: it upserts all SRD rows by name + source_edition.
  * User data (characters, etc.) is NEVER deleted — the seed only touches srd_*
@@ -34,14 +29,19 @@ import {
   transformBackground2014,
   transformBackground2024,
 } from './transformers/backgrounds.js';
-import type { RawClass2014 } from './transformers/classes.js';
-import { transformClass2014 } from './transformers/classes.js';
+import {
+  type RawClass2014,
+  type RawClass2024,
+  transformClass2014,
+  transformClass2024,
+} from './transformers/classes.js';
 import {
   type RawCondition2014,
   type RawCondition2024,
   transformCondition2014,
   transformCondition2024,
 } from './transformers/conditions.js';
+import { type RawFeat2024, transformFeat2024 } from './transformers/feats.js';
 import {
   type RawEquipment2014,
   type RawEquipment2024,
@@ -50,18 +50,32 @@ import {
   transformEquipment2024,
   transformMagicItem2014,
 } from './transformers/items.js';
-import type { RawMonster2014 } from './transformers/monsters.js';
-import { transformMonster2014 } from './transformers/monsters.js';
+import {
+  type RawMonster2014,
+  type RawMonster2024,
+  transformMonster2014,
+  transformMonster2024,
+} from './transformers/monsters.js';
 import type { LanguageLookup, RawRace2014, TraitLookup } from './transformers/races.js';
-import { transformRace2014 as transformSpecies2014 } from './transformers/races.js';
+import {
+  type RawSpecies2024,
+  transformRace2014 as transformSpecies2014,
+  transformSpecies2024,
+} from './transformers/races.js';
 import {
   type RawRule2014,
+  type RawRule2024,
   type RawRuleSection2014,
   transformRule2014,
+  transformRule2024,
   transformRuleSection2014,
 } from './transformers/rules.js';
-import type { RawSpell2014 } from './transformers/spells.js';
-import { transformSpell2014 } from './transformers/spells.js';
+import {
+  type RawSpell2014,
+  type RawSpell2024,
+  transformSpell2014,
+  transformSpell2024,
+} from './transformers/spells.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const dataDir = join(__dirname, 'data');
@@ -70,6 +84,14 @@ const data2024Dir = join(dataDir, '2024');
 function loadJson<T>(filePath: string): T {
   const raw = readFileSync(filePath, 'utf-8');
   return JSON.parse(raw) as T;
+}
+
+function tryLoadJson<T>(filePath: string): T | null {
+  try {
+    return loadJson<T>(filePath);
+  } catch {
+    return null;
+  }
 }
 
 const BATCH_SIZE = 100;
@@ -137,9 +159,7 @@ type RawLanguageData = {
 };
 
 async function seedSpecies() {
-  // 2014 data uses the term "Race"; 2024 will use "Species".
-  // The transformer sets displayTerm accordingly on each row.
-  const raw = loadJson<RawRace2014[]>(join(dataDir, 'races.json'));
+  const raw2014 = loadJson<RawRace2014[]>(join(dataDir, 'races.json'));
 
   const rawTraits = loadJson<RawTraitData[]>(join(dataDir, 'traits.json'));
   const traitLookup: TraitLookup = new Map(rawTraits.map((t) => [t.index, t.desc]));
@@ -157,16 +177,34 @@ async function seedSpecies() {
     ]),
   );
 
-  const rows = raw.map((r) => transformSpecies2014(r, traitLookup, languageLookup));
-  await batchUpsert('srd_species', rows, 'srd_species_name_edition_uq');
-  logger.info(`species: upserted ${rows.length} rows (2014, displayTerm='Race')`);
+  const rows2014 = raw2014.map((r) => transformSpecies2014(r, traitLookup, languageLookup));
+  await batchUpsert('srd_species', rows2014, 'srd_species_name_edition_uq');
+  logger.info(`species: upserted ${rows2014.length} rows (2014, displayTerm='Race')`);
+
+  const raw2024 = tryLoadJson<RawSpecies2024[]>(join(data2024Dir, 'species.json'));
+  if (raw2024) {
+    const rows2024 = raw2024.map(transformSpecies2024);
+    await batchUpsert('srd_species', rows2024, 'srd_species_name_edition_uq');
+    logger.info(`species: upserted ${rows2024.length} rows (2024, displayTerm='Species')`);
+  } else {
+    logger.warn('species: no 2024 data file found — skipping');
+  }
 }
 
 async function seedClasses() {
-  const raw = loadJson<RawClass2014[]>(join(dataDir, 'classes.json'));
-  const rows = raw.map(transformClass2014);
-  await batchUpsert('srd_classes', rows, 'srd_classes_name_edition_uq');
-  logger.info(`classes: upserted ${rows.length} rows (2014)`);
+  const raw2014 = loadJson<RawClass2014[]>(join(dataDir, 'classes.json'));
+  const rows2014 = raw2014.map(transformClass2014);
+  await batchUpsert('srd_classes', rows2014, 'srd_classes_name_edition_uq');
+  logger.info(`classes: upserted ${rows2014.length} rows (2014)`);
+
+  const raw2024 = tryLoadJson<RawClass2024[]>(join(data2024Dir, 'classes.json'));
+  if (raw2024) {
+    const rows2024 = raw2024.map(transformClass2024);
+    await batchUpsert('srd_classes', rows2024, 'srd_classes_name_edition_uq');
+    logger.info(`classes: upserted ${rows2024.length} rows (2024)`);
+  } else {
+    logger.warn('classes: no 2024 data file found — skipping');
+  }
 }
 
 async function seedBackgrounds() {
@@ -184,17 +222,35 @@ async function seedBackgrounds() {
 }
 
 async function seedSpells() {
-  const raw = loadJson<RawSpell2014[]>(join(dataDir, 'spells.json'));
-  const rows = raw.map(transformSpell2014);
-  await batchUpsert('srd_spells', rows, 'srd_spells_name_edition_uq');
-  logger.info(`spells: upserted ${rows.length} rows (2014)`);
+  const raw2014 = loadJson<RawSpell2014[]>(join(dataDir, 'spells.json'));
+  const rows2014 = raw2014.map(transformSpell2014);
+  await batchUpsert('srd_spells', rows2014, 'srd_spells_name_edition_uq');
+  logger.info(`spells: upserted ${rows2014.length} rows (2014)`);
+
+  const raw2024 = tryLoadJson<RawSpell2024[]>(join(data2024Dir, 'spells.json'));
+  if (raw2024) {
+    const rows2024 = raw2024.map(transformSpell2024);
+    await batchUpsert('srd_spells', rows2024, 'srd_spells_name_edition_uq');
+    logger.info(`spells: upserted ${rows2024.length} rows (2024)`);
+  } else {
+    logger.warn('spells: no 2024 data file found — skipping');
+  }
 }
 
 async function seedMonsters() {
-  const raw = loadJson<RawMonster2014[]>(join(dataDir, 'monsters.json'));
-  const rows = raw.map(transformMonster2014);
-  await batchUpsert('srd_monsters', rows, 'srd_monsters_name_edition_uq');
-  logger.info(`monsters: upserted ${rows.length} rows (2014)`);
+  const raw2014 = loadJson<RawMonster2014[]>(join(dataDir, 'monsters.json'));
+  const rows2014 = raw2014.map(transformMonster2014);
+  await batchUpsert('srd_monsters', rows2014, 'srd_monsters_name_edition_uq');
+  logger.info(`monsters: upserted ${rows2014.length} rows (2014)`);
+
+  const raw2024 = tryLoadJson<RawMonster2024[]>(join(data2024Dir, 'monsters.json'));
+  if (raw2024) {
+    const rows2024 = raw2024.map(transformMonster2024);
+    await batchUpsert('srd_monsters', rows2024, 'srd_monsters_name_edition_uq');
+    logger.info(`monsters: upserted ${rows2024.length} rows (2024)`);
+  } else {
+    logger.warn('monsters: no 2024 data file found — skipping');
+  }
 }
 
 async function seedItems() {
@@ -231,7 +287,6 @@ async function seedRules() {
   const rawRules = loadJson<RawRule2014[]>(join(dataDir, 'rules.json'));
   const rawSections = loadJson<RawRuleSection2014[]>(join(dataDir, 'rule-sections.json'));
 
-  // Build a lookup from section index → parent rule category name
   const sectionToCategory = new Map<string, string>();
   for (const rule of rawRules) {
     for (const sub of rule.subsections) {
@@ -243,12 +298,31 @@ async function seedRules() {
   const sectionRows = rawSections.map((s) =>
     transformRuleSection2014(s, sectionToCategory.get(s.index) ?? 'General'),
   );
-  const all = [...categoryRows, ...sectionRows];
-
-  await batchUpsert('srd_rules', all, 'srd_rules_topic_edition_uq');
+  const all2014 = [...categoryRows, ...sectionRows];
+  await batchUpsert('srd_rules', all2014, 'srd_rules_topic_edition_uq');
   logger.info(
-    `rules: upserted ${categoryRows.length} categories + ${sectionRows.length} sections = ${all.length} rows (2014)`,
+    `rules: upserted ${categoryRows.length} categories + ${sectionRows.length} sections = ${all2014.length} rows (2014)`,
   );
+
+  const raw2024 = tryLoadJson<RawRule2024[]>(join(data2024Dir, 'rules.json'));
+  if (raw2024) {
+    const rows2024 = raw2024.map(transformRule2024);
+    await batchUpsert('srd_rules', rows2024, 'srd_rules_topic_edition_uq');
+    logger.info(`rules: upserted ${rows2024.length} rows (2024)`);
+  } else {
+    logger.warn('rules: no 2024 data file found — skipping');
+  }
+}
+
+async function seedFeats() {
+  const raw2024 = tryLoadJson<RawFeat2024[]>(join(data2024Dir, 'feats.json'));
+  if (!raw2024) {
+    logger.warn('feats: no 2024 data file found — skipping');
+    return;
+  }
+  const rows = raw2024.map(transformFeat2024);
+  await batchUpsert('srd_feats', rows, 'srd_feats_name_edition_uq');
+  logger.info(`feats: upserted ${rows.length} rows (2024)`);
 }
 
 // ── Upsert seed ───────────────────────────────────────────────────────────────
@@ -265,6 +339,7 @@ async function main() {
   await seedItems();
   await seedConditions();
   await seedRules();
+  await seedFeats();
 
   logger.info('SRD seed complete.');
   process.exit(0);

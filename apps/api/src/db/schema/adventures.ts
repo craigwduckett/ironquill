@@ -10,7 +10,7 @@ import {
   varchar,
 } from 'drizzle-orm/pg-core';
 import { characters } from './characters.js';
-import { srdMonsters } from './srd.js';
+import { srdEditionEnum, srdMonsters } from './srd.js';
 import { users } from './users.js';
 
 // ── Enums ─────────────────────────────────────────────────────────────────────
@@ -40,6 +40,8 @@ export const adventures = pgTable('adventures', {
   playerCapacityMax: integer('player_capacity_max').notNull().default(6),
   inviteCode: varchar('invite_code', { length: 16 }),
   status: adventureStatusEnum('status').notNull().default('draft'),
+  // Which SRD edition this adventure uses — drives which data is shown in character creation.
+  preferredEdition: srdEditionEnum('preferred_edition').notNull().default('2024'),
   createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
   updatedAt: timestamp('updated_at', { withTimezone: true }).notNull().defaultNow(),
 });
