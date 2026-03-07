@@ -1,63 +1,75 @@
-.page {
-  max-width: var(--content-max-width);
-  margin: 0 auto;
-  padding: var(--space-8) var(--space-6);
+/* ── Master-detail shell ─────────────────────────────────────────────────────
+   The page fills the remaining viewport height below the AppShell nav.
+   overflow: hidden on the shell prevents a double scrollbar; each pane
+   scrolls independently.
+────────────────────────────────────────────────────────────────────────────── */
+
+/* Fill the scrollable main container — the main has overflow-y: auto, so
+   we stretch to fill it and clip here so each pane scrolls independently. */
+.shell {
+  display: flex;
+  height: 100%;
+  overflow: hidden;
 }
 
-.breadcrumb {
+/* ── Sidebar ─────────────────────────────────────────────────────────────────── */
+
+.sidebar {
+  width: 300px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid var(--color-border);
+  overflow: hidden;
+  background: var(--color-bg-subtle);
+}
+
+.sidebarHead {
+  padding: var(--space-4);
+  border-bottom: 1px solid var(--color-border);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  flex-shrink: 0;
+}
+
+.sidebarTitle {
   display: flex;
   align-items: center;
-  gap: var(--space-2);
-  font-size: var(--text-sm);
-  color: var(--color-text-muted);
-  margin-bottom: var(--space-6);
-}
-
-.breadcrumbLink {
-  color: var(--color-accent);
-  text-decoration: none;
-}
-.breadcrumbLink:hover {
-  text-decoration: underline;
-}
-
-.breadcrumbSep {
-  color: var(--color-border);
-}
-
-.header {
-  display: flex;
-  align-items: flex-start;
   justify-content: space-between;
-  flex-wrap: wrap;
-  gap: var(--space-4);
-  margin-bottom: var(--space-6);
 }
 
-.title {
+.sidebarTitleText {
   font-family: var(--font-display);
-  font-size: var(--text-2xl);
+  font-size: var(--text-base);
   color: var(--color-accent);
   letter-spacing: 0.04em;
 }
 
-.controls {
+.sidebarBack {
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  text-decoration: none;
   display: flex;
-  gap: var(--space-3);
-  flex-wrap: wrap;
   align-items: center;
+  gap: var(--space-1);
+  transition: color var(--transition-fast);
+}
+.sidebarBack:hover {
+  color: var(--color-accent);
 }
 
 .searchInput {
-  background: var(--color-bg);
+  width: 100%;
+  background: var(--color-surface);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
   color: var(--color-text-primary);
   font-family: var(--font-body);
   font-size: var(--text-sm);
-  padding: var(--space-2) var(--space-4);
+  padding: var(--space-2) var(--space-3);
   transition: border-color var(--transition-fast);
-  min-width: 220px;
+  box-sizing: border-box;
 }
 .searchInput:focus {
   outline: none;
@@ -67,127 +79,191 @@
   color: var(--color-text-muted);
 }
 
+/* ── Filter chips ─────────────────────────────────────────────────────────── */
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1);
+}
+
+.chip {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-full);
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  font-family: var(--font-body);
+  font-size: var(--text-xs);
+  padding: 2px var(--space-3);
+  transition:
+    background var(--transition-fast),
+    border-color var(--transition-fast),
+    color var(--transition-fast);
+  white-space: nowrap;
+}
+.chip:hover {
+  border-color: var(--color-accent);
+  color: var(--color-text-primary);
+}
+.chipActive {
+  background: var(--color-accent-muted);
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+  font-weight: var(--font-semibold);
+}
+
+/* ── Select (for multi-value filters like spell level) ──────────────────── */
+
 .select {
-  background: var(--color-bg);
+  width: 100%;
+  background: var(--color-surface);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
   color: var(--color-text-primary);
   font-family: var(--font-body);
   font-size: var(--text-sm);
-  padding: var(--space-2) var(--space-4);
+  padding: var(--space-2) var(--space-3);
   cursor: pointer;
+  box-sizing: border-box;
 }
 .select:focus {
   outline: none;
   border-color: var(--color-accent);
 }
 
+/* ── Count label ─────────────────────────────────────────────────────────── */
+
 .count {
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  padding: var(--space-2) var(--space-4);
+  border-bottom: 1px solid var(--color-border);
+  flex-shrink: 0;
+}
+
+/* ── Result list ─────────────────────────────────────────────────────────── */
+
+.list {
+  flex: 1;
+  overflow-y: auto;
+}
+
+.listRow {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-4);
+  cursor: pointer;
+  border-left: 3px solid transparent;
+  transition:
+    background var(--transition-fast),
+    border-color var(--transition-fast);
+  width: 100%;
+  background: none;
+  border-top: none;
+  border-right: none;
+  border-bottom: 1px solid var(--color-border-subtle);
+  text-align: left;
+}
+.listRow:hover {
+  background: var(--color-surface);
+}
+.listRowActive {
+  background: var(--color-surface);
+  border-left-color: var(--color-accent);
+}
+
+.rowDot {
+  width: 8px;
+  height: 8px;
+  border-radius: var(--radius-full);
+  flex-shrink: 0;
+}
+
+.rowName {
+  flex: 1;
+  font-size: var(--text-sm);
+  color: var(--color-text-primary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 0;
+}
+
+.rowCategory {
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.rowBadge {
+  flex-shrink: 0;
+}
+
+/* ── Detail pane ─────────────────────────────────────────────────────────── */
+
+.detail {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--space-8) var(--space-8);
+}
+
+.detailInner {
+  max-width: 680px;
+  margin: 0 auto;
+}
+
+.emptyDetail {
+  max-width: 680px;
+  margin: var(--space-20) auto;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.emptyDetailIcon {
+  font-size: 2.5rem;
+}
+
+.emptyDetailText {
   font-size: var(--text-sm);
   color: var(--color-text-muted);
-  margin-bottom: var(--space-4);
 }
 
-/* ── Card grid ────────────────────────────────────────────────────────────── */
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: var(--space-4);
+/* ── Detail content ──────────────────────────────────────────────────────── */
+
+.detailHeader {
+  margin-bottom: var(--space-6);
+  padding-bottom: var(--space-4);
+  border-bottom: 1px solid var(--color-border);
 }
 
-.card {
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-lg);
-  padding: var(--space-5);
-  cursor: pointer;
-  transition:
-    border-color var(--transition-fast),
-    background var(--transition-fast);
-  text-align: left;
-  width: 100%;
-}
-.card:hover {
-  border-color: var(--color-accent);
-  background: var(--color-surface-raised);
+.detailTitle {
+  font-family: var(--font-display);
+  font-size: var(--text-2xl);
+  color: var(--color-accent);
+  margin-bottom: var(--space-3);
 }
 
-.cardName {
-  font-size: var(--text-base);
-  font-weight: var(--font-semibold);
-  color: var(--color-text-primary);
-  margin-bottom: var(--space-2);
+.detailSubtitle {
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+  margin-bottom: var(--space-3);
 }
 
 .cardMeta {
   display: flex;
   flex-wrap: wrap;
   gap: var(--space-2);
-  margin-bottom: var(--space-3);
-}
-
-.cardDesc {
-  font-size: var(--text-sm);
-  color: var(--color-text-secondary);
-  line-height: var(--leading-snug);
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-
-/* ── Layout (grid + drawer below) ────────────────────────────────────────── */
-.layout {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-4);
-}
-
-/* ── Detail drawer ────────────────────────────────────────────────────────── */
-.detail {
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-lg);
-  padding: var(--space-6);
-  max-height: 520px;
-  overflow-y: auto;
-  scroll-behavior: smooth;
-}
-
-.detailHeader {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: var(--space-4);
-  margin-bottom: var(--space-4);
-}
-
-.detailTitle {
-  font-family: var(--font-display);
-  font-size: var(--text-xl);
-  color: var(--color-accent);
-}
-
-.detailClose {
-  background: none;
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-md);
-  color: var(--color-text-muted);
-  cursor: pointer;
-  font-size: var(--text-sm);
-  padding: var(--space-1) var(--space-3);
-  flex-shrink: 0;
-  transition:
-    border-color var(--transition-fast),
-    color var(--transition-fast);
-}
-.detailClose:hover {
-  border-color: var(--color-accent);
-  color: var(--color-text-primary);
+  align-items: center;
 }
 
 .detailSection {
-  margin-top: var(--space-5);
+  margin-top: var(--space-6);
 }
 
 .detailSectionLabel {
@@ -213,6 +289,79 @@
   gap: var(--space-2);
   padding: 0;
 }
+
+/* ── Novice tooltip / explainer ──────────────────────────────────────────── */
+
+.tooltip {
+  display: inline-block;
+  position: relative;
+  cursor: help;
+}
+
+.tooltipTrigger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 14px;
+  height: 14px;
+  border-radius: var(--radius-full);
+  background: var(--color-surface-raised);
+  border: 1px solid var(--color-border);
+  color: var(--color-text-muted);
+  font-size: 9px;
+  font-weight: var(--font-bold);
+  cursor: help;
+  vertical-align: middle;
+  margin-left: 4px;
+  line-height: 1;
+}
+
+.tooltipBox {
+  display: none;
+  position: absolute;
+  left: 0;
+  top: calc(100% + 6px);
+  z-index: var(--z-tooltip);
+  background: var(--color-surface-raised);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-3) var(--space-4);
+  width: 220px;
+  font-size: var(--text-xs);
+  color: var(--color-text-secondary);
+  line-height: var(--leading-relaxed);
+  box-shadow: var(--shadow-md);
+  pointer-events: none;
+}
+
+.tooltip:hover .tooltipBox,
+.tooltip:focus-within .tooltipBox {
+  display: block;
+}
+
+/* ── Novice callout box ───────────────────────────────────────────────────── */
+
+.noviceBox {
+  background: var(--color-accent-muted);
+  border: 1px solid rgba(200, 169, 110, 0.25);
+  border-radius: var(--radius-md);
+  padding: var(--space-3) var(--space-4);
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+  line-height: var(--leading-relaxed);
+  margin-bottom: var(--space-5);
+}
+
+.noviceBoxLabel {
+  font-size: var(--text-xs);
+  font-weight: var(--font-semibold);
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--color-accent);
+  margin-bottom: var(--space-1);
+}
+
+/* ── Stat grid (monsters) ────────────────────────────────────────────────── */
 
 .statGrid {
   display: grid;
@@ -244,8 +393,19 @@
   color: var(--color-text-secondary);
 }
 
+/* ── Divider ─────────────────────────────────────────────────────────────── */
+
 .divider {
   border: none;
   border-top: 1px solid var(--color-border-subtle);
-  margin: var(--space-4) 0;
+  margin: var(--space-5) 0;
+}
+
+/* ── Spinner / error state ───────────────────────────────────────────────── */
+
+.loadingPane {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
