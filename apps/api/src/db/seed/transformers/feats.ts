@@ -10,26 +10,27 @@
  *
  * 2024 feats are typed: origin | general | fighting-style | epic-boon.
  * Origin feats are mandatory — every Background grants exactly one.
+ *
+ * Note: 5e-bits 2024 format uses `description` (string) and `prerequisites`
+ * as a flat object — different from the 2014 array-of-objects format.
  */
 
 import type { srdFeatTypeEnum } from '../../schema/srd.js';
 
 type FeatType = (typeof srdFeatTypeEnum.enumValues)[number];
 
-type RawPrerequisite2024 = {
-  type: 'level' | 'feature' | 'ability_score';
+// 5e-bits/5e-database 2024 format: prerequisites is a flat object, not an array.
+type RawPrerequisiteObject2024 = {
   minimum_level?: number;
-  feature?: string;
-  ability_score?: { index: string; name: string };
-  minimum_score?: number;
+  feature_named?: string;
 };
 
 export type RawFeat2024 = {
   index: string;
   name: string;
-  desc: string[];
+  description: string;
   type?: string;
-  prerequisites?: RawPrerequisite2024[];
+  prerequisites?: RawPrerequisiteObject2024;
   repeatable?: string;
 };
 
@@ -46,30 +47,17 @@ function parsePrerequisites(raw: RawFeat2024): {
   featureNamed?: string;
   abilityScore?: { name: string; minimum: number };
 } | null {
-  if (!raw.prerequisites?.length) return null;
+  if (!raw.prerequisites) return null;
 
+  const prereq = raw.prerequisites;
   const result: {
     minimumLevel?: number;
     featureNamed?: string;
     abilityScore?: { name: string; minimum: number };
   } = {};
 
-  for (const prereq of raw.prerequisites) {
-    if (prereq.type === 'level' && prereq.minimum_level != null) {
-      result.minimumLevel = prereq.minimum_level;
-    } else if (prereq.type === 'feature' && prereq.feature) {
-      result.featureNamed = prereq.feature;
-    } else if (
-      prereq.type === 'ability_score' &&
-      prereq.ability_score &&
-      prereq.minimum_score != null
-    ) {
-      result.abilityScore = {
-        name: prereq.ability_score.name,
-        minimum: prereq.minimum_score,
-      };
-    }
-  }
+  if (prereq.minimum_level != null) result.minimumLevel = prereq.minimum_level;
+  if (prereq.feature_named) result.featureNamed = prereq.feature_named;
 
   return Object.keys(result).length ? result : null;
 }
@@ -78,7 +66,7 @@ export function transformFeat2024(raw: RawFeat2024) {
   return {
     sourceEdition: '2024' as const,
     name: raw.name,
-    description: raw.desc.join('\n'),
+    description: raw.description,
     type: mapFeatType(raw),
     prerequisites: parsePrerequisites(raw),
     repeatable: raw.repeatable ?? null,

@@ -275,10 +275,11 @@
       "M"
     ],
     "material": "a mix of vinegar and honey",
-    "duration": "10 days As you cast the spell, choose whether it creates antipathy or sympathy, and target one creature or object that is Huge or smaller. Then specify a kind of creature, such as red dragons, goblins, or vampires.",
+    "duration": "10 days",
     "concentration": false,
     "ritual": false,
     "desc": [
+      "As you cast the spell, choose whether it creates antipathy or sympathy, and target one creature or object that is Huge or smaller. Then specify a kind of creature, such as red dragons, goblins, or vampires.",
       "A creature of the chosen kind makes a Wisdom saving throw when it comes within 120 feet of the target. Your choice of antipathy or sympathy deter- mines what happens to a creature when it fails that save: Antipathy. The creature has the Frightened condi- tion. The Frightened creature must use its move- ment on its turns to get as far away as possible from the target, moving by the safest route. Sympathy. The creature has the Charmed condi- tion. The Charmed creature must use its move- ment on its turns to get as close as possible to the target, moving by the safest route. If the creature is within 5 feet of the target, the creature can’t willingly move away. If the target damages the Charmed creature, that creature can make a Animated Object Huge or Smaller Construct, Unaligned AC 15 HP 10 (Medium or smaller), 20 (Large), 40 (Huge) Speed 30 ft. MOD SAVE MOD SAVE MOD SAVE S tr 16 +3 +3 d ex 10 +0 +0 c on 10 +0 +0 i nt 3 −4 −4 W i S 3 −4 −4 c h A 1 −5 −5 Immunities Poison, Psychic; Charmed, Exhaustion, Frightened, Paralyzed, Poisoned Senses Blindsight 30 ft.; Passive Perception 6 Languages Understands the languages you know CR None (XP 0; PB equals your Proficiency Bonus) Actions Slam. Melee Attack Roll: Bonus equals your spell attack modifier, reach 5 ft. Hit: Force damage equal to 1d4 + 3 (Medium or smaller), 2d6 + 3 + your spellcasting ability modifier (Large), or 2d12 + 3 + your spellcasting ability modifier (Huge)."
     ],
     "higher_level": null,
@@ -704,10 +705,11 @@
       "M"
     ],
     "material": "a tentacle",
-    "duration": "up to 1 minute Squirming, ebony tentacles fill a 20-foot square on ground that you can see within range.",
+    "duration": "up to 1 minute",
     "concentration": true,
     "ritual": false,
     "desc": [
+      "Squirming, ebony tentacles fill a 20-foot square on ground that you can see within range.",
       "For the du- ration, these tentacles turn the ground in that area into Difficult Terrain. Each creature in that area makes a Strength sav- ing throw. On a failed save, it takes 3d6 Bludgeoning damage, and it has the Restrained condition until the spell ends. A creature also makes that save if it enters the area or ends it turn there. A creature makes that save only once per turn. A Restrained creature can take an action to make a Strength (Athletics) check against your spell save DC, ending the condition on itself on a success."
     ],
     "higher_level": null,
@@ -1039,10 +1041,11 @@
       "S"
     ],
     "material": null,
-    "duration": "Instantaneous Channeling the chill of the grave, make a melee spell attack against a target within reach.",
+    "duration": "Instantaneous",
     "concentration": false,
     "ritual": false,
     "desc": [
+      "Channeling the chill of the grave, make a melee spell attack against a target within reach.",
       "On a hit, the target takes 1d10 Necrotic damage, and it can’t re- gain Hit Points until the end of your next turn."
     ],
     "higher_level": [
@@ -1094,10 +1097,11 @@
       "M"
     ],
     "material": "the powder of a crushed black pearl worth 500+ GP",
-    "duration": "Instantaneous Negative energy ripples out in a 60-foot-radius Sphere from a point you choose within range.",
+    "duration": "Instantaneous",
     "concentration": false,
     "ritual": false,
     "desc": [
+      "Negative energy ripples out in a 60-foot-radius Sphere from a point you choose within range.",
       "Each creature in that area makes a Constitution saving throw, taking 8d8 Necrotic damage on a failed save or half as much damage on a successful one."
     ],
     "higher_level": [
@@ -1698,7 +1702,7 @@
     "name": "Storm Counterspell",
     "level": 3,
     "school": "Abjuration",
-    "casting_time": "Reaction, which you take when you see a creature within 60 feet of yourself casting a spell with Verbal, Somatic, or Material components",
+    "casting_time": "Reaction",
     "range": "60 feet",
     "components": [
       "S"
@@ -2351,7 +2355,7 @@
     "name": "Divine Smite",
     "level": 1,
     "school": "Evocation",
-    "casting_time": "Bonus Action, which you take immedi- ately after hitting a target with a Melee weapon or an Unarmed Strike",
+    "casting_time": "Bonus Action",
     "range": "",
     "components": [],
     "material": null,
@@ -2537,10 +2541,11 @@
       "S"
     ],
     "material": null,
-    "duration": "Instantaneous Whispering to the spirits of nature, you create one of the following effects within range. Weather Sensor.",
+    "duration": "Instantaneous",
     "concentration": false,
     "ritual": false,
     "desc": [
+      "Whispering to the spirits of nature, you create one of the following effects within range. Weather Sensor.",
       "You create a Tiny, harmless sen- sory effect that predicts what the weather will be at your location for the next 24 hours. The effect might manifest as a golden orb for clear skies, a cloud for rain, falling snowflakes for snow, and so on. This effect persists for 1 round. Bloom. You instantly make a flower blossom, a seed pod open, or a leaf bud bloom. Sensory Effect. You create a harmless sensory ef- fect, such as falling leaves, spectral dancing fairies, a gentle breeze, the sound of an animal, or the faint odor of skunk. The effect must fit in a 5-foot Cube. Fire Play. You light or snuff out a candle, a torch, or a campfire."
     ],
     "higher_level": null,
@@ -2693,10 +2698,11 @@
       "V"
     ],
     "material": null,
-    "duration": "up to 1 minute As you hit the target, grasping vines appear on it, and it makes a Strength saving throw.",
+    "duration": "up to 1 minute",
     "concentration": true,
     "ritual": false,
     "desc": [
+      "As you hit the target, grasping vines appear on it, and it makes a Strength saving throw.",
       "A Large or larger creature has Advantage on this save. On a failed save, the target has the Restrained condition until the spell ends. On a successful save, the vines shrivel away, and the spell ends. While Restrained, the target takes 1d6 Piercing damage at the start of each of its turns. The target or a creature within reach of it can take an action to make a Strength (Athletics) check against your spell save DC. On a success, the spell ends."
     ],
     "higher_level": [
@@ -3171,10 +3177,11 @@
       "M"
     ],
     "material": "a bit of phosphorus or a firefly",
-    "duration": "10 minutes Wispy flames wreathe your body for the duration, shedding Bright Light in a 10-foot radius and Dim Light for an additional 10 feet.",
+    "duration": "10 minutes",
     "concentration": false,
     "ritual": false,
     "desc": [
+      "Wispy flames wreathe your body for the duration, shedding Bright Light in a 10-foot radius and Dim Light for an additional 10 feet.",
       "The flames provide you with a warm shield or a chill shield, as you choose. The warm shield grants you Resistance to Cold damage, and the chill shield grants you Resistance to Fire damage. In addition, whenever a creature within 5 feet of you hits you with a melee attack roll, the shield erupts with flame. The attacker takes 2d8 Fire dam - age from a warm shield or 2d8 Cold damage from a chill shield."
     ],
     "higher_level": null,
@@ -3779,10 +3786,11 @@
       "M"
     ],
     "material": "a bit of pork rind or butter",
-    "duration": "1 minute Nonflammable grease covers the ground in a 10- foot square centered on a point within range and turns it into Difficult Terrain for the duration.",
+    "duration": "1 minute",
     "concentration": false,
     "ritual": false,
     "desc": [
+      "Nonflammable grease covers the ground in a 10- foot square centered on a point within range and turns it into Difficult Terrain for the duration.",
       "When the grease appears, each creature stand- ing in its area must succeed on a Dexterity saving throw or have the Prone condition. A creature that enters the area or ends its turn there must also suc- ceed on that save or fall Prone."
     ],
     "higher_level": null,
@@ -4125,7 +4133,7 @@
     "name": "Hellish Rebuke",
     "level": 1,
     "school": "Evocation",
-    "casting_time": "Reaction, which you take in response to taking damage from a creature that you can see within 60 feet of yourself",
+    "casting_time": "Reaction",
     "range": "60 feet",
     "components": [
       "V",
@@ -4425,10 +4433,11 @@
       "M"
     ],
     "material": "a mitten",
-    "duration": "Instantaneous Hail falls in a 20-foot-radius, 40-foot-high Cylinder centered on a point within range.",
+    "duration": "Instantaneous",
     "concentration": false,
     "ritual": false,
     "desc": [
+      "Hail falls in a 20-foot-radius, 40-foot-high Cylinder centered on a point within range.",
       "Each creature in the Cylinder makes a Dexterity saving throw. A creature takes 2d10 Bludgeoning damage and 4d6 Cold damage on a failed save or half as much dam- age on a successful one. Hailstones turn ground in the Cylinder into Diffi - cult Terrain until the end of your next turn."
     ],
     "higher_level": [
@@ -4578,10 +4587,11 @@
       "M"
     ],
     "material": "a locust",
-    "duration": "up to 10 minutes Swarming locusts fill a 20-foot-radius Sphere centered on a point you choose within range.",
+    "duration": "up to 10 minutes",
     "concentration": true,
     "ritual": false,
     "desc": [
+      "Swarming locusts fill a 20-foot-radius Sphere centered on a point you choose within range.",
       "The Sphere remains for the duration, and its area is Lightly Obscured and Difficult Terrain. When the swarm appears, each creature in it makes a Constitution saving throw, taking 4d10 Piercing damage on a failed save or half as much damage on a successful one. A creature also makes this save when it enters the spell’s area for the first time on a turn or ends its turn there. A creature makes this save only once per turn."
     ],
     "higher_level": [
@@ -5055,10 +5065,11 @@
       "M"
     ],
     "material": "a gem, crystal, or reliquary worth 500+ GP",
-    "duration": "Until dispelled Your body falls into a catatonic state as your soul leaves it and enters the container you used for the spell’s Material component.",
+    "duration": "Until dispelled",
     "concentration": false,
     "ritual": false,
     "desc": [
+      "Your body falls into a catatonic state as your soul leaves it and enters the container you used for the spell’s Material component.",
       "While your soul inhab- its the container, you are aware of your surround- ings as if you were in the container’s space. You can’t move or take Reactions. The only action you can take is to project your soul up to 100 feet out of the container, either returning to your living body (and ending the spell) or attempting to possess a Humanoid’s body. You can attempt to possess any Humanoid within 100 feet of you that you can see (creatures warded by a Protection from Evil and Good or Magic Circle spell can’t be possessed). The target makes a Cha- risma saving throw. On a failed save, your soul en- ters the target’s body, and the target’s soul becomes trapped in the container. On a successful save, the target resists your efforts to possess it, and you can’t attempt to possess it again for 24 hours. Once you possess a creature’s body, you control it. Your Hit Points, Hit Point Dice, Strength, Dexterity, Constitution, Speed, and senses are replaced by the creature’s. You otherwise keep your game statistics. Meanwhile, the possessed creature’s soul can per- ceive from the container using its own senses, but it can’t move and it is Incapacitated. While possessing a body, you can take a Magic ac- tion to return from the host body to the container if it is within 100 feet of you, returning the host crea- ture’s soul to its body. If the host body dies while you’re in it, the creature dies, and you make a Cha- risma saving throw against your own spellcasting DC. On a success, you return to the container if it is within 100 feet of you. Otherwise, you die. If the container is destroyed or the spell ends, your soul returns to your body. If your body is more than 100 feet away from you or if your body is dead, you die. If another creature’s soul is in the container when it is destroyed, the creature’s soul returns to its body if the body is alive and within 100 feet. Oth- erwise, that creature dies. When the spell ends, the container is destroyed."
     ],
     "higher_level": null,
@@ -5415,10 +5426,11 @@
       "S"
     ],
     "material": null,
-    "duration": "Instantaneous Blazing orbs of fire plummet to the ground at four different points you can see within range.",
+    "duration": "Instantaneous",
     "concentration": false,
     "ritual": false,
     "desc": [
+      "Blazing orbs of fire plummet to the ground at four different points you can see within range.",
       "Each creature in a 40-foot-radius Sphere centered on each of those points makes a Dexterity saving throw. A creature takes 20d6 Fire damage and 20d6 Bludgeoning damage on a failed save or half as much damage on a successful one. A creature in the area of more than one fiery Sphere is affected only once. A nonmagical object that isn’t being worn or car- ried also takes the damage if it’s in the spell’s area, and the object starts burning if it’s flammable."
     ],
     "higher_level": null,
@@ -6800,7 +6812,7 @@
     "name": "Searing Smite",
     "level": 1,
     "school": "Evocation",
-    "casting_time": "Bonus Action, which you take immedi- ately after hitting a target with a Melee weapon or an Unarmed Strike",
+    "casting_time": "Bonus Action",
     "range": "",
     "components": [],
     "material": null,
@@ -7075,7 +7087,7 @@
     "name": "Shining Smite",
     "level": 2,
     "school": "Transmutation",
-    "casting_time": "Bonus Action, which you take immedi- ately after hitting a creature with a Melee weapon or an Unarmed Strike",
+    "casting_time": "Bonus Action",
     "range": "",
     "components": [],
     "material": null,
@@ -7720,10 +7732,11 @@
       "M"
     ],
     "material": "a piece of sunstone",
-    "duration": "Instantaneous Brilliant sunlight flashes in a 60-foot-radius Sphere centered on a point you choose within range.",
+    "duration": "Instantaneous",
     "concentration": false,
     "ritual": false,
     "desc": [
+      "Brilliant sunlight flashes in a 60-foot-radius Sphere centered on a point you choose within range.",
       "Each creature in the Sphere makes a Constitution saving throw. On a failed save, a creature takes 12d6 Ra- diant damage and has the Blinded condition for 1 minute. On a successful save, it takes half as much damage only. A creature Blinded by this spell makes another Constitution saving throw at the end of each of its turns, ending the effect on itself on a success. This spell dispels Darkness in its area that was created by any spell."
     ],
     "higher_level": null,
@@ -7846,10 +7859,11 @@
       "M"
     ],
     "material": "rare inks worth 50+ GP, which the spell consumes",
-    "duration": "1 round As you cast the spell, you draw a 5-foot-radius circle on the ground inscribed with sigils that link your location to a permanent teleportation circle of your choice whose sigil sequence you know and that is on the same plane of existence as you.",
+    "duration": "1 round",
     "concentration": false,
     "ritual": false,
     "desc": [
+      "As you cast the spell, you draw a 5-foot-radius circle on the ground inscribed with sigils that link your location to a permanent teleportation circle of your choice whose sigil sequence you know and that is on the same plane of existence as you.",
       "A shimmer- ing portal opens within the circle you drew and remains open until the end of your next turn. Any creature that enters the portal instantly appears within 5 feet of the destination circle or in the near- est unoccupied space if that space is occupied. Many major temples, guildhalls, and other import- ant places have permanent teleportation circles. Each circle includes a unique sigil sequence—a string of runes arranged in a particular pattern. When you first gain the ability to cast this spell, you learn the sigil sequences for two destinations on the Material Plane, determined by the GM. You might learn additional sigil sequences during your adventures. You can commit a new sigil sequence to memory after studying it for 1 minute. You can create a permanent teleportation circle by casting this spell in the same location every day for 365 days."
     ],
     "higher_level": null,
@@ -8123,10 +8137,11 @@
       "M"
     ],
     "material": "a weapon with which you have profi - ciency and that is worth 1+ CP",
-    "duration": "Instantaneous Guided by a flash of magical insight, you make one attack with the weapon used in the spell’s casting.",
+    "duration": "Instantaneous",
     "concentration": false,
     "ritual": false,
     "desc": [
+      "Guided by a flash of magical insight, you make one attack with the weapon used in the spell’s casting.",
       "The attack uses your spellcasting ability for the at- tack and damage rolls instead of using Strength or Dexterity. If the attack deals damage, it can be Ra- diant damage or the weapon’s normal damage type (your choice)."
     ],
     "higher_level": [
