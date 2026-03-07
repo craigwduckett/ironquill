@@ -1,3 +1,4 @@
+import { Link } from '@tanstack/react-router';
 import type { ReactNode } from 'react';
 import styles from './AuthLayout.module.css';
 
@@ -12,7 +13,9 @@ export function AuthLayout({ title, subtitle, children, footer }: AuthLayoutProp
   return (
     <div className={styles.layout}>
       <div className={styles.card}>
-        <div className={styles.logo}>IronQuill</div>
+        <Link to="/" className={styles.logo}>
+          IronQuill
+        </Link>
         <h1 className={styles.title}>{title}</h1>
         {subtitle && <p className={styles.subtitle}>{subtitle}</p>}
         {children}

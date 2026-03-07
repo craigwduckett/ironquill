@@ -12,7 +12,7 @@ type AppShellProps = {
 const NAV_LINKS = [
   { to: '/srd', label: 'SRD' },
   { to: '/dashboard', label: 'Dashboard', authRequired: true },
-];
+] as const;
 
 export function AppShell({ children }: AppShellProps) {
   const { user } = useAuthStore();
@@ -28,16 +28,18 @@ export function AppShell({ children }: AppShellProps) {
         </Link>
 
         <nav className={styles.navLinks} aria-label="Main navigation">
-          {NAV_LINKS.filter((l) => !l.authRequired || user).map((link) => (
-            <Link
-              key={link.to}
-              to={link.to as '/srd'}
-              className={styles.navLink}
-              data-active={currentPath.startsWith(link.to) ? 'true' : undefined}
-            >
-              {link.label}
-            </Link>
-          ))}
+          {NAV_LINKS.filter((l) => !('authRequired' in l) || !l.authRequired || user).map(
+            (link) => (
+              <Link
+                key={link.to}
+                to={link.to}
+                className={styles.navLink}
+                data-active={currentPath.startsWith(link.to) ? 'true' : undefined}
+              >
+                {link.label}
+              </Link>
+            ),
+          )}
         </nav>
 
         <div className={styles.navActions}>
@@ -55,18 +57,18 @@ export function AppShell({ children }: AppShellProps) {
             </>
           ) : (
             <>
-              <Link to="/login" className={styles.navLink}>
+              <Link
+                to="/login"
+                className={styles.navLink}
+                data-active={currentPath === '/login' ? 'true' : undefined}
+              >
                 Sign in
               </Link>
-              <Button
-                variant="primary"
-                size="sm"
-                onClick={() => {
-                  window.location.href = '/register';
-                }}
-              >
-                Get started
-              </Button>
+              <Link to="/register">
+                <Button variant="primary" size="sm">
+                  Get started
+                </Button>
+              </Link>
             </>
           )}
         </div>

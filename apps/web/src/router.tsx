@@ -2,6 +2,7 @@ import {
   createRootRoute,
   createRoute,
   createRouter,
+  Link,
   Outlet,
   redirect,
 } from '@tanstack/react-router';
@@ -35,16 +36,29 @@ const RouterDevtools = import.meta.env.DEV
     )
   : ((() => null) as () => null);
 
-// ── Root (shell layout) ───────────────────────────────────────────────────────
+// ── Root (bare) ───────────────────────────────────────────────────────────────
+// Auth routes use this root directly so they render their own full-screen
+// layout without the AppShell header/footer.
 
 const rootRoute = createRootRoute({
   component: () => (
     <>
-      <AppShell>
-        <Outlet />
-      </AppShell>
+      <Outlet />
       <RouterDevtools />
     </>
+  ),
+});
+
+// ── Shell layout route ────────────────────────────────────────────────────────
+// All non-auth pages nest under this to get the persistent header/footer.
+
+const shellRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  id: 'shell',
+  component: () => (
+    <AppShell>
+      <Outlet />
+    </AppShell>
   ),
 });
 
@@ -55,10 +69,10 @@ function requireAuth() {
   if (!accessToken) throw redirect({ to: '/login' });
 }
 
-// ── Public routes ─────────────────────────────────────────────────────────────
+// ── Home route ────────────────────────────────────────────────────────────────
 
 const indexRoute = createRoute({
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => shellRoute,
   path: '/',
   component: () => (
     <main
@@ -95,8 +109,8 @@ const indexRoute = createRoute({
           justifyContent: 'center',
         }}
       >
-        <a
-          href="/register"
+        <Link
+          to="/register"
           style={{
             padding: 'var(--space-3) var(--space-8)',
             background: 'var(--color-accent)',
@@ -107,9 +121,9 @@ const indexRoute = createRoute({
           }}
         >
           Get started
-        </a>
-        <a
-          href="/srd"
+        </Link>
+        <Link
+          to="/srd"
           style={{
             padding: 'var(--space-3) var(--space-8)',
             background: 'var(--color-surface-raised)',
@@ -120,13 +134,13 @@ const indexRoute = createRoute({
           }}
         >
           Browse SRD
-        </a>
+        </Link>
       </div>
     </main>
   ),
 });
 
-// ── Auth routes ───────────────────────────────────────────────────────────────
+// ── Auth routes (no AppShell — full-screen layout) ────────────────────────────
 
 const loginRoute = createRoute({
   getParentRoute: () => rootRoute,
@@ -140,10 +154,10 @@ const registerRoute = createRoute({
   component: RegisterPage,
 });
 
-// ── Protected routes ──────────────────────────────────────────────────────────
+// ── Protected routes (all nested under shellRoute) ────────────────────────────
 
 const dashboardRoute = createRoute({
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => shellRoute,
   path: '/dashboard',
   beforeLoad: requireAuth,
   component: DashboardPage,
@@ -152,7 +166,7 @@ const dashboardRoute = createRoute({
 // Character routes — wizard and sheet will be built in the next phase.
 // Stubs exist so links in the dashboard compile and navigate correctly.
 const characterNewRoute = createRoute({
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => shellRoute,
   path: '/characters/new',
   beforeLoad: requireAuth,
   component: () => (
@@ -181,7 +195,7 @@ const characterNewRoute = createRoute({
 });
 
 const characterDetailRoute = createRoute({
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => shellRoute,
   path: '/characters/$id',
   beforeLoad: requireAuth,
   component: () => (
@@ -210,55 +224,55 @@ const characterDetailRoute = createRoute({
 // ── SRD routes ────────────────────────────────────────────────────────────────
 
 const srdRoute = createRoute({
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => shellRoute,
   path: '/srd',
   component: SrdIndexPage,
 });
 
 const srdSpeciesRoute = createRoute({
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => shellRoute,
   path: '/srd/species',
   component: SrdSpeciesPage,
 });
 
 const srdClassesRoute = createRoute({
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => shellRoute,
   path: '/srd/classes',
   component: SrdClassesPage,
 });
 
 const srdBackgroundsRoute = createRoute({
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => shellRoute,
   path: '/srd/backgrounds',
   component: SrdBackgroundsPage,
 });
 
 const srdSpellsRoute = createRoute({
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => shellRoute,
   path: '/srd/spells',
   component: SrdSpellsPage,
 });
 
 const srdMonstersRoute = createRoute({
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => shellRoute,
   path: '/srd/monsters',
   component: SrdMonstersPage,
 });
 
 const srdItemsRoute = createRoute({
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => shellRoute,
   path: '/srd/items',
   component: SrdItemsPage,
 });
 
 const srdConditionsRoute = createRoute({
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => shellRoute,
   path: '/srd/conditions',
   component: SrdConditionsPage,
 });
 
 const srdRulesRoute = createRoute({
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => shellRoute,
   path: '/srd/rules',
   component: SrdRulesPage,
 });
@@ -266,25 +280,25 @@ const srdRulesRoute = createRoute({
 // ── Legal routes ──────────────────────────────────────────────────────────────
 
 const legalRoute = createRoute({
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => shellRoute,
   path: '/legal',
   component: LegalPage,
 });
 
 const legalTermsRoute = createRoute({
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => shellRoute,
   path: '/legal/terms',
   component: TermsPage,
 });
 
 const legalPrivacyRoute = createRoute({
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => shellRoute,
   path: '/legal/privacy',
   component: PrivacyPage,
 });
 
 const legalSrdRoute = createRoute({
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => shellRoute,
   path: '/legal/srd',
   component: SrdAttributionsPage,
 });
@@ -292,25 +306,27 @@ const legalSrdRoute = createRoute({
 // ── Router ────────────────────────────────────────────────────────────────────
 
 const routeTree = rootRoute.addChildren([
-  indexRoute,
   loginRoute,
   registerRoute,
-  dashboardRoute,
-  characterNewRoute,
-  characterDetailRoute,
-  srdRoute,
-  srdSpeciesRoute,
-  srdClassesRoute,
-  srdBackgroundsRoute,
-  srdSpellsRoute,
-  srdMonstersRoute,
-  srdItemsRoute,
-  srdConditionsRoute,
-  srdRulesRoute,
-  legalRoute,
-  legalTermsRoute,
-  legalPrivacyRoute,
-  legalSrdRoute,
+  shellRoute.addChildren([
+    indexRoute,
+    dashboardRoute,
+    characterNewRoute,
+    characterDetailRoute,
+    srdRoute,
+    srdSpeciesRoute,
+    srdClassesRoute,
+    srdBackgroundsRoute,
+    srdSpellsRoute,
+    srdMonstersRoute,
+    srdItemsRoute,
+    srdConditionsRoute,
+    srdRulesRoute,
+    legalRoute,
+    legalTermsRoute,
+    legalPrivacyRoute,
+    legalSrdRoute,
+  ]),
 ]);
 
 export const router = createRouter({ routeTree, defaultPreload: 'intent' });
