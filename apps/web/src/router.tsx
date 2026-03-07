@@ -1,18 +1,14 @@
-import {
-  createRootRoute,
-  createRoute,
-  createRouter,
-} from "@tanstack/react-router";
-import { Outlet } from "@tanstack/react-router";
-import { lazy } from "react";
-import { AppShell } from "./components/layout/AppShell/AppShell.js";
-import { useAuthStore } from "./stores/auth.js";
+import { createRootRoute, createRoute, createRouter } from '@tanstack/react-router';
+import { Outlet } from '@tanstack/react-router';
+import { lazy } from 'react';
+import { AppShell } from './components/layout/AppShell/AppShell.js';
+import { useAuthStore } from './stores/auth.js';
 
 // ── Root ─────────────────────────────────────────────────────────────────────
 
 const RouterDevtools = import.meta.env.DEV
   ? lazy(() =>
-      import("@tanstack/router-devtools").then((m) => ({
+      import('@tanstack/router-devtools').then((m) => ({
         default: m.TanStackRouterDevtools,
       })),
     )
@@ -33,7 +29,7 @@ const rootRoute = createRootRoute({
 
 const indexRoute = createRoute({
   getParentRoute: () => rootRoute,
-  path: "/",
+  path: '/',
   component: () => (
     <main>
       <h1>IronQuill</h1>
@@ -44,7 +40,7 @@ const indexRoute = createRoute({
 
 const loginRoute = createRoute({
   getParentRoute: () => rootRoute,
-  path: "/login",
+  path: '/login',
   component: () => (
     <main>
       <h1>Sign In</h1>
@@ -54,7 +50,7 @@ const loginRoute = createRoute({
 
 const registerRoute = createRoute({
   getParentRoute: () => rootRoute,
-  path: "/register",
+  path: '/register',
   component: () => (
     <main>
       <h1>Create Account</h1>
@@ -64,11 +60,11 @@ const registerRoute = createRoute({
 
 const dashboardRoute = createRoute({
   getParentRoute: () => rootRoute,
-  path: "/dashboard",
+  path: '/dashboard',
   beforeLoad: ({ navigate }) => {
     const { accessToken } = useAuthStore.getState();
     if (!accessToken) {
-      void navigate({ to: "/login" });
+      void navigate({ to: '/login' });
     }
   },
   component: () => {
@@ -84,16 +80,11 @@ const dashboardRoute = createRoute({
 
 // ── Router ────────────────────────────────────────────────────────────────────
 
-const routeTree = rootRoute.addChildren([
-  indexRoute,
-  loginRoute,
-  registerRoute,
-  dashboardRoute,
-]);
+const routeTree = rootRoute.addChildren([indexRoute, loginRoute, registerRoute, dashboardRoute]);
 
-export const router = createRouter({ routeTree, defaultPreload: "intent" });
+export const router = createRouter({ routeTree, defaultPreload: 'intent' });
 
-declare module "@tanstack/react-router" {
+declare module '@tanstack/react-router' {
   interface Register {
     router: typeof router;
   }
