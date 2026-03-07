@@ -1,8 +1,15 @@
-import { createRootRoute, createRoute, createRouter, Outlet } from '@tanstack/react-router';
+import {
+  createRootRoute,
+  createRoute,
+  createRouter,
+  Outlet,
+  redirect,
+} from '@tanstack/react-router';
 import { lazy } from 'react';
 import { AppShell } from './components/layout/AppShell/AppShell.js';
 import { LoginPage } from './features/auth/LoginPage/LoginPage.js';
 import { RegisterPage } from './features/auth/RegisterPage/RegisterPage.js';
+import { DashboardPage } from './features/character/DashboardPage/index.js';
 import { LegalPage } from './features/legal/LegalPage/index.js';
 import { PrivacyPage } from './features/legal/PrivacyPage/index.js';
 import { SrdAttributionsPage } from './features/legal/SrdAttributionsPage/index.js';
@@ -40,6 +47,13 @@ const rootRoute = createRootRoute({
     </>
   ),
 });
+
+// ── Auth guard helper ─────────────────────────────────────────────────────────
+
+function requireAuth() {
+  const { accessToken } = useAuthStore.getState();
+  if (!accessToken) throw redirect({ to: '/login' });
+}
 
 // ── Public routes ─────────────────────────────────────────────────────────────
 
@@ -112,7 +126,7 @@ const indexRoute = createRoute({
   ),
 });
 
-// ── Auth routes (no shell padding — AuthLayout handles its own layout) ────────
+// ── Auth routes ───────────────────────────────────────────────────────────────
 
 const loginRoute = createRoute({
   getParentRoute: () => rootRoute,
@@ -131,36 +145,66 @@ const registerRoute = createRoute({
 const dashboardRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: '/dashboard',
-  beforeLoad: ({ navigate }) => {
-    const { accessToken } = useAuthStore.getState();
-    if (!accessToken) void navigate({ to: '/login' });
-  },
-  component: () => {
-    const { user } = useAuthStore();
-    return (
-      <div
+  beforeLoad: requireAuth,
+  component: DashboardPage,
+});
+
+// Character routes — wizard and sheet will be built in the next phase.
+// Stubs exist so links in the dashboard compile and navigate correctly.
+const characterNewRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/characters/new',
+  beforeLoad: requireAuth,
+  component: () => (
+    <div
+      style={{
+        maxWidth: 'var(--content-max-width)',
+        margin: '0 auto',
+        padding: 'var(--space-8) var(--space-6)',
+      }}
+    >
+      <h1
         style={{
-          maxWidth: 'var(--content-max-width)',
-          margin: '0 auto',
-          padding: 'var(--space-8) var(--space-6)',
+          fontFamily: 'var(--font-display)',
+          fontSize: 'var(--text-3xl)',
+          color: 'var(--color-accent)',
+          marginBottom: 'var(--space-4)',
         }}
       >
-        <h1
-          style={{
-            fontFamily: 'var(--font-display)',
-            fontSize: 'var(--text-3xl)',
-            color: 'var(--color-accent)',
-            marginBottom: 'var(--space-2)',
-          }}
-        >
-          Dashboard
-        </h1>
-        <p style={{ color: 'var(--color-text-secondary)' }}>
-          Welcome back, {user?.displayName} — your adventures await.
-        </p>
-      </div>
-    );
-  },
+        Create Character
+      </h1>
+      <p style={{ color: 'var(--color-text-secondary)' }}>
+        Character creation wizard — coming next.
+      </p>
+    </div>
+  ),
+});
+
+const characterDetailRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/characters/$id',
+  beforeLoad: requireAuth,
+  component: () => (
+    <div
+      style={{
+        maxWidth: 'var(--content-max-width)',
+        margin: '0 auto',
+        padding: 'var(--space-8) var(--space-6)',
+      }}
+    >
+      <h1
+        style={{
+          fontFamily: 'var(--font-display)',
+          fontSize: 'var(--text-3xl)',
+          color: 'var(--color-accent)',
+          marginBottom: 'var(--space-4)',
+        }}
+      >
+        Character Sheet
+      </h1>
+      <p style={{ color: 'var(--color-text-secondary)' }}>Character sheet — coming next.</p>
+    </div>
+  ),
 });
 
 // ── SRD routes ────────────────────────────────────────────────────────────────
@@ -252,6 +296,8 @@ const routeTree = rootRoute.addChildren([
   loginRoute,
   registerRoute,
   dashboardRoute,
+  characterNewRoute,
+  characterDetailRoute,
   srdRoute,
   srdSpeciesRoute,
   srdClassesRoute,
