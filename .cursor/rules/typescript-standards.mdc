@@ -6,34 +6,152 @@ alwaysApply: false
 
 # TypeScript Standards
 
-- Strict mode enabled everywhere (`"strict": true`)
-- No `any` — use `unknown` and narrow with type guards or Zod `.parse()`
-- Prefer `type` over `interface`; use `interface` only when intentional extension is needed
-- All exported functions must have explicit return types
-- Zod schemas in `packages/shared` are the **single source of truth** — infer TypeScript types from them
+## Strict Mode
+
+- `"strict": true` enabled in every `tsconfig.json` — no exceptions.
+- `"noUncheckedIndexedAccess": true` where feasible.
+
+## No `any` — Ever
+
+**`any` is banned.** It silently disables type checking and is the leading cause of runtime errors that TypeScript should prevent. Do not use it as an escape hatch, a placeholder, or a shortcut.
 
 ```typescript
-// ✅ Good — derive type from schema
-import { CharacterSchema } from '@ironquill/shared';
-export type Character = z.infer<typeof CharacterSchema>;
+// ❌ Never
+function process(data: any) { ... }
+const result: any = fetch(...);
+const items = [] as any[];
 
-// ❌ Bad — manually duplicating the schema
-export interface Character {
-  id: string;
+// ❌ Also banned — these are just hidden `any`
+const obj: Object = ...;
+const fn: Function = ...;
+```
+
+### What to use instead
+
+| Situation | Use instead of `any` |
+|-----------|----------------------|
+| Truly unknown external data (API responses, JSON, event payloads) | `unknown` — then narrow with a type guard or Zod |
+| A value that could be several known shapes | A union type: `string \| number \| null` |
+| A generic container whose type is inferred by the caller | Generics: `function wrap<T>(val: T): Box<T>` |
+| An object with arbitrary string keys | `Record<string, unknown>` |
+| A callback whose arguments aren't yet known | `(...args: unknown[]) => unknown` |
+| JSONB columns in Drizzle | `.$type<MyType>()` with an explicit type |
+
+```typescript
+// ✅ unknown + Zod parse — safe external data
+import { z } from 'zod';
+const RawSchema = z.object({ id: z.string(), name: z.string() });
+function parseResponse(raw: unknown) {
+  return RawSchema.parse(raw); // throws with a clear message on bad data
+}
+
+// ✅ Generic — type flows through without losing information
+function firstOrThrow<T>(arr: T[]): T {
+  if (arr.length === 0) throw new Error('Empty array');
+  return arr[0];
+}
+
+// ✅ Record for dynamic keys
+function buildIndex(items: { id: string; name: string }[]): Record<string, string> {
+  return Object.fromEntries(items.map((i) => [i.id, i.name]));
+}
+
+// ✅ Type guard to narrow unknown
+function isAppError(err: unknown): err is { message: string; code: string } {
+  return (
+    typeof err === 'object' &&
+    err !== null &&
+    'message' in err &&
+    'code' in err
+  );
+}
+```
+
+## No Unsafe `as` Casts
+
+Do not use `as` to silence type errors. It bypasses the type checker and hides real bugs.
+
+```typescript
+// ❌ Never cast to make an error go away
+const user = response as User;
+const id = event.target as HTMLInputElement;
+
+// ✅ Use a type guard or a validated boundary instead
+if (event.target instanceof HTMLInputElement) {
+  const id = event.target.value;
+}
+```
+
+**The only permitted uses of `as`:**
+- Drizzle JSONB column typing: `.$type<T>()`
+- `as const` for literal narrowing
+- At a validated parse boundary where Zod or a type guard has already confirmed the shape
+
+## Type Inference
+
+Let TypeScript infer types where the inference is obvious and local. Add explicit types at public API boundaries.
+
+```typescript
+// ✅ Let inference work for local variables
+const count = 0;
+const names = ['Alice', 'Bob'];
+
+// ✅ Explicit on exported functions
+export async function getCharacter(id: string): Promise<Character> { ... }
+
+// ❌ Unnecessary annotation on obvious inference
+const count: number = 0;
+```
+
+## Schema-First Types
+
+Zod schemas in `packages/shared` are the **single source of truth** — infer TypeScript types from them, never define them manually alongside.
+
+```typescript
+// ✅ Derive type from schema
+import { z } from 'zod';
+import { CharacterCreateSchema } from '@ironquill/shared';
+export type CharacterCreateInput = z.infer<typeof CharacterCreateSchema>;
+
+// ❌ Never duplicate the schema as a manual interface
+export interface CharacterCreateInput {
   name: string;
+  speciesId: string;
   // ...
 }
 ```
 
-- Use discriminated unions for state modelling
+## Discriminated Unions for State
+
+Model state with discriminated unions — never with optional fields that imply impossible combinations.
 
 ```typescript
-// ✅ Good
+// ✅ Good — each state is fully typed, impossible states are impossible
 type SessionState =
   | { status: 'idle' }
   | { status: 'loading' }
   | { status: 'active'; sessionId: string }
   | { status: 'error'; message: string };
+
+// ❌ Bad — allows { status: 'idle', sessionId: string } which makes no sense
+type SessionState = {
+  status: 'idle' | 'loading' | 'active' | 'error';
+  sessionId?: string;
+  message?: string;
+};
 ```
 
-- Never cast with `as` unless at a verified boundary (e.g. Drizzle JSONB `.$type<T>()`)
+## `type` vs `interface`
+
+Prefer `type`. Use `interface` only when deliberate declaration merging or class implementation is the goal.
+
+```typescript
+// ✅ type for almost everything
+type CharacterCardProps = { id: string; name: string; level: number };
+
+// ✅ interface only when extending is intentional
+interface Repository<T> {
+  findById(id: string): Promise<T | null>;
+  save(entity: T): Promise<T>;
+}
+```
