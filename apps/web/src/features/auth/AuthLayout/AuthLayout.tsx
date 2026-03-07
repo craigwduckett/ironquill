@@ -1,6 +1,6 @@
-import { Link } from "@tanstack/react-router";
-import type { ReactNode } from "react";
-import styles from "./AuthLayout.module.css";
+import { Link } from '@tanstack/react-router';
+import type { ReactNode } from 'react';
+import styles from './AuthLayout.module.css';
 
 type AuthLayoutProps = {
   title: string;
@@ -9,12 +9,7 @@ type AuthLayoutProps = {
   footer?: ReactNode;
 };
 
-export function AuthLayout({
-  title,
-  subtitle,
-  children,
-  footer,
-}: AuthLayoutProps) {
+export function AuthLayout({ title, subtitle, children, footer }: AuthLayoutProps) {
   return (
     <div className={styles.layout}>
       <div className={styles.card}>

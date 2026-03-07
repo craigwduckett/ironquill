@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { Badge, EmptyState, Spinner } from '../../../components/ui/index.js';
 import { type SrdItem, useSrdItems } from '../hooks/useSrd.js';
 import styles from '../SrdListPage.module.css';
+import { SrdMarkdown } from '../SrdMarkdown/SrdMarkdown.js';
 
 const CATEGORY_LABELS: Record<SrdItem['category'], string> = {
   weapon: 'Weapon',
@@ -89,7 +90,7 @@ export function SrdItemsPage() {
                   key={item.id}
                   type="button"
                   className={styles.card}
-                  onClick={() => setSelected(item)}
+                  onClick={() => setSelected((prev) => (prev?.id === item.id ? null : item))}
                   aria-pressed={selected?.id === item.id}
                 >
                   <div className={styles.cardName}>{item.name}</div>
@@ -117,18 +118,30 @@ export function SrdItemsPage() {
 
           {selected && (
             <div className={styles.detail}>
-              <div className={styles.detailTitle}>{selected.name}</div>
-              <div className={styles.cardMeta}>
-                <Badge>{CATEGORY_LABELS[selected.category]}</Badge>
-                {selected.rarity && (
-                  <Badge variant={RARITY_VARIANT[selected.rarity] ?? 'default'}>
-                    {selected.rarity}
-                  </Badge>
-                )}
-                {selected.requiresAttunement && (
-                  <Badge variant="warning">Requires Attunement</Badge>
-                )}
+              <div className={styles.detailHeader}>
+                <div>
+                  <div className={styles.detailTitle}>{selected.name}</div>
+                  <div className={styles.cardMeta}>
+                    <Badge>{CATEGORY_LABELS[selected.category]}</Badge>
+                    {selected.rarity && (
+                      <Badge variant={RARITY_VARIANT[selected.rarity] ?? 'default'}>
+                        {selected.rarity}
+                      </Badge>
+                    )}
+                    {selected.requiresAttunement && (
+                      <Badge variant="warning">Requires Attunement</Badge>
+                    )}
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  className={styles.detailClose}
+                  onClick={() => setSelected(null)}
+                >
+                  Close
+                </button>
               </div>
+
               {selected.cost && (
                 <div className={styles.detailSection}>
                   <div className={styles.detailSectionLabel}>Cost</div>
@@ -144,9 +157,11 @@ export function SrdItemsPage() {
                 </div>
               )}
               <div className={styles.detailSection}>
-                <p className={styles.detailText}>
-                  {selected.description || 'No description available.'}
-                </p>
+                {selected.description ? (
+                  <SrdMarkdown content={selected.description} />
+                ) : (
+                  <p className={styles.detailText}>No description available.</p>
+                )}
               </div>
             </div>
           )}

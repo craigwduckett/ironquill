@@ -1,4 +1,5 @@
 import { useSrdClasses } from '../../srd/hooks/useSrd.js';
+import { SrdMarkdown } from '../../srd/SrdMarkdown/SrdMarkdown.js';
 import styles from './CharacterWizard.module.css';
 import type { WizardDraft } from './wizardState.js';
 
@@ -90,7 +91,7 @@ export function Step2Class({ draft, onChange }: Props) {
           </div>
 
           {selected.description && (
-            <p className={styles.detailDescription}>{selected.description}</p>
+            <SrdMarkdown content={selected.description} className={styles.detailDescription} />
           )}
 
           {/* Saving throws */}
@@ -128,7 +129,7 @@ export function Step2Class({ draft, onChange }: Props) {
                 {level1Features.map((f) => (
                   <div key={f.name} className={styles.trait}>
                     <p className={styles.traitName}>{f.name}</p>
-                    <p className={styles.traitDesc}>{f.description}</p>
+                    <SrdMarkdown content={f.description} className={styles.traitDesc} />
                   </div>
                 ))}
               </div>

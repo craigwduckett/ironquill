@@ -1,4 +1,5 @@
 import { useSrdSpecies } from '../../srd/hooks/useSrd.js';
+import { SrdMarkdown } from '../../srd/SrdMarkdown/SrdMarkdown.js';
 import styles from './CharacterWizard.module.css';
 import type { WizardDraft } from './wizardState.js';
 
@@ -70,7 +71,7 @@ export function Step1Species({ draft, onChange }: Props) {
           </div>
 
           {selected.description && (
-            <p className={styles.detailDescription}>{selected.description}</p>
+            <SrdMarkdown content={selected.description} className={styles.detailDescription} />
           )}
 
           {/* Ability bonuses */}
@@ -101,7 +102,7 @@ export function Step1Species({ draft, onChange }: Props) {
               {selected.traits.map((t) => (
                 <div key={t.name} className={styles.trait}>
                   <p className={styles.traitName}>{t.name}</p>
-                  <p className={styles.traitDesc}>{t.description}</p>
+                  <SrdMarkdown content={t.description} className={styles.traitDesc} />
                 </div>
               ))}
             </div>

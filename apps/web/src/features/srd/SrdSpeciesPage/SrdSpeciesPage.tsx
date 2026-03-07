@@ -3,64 +3,7 @@ import { useState } from 'react';
 import { Badge, EmptyState, Spinner } from '../../../components/ui/index.js';
 import { type SrdSpecies, useSrdSpecies } from '../hooks/useSrd.js';
 import styles from '../SrdListPage.module.css';
-
-function SpeciesDetail({ species }: { species: SrdSpecies }) {
-  return (
-    <div className={styles.detail}>
-      <div className={styles.detailTitle}>{species.name}</div>
-
-      <div className={styles.cardMeta}>
-        <Badge variant="accent">{species.displayTerm}</Badge>
-        <Badge>{species.size}</Badge>
-        <Badge>Speed {species.speed} ft.</Badge>
-        <Badge variant="info">{species.sourceEdition}</Badge>
-      </div>
-
-      {species.description && <p className={styles.detailText}>{species.description}</p>}
-
-      {Object.keys(species.abilityBonuses).length > 0 && (
-        <div className={styles.detailSection}>
-          <div className={styles.detailSectionLabel}>Ability Bonuses</div>
-          <ul className={styles.detailList}>
-            {Object.entries(species.abilityBonuses).map(([ability, bonus]) => (
-              <li key={ability}>
-                <Badge variant="success">
-                  {ability} +{bonus}
-                </Badge>
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
-
-      {species.traits.length > 0 && (
-        <div className={styles.detailSection}>
-          <div className={styles.detailSectionLabel}>Traits</div>
-          <ul className={styles.detailList}>
-            {species.traits.map((t) => (
-              <li key={t.name}>
-                <Badge>{t.name}</Badge>
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
-
-      {species.languages.length > 0 && (
-        <div className={styles.detailSection}>
-          <div className={styles.detailSectionLabel}>Languages</div>
-          <ul className={styles.detailList}>
-            {species.languages.map((l) => (
-              <li key={l}>
-                <Badge variant="default">{l}</Badge>
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
-    </div>
-  );
-}
+import { SrdMarkdown } from '../SrdMarkdown/SrdMarkdown.js';
 
 export function SrdSpeciesPage() {
   const { data, isLoading, isError } = useSrdSpecies();
@@ -110,7 +53,7 @@ export function SrdSpeciesPage() {
                   key={s.id}
                   type="button"
                   className={styles.card}
-                  onClick={() => setSelected(s)}
+                  onClick={() => setSelected((prev) => (prev?.id === s.id ? null : s))}
                   aria-pressed={selected?.id === s.id}
                 >
                   <div className={styles.cardName}>{s.name}</div>
@@ -130,7 +73,70 @@ export function SrdSpeciesPage() {
             )}
           </div>
 
-          {selected && <SpeciesDetail species={selected} />}
+          {selected && (
+            <div className={styles.detail}>
+              <div className={styles.detailHeader}>
+                <div>
+                  <div className={styles.detailTitle}>{selected.name}</div>
+                  <div className={styles.cardMeta}>
+                    <Badge variant="accent">{selected.displayTerm}</Badge>
+                    <Badge>{selected.size}</Badge>
+                    <Badge>Speed {selected.speed} ft.</Badge>
+                    <Badge variant="info">{selected.sourceEdition}</Badge>
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  className={styles.detailClose}
+                  onClick={() => setSelected(null)}
+                >
+                  Close
+                </button>
+              </div>
+
+              {selected.description && <SrdMarkdown content={selected.description} />}
+
+              {Object.keys(selected.abilityBonuses).length > 0 && (
+                <div className={styles.detailSection}>
+                  <div className={styles.detailSectionLabel}>Ability Bonuses</div>
+                  <ul className={styles.detailList}>
+                    {Object.entries(selected.abilityBonuses).map(([ability, bonus]) => (
+                      <li key={ability}>
+                        <Badge variant="success">
+                          {ability} +{bonus}
+                        </Badge>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
+              {selected.traits.length > 0 && (
+                <div className={styles.detailSection}>
+                  <div className={styles.detailSectionLabel}>Traits</div>
+                  {selected.traits.map((t) => (
+                    <div key={t.name} className={styles.detailSection}>
+                      <div className={styles.detailSectionLabel}>{t.name}</div>
+                      <SrdMarkdown content={t.description} />
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {selected.languages.length > 0 && (
+                <div className={styles.detailSection}>
+                  <div className={styles.detailSectionLabel}>Languages</div>
+                  <ul className={styles.detailList}>
+                    {selected.languages.map((l) => (
+                      <li key={l}>
+                        <Badge variant="default">{l}</Badge>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </div>
+          )}
         </div>
       )}
     </div>

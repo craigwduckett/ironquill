@@ -5,34 +5,34 @@ import {
   Link,
   Outlet,
   redirect,
-} from "@tanstack/react-router";
-import { lazy } from "react";
-import { AppShell } from "./components/layout/AppShell/AppShell.js";
-import { LoginPage } from "./features/auth/LoginPage/LoginPage.js";
-import { RegisterPage } from "./features/auth/RegisterPage/RegisterPage.js";
-import { CharacterSheet } from "./features/character/CharacterSheet/index.js";
-import { CharacterWizard } from "./features/character/CharacterWizard/index.js";
-import { DashboardPage } from "./features/character/DashboardPage/index.js";
-import { LegalPage } from "./features/legal/LegalPage/index.js";
-import { PrivacyPage } from "./features/legal/PrivacyPage/index.js";
-import { SrdAttributionsPage } from "./features/legal/SrdAttributionsPage/index.js";
-import { TermsPage } from "./features/legal/TermsPage/index.js";
-import { SrdBackgroundsPage } from "./features/srd/SrdBackgroundsPage/SrdBackgroundsPage.js";
-import { SrdClassesPage } from "./features/srd/SrdClassesPage/SrdClassesPage.js";
-import { SrdConditionsPage } from "./features/srd/SrdConditionsPage/SrdConditionsPage.js";
-import { SrdIndexPage } from "./features/srd/SrdIndexPage/SrdIndexPage.js";
-import { SrdItemsPage } from "./features/srd/SrdItemsPage/SrdItemsPage.js";
-import { SrdMonstersPage } from "./features/srd/SrdMonstersPage/SrdMonstersPage.js";
-import { SrdRulesPage } from "./features/srd/SrdRulesPage/SrdRulesPage.js";
-import { SrdSpeciesPage } from "./features/srd/SrdSpeciesPage/SrdSpeciesPage.js";
-import { SrdSpellsPage } from "./features/srd/SrdSpellsPage/SrdSpellsPage.js";
-import { useAuthStore } from "./stores/auth.js";
+} from '@tanstack/react-router';
+import { lazy } from 'react';
+import { AppShell } from './components/layout/AppShell/AppShell.js';
+import { LoginPage } from './features/auth/LoginPage/LoginPage.js';
+import { RegisterPage } from './features/auth/RegisterPage/RegisterPage.js';
+import { CharacterSheet } from './features/character/CharacterSheet/index.js';
+import { CharacterWizard } from './features/character/CharacterWizard/index.js';
+import { DashboardPage } from './features/character/DashboardPage/index.js';
+import { LegalPage } from './features/legal/LegalPage/index.js';
+import { PrivacyPage } from './features/legal/PrivacyPage/index.js';
+import { SrdAttributionsPage } from './features/legal/SrdAttributionsPage/index.js';
+import { TermsPage } from './features/legal/TermsPage/index.js';
+import { SrdBackgroundsPage } from './features/srd/SrdBackgroundsPage/SrdBackgroundsPage.js';
+import { SrdClassesPage } from './features/srd/SrdClassesPage/SrdClassesPage.js';
+import { SrdConditionsPage } from './features/srd/SrdConditionsPage/SrdConditionsPage.js';
+import { SrdIndexPage } from './features/srd/SrdIndexPage/SrdIndexPage.js';
+import { SrdItemsPage } from './features/srd/SrdItemsPage/SrdItemsPage.js';
+import { SrdMonstersPage } from './features/srd/SrdMonstersPage/SrdMonstersPage.js';
+import { SrdRulesPage } from './features/srd/SrdRulesPage/SrdRulesPage.js';
+import { SrdSpeciesPage } from './features/srd/SrdSpeciesPage/SrdSpeciesPage.js';
+import { SrdSpellsPage } from './features/srd/SrdSpellsPage/SrdSpellsPage.js';
+import { useAuthStore } from './stores/auth.js';
 
 // ── Dev tools ─────────────────────────────────────────────────────────────────
 
 const RouterDevtools = import.meta.env.DEV
   ? lazy(() =>
-      import("@tanstack/router-devtools").then((m) => ({
+      import('@tanstack/router-devtools').then((m) => ({
         default: m.TanStackRouterDevtools,
       })),
     )
@@ -56,7 +56,7 @@ const rootRoute = createRootRoute({
 
 const shellRoute = createRoute({
   getParentRoute: () => rootRoute,
-  id: "shell",
+  id: 'shell',
   component: () => (
     <AppShell>
       <Outlet />
@@ -68,59 +68,58 @@ const shellRoute = createRoute({
 
 function requireAuth() {
   const { accessToken } = useAuthStore.getState();
-  if (!accessToken) throw redirect({ to: "/login" });
+  if (!accessToken) throw redirect({ to: '/login' });
 }
 
 // ── Home route ────────────────────────────────────────────────────────────────
 
 const indexRoute = createRoute({
   getParentRoute: () => shellRoute,
-  path: "/",
+  path: '/',
   component: () => (
     <main
       style={{
-        maxWidth: "var(--content-max-width)",
-        margin: "0 auto",
-        padding: "var(--space-20) var(--space-6)",
-        textAlign: "center",
+        maxWidth: 'var(--content-max-width)',
+        margin: '0 auto',
+        padding: 'var(--space-20) var(--space-6)',
+        textAlign: 'center',
       }}
     >
       <h1
         style={{
-          fontFamily: "var(--font-display)",
-          fontSize: "var(--text-4xl)",
-          color: "var(--color-accent)",
-          marginBottom: "var(--space-4)",
+          fontFamily: 'var(--font-display)',
+          fontSize: 'var(--text-4xl)',
+          color: 'var(--color-accent)',
+          marginBottom: 'var(--space-4)',
         }}
       >
         IronQuill
       </h1>
       <p
         style={{
-          color: "var(--color-text-secondary)",
-          fontSize: "var(--text-lg)",
-          marginBottom: "var(--space-8)",
+          color: 'var(--color-text-secondary)',
+          fontSize: 'var(--text-lg)',
+          marginBottom: 'var(--space-8)',
         }}
       >
-        Your D&amp;D adventure companion. Run better sessions, build richer
-        worlds.
+        Your D&amp;D adventure companion. Run better sessions, build richer worlds.
       </p>
       <div
         style={{
-          display: "flex",
-          gap: "var(--space-4)",
-          justifyContent: "center",
+          display: 'flex',
+          gap: 'var(--space-4)',
+          justifyContent: 'center',
         }}
       >
         <Link
           to="/register"
           style={{
-            padding: "var(--space-3) var(--space-8)",
-            background: "var(--color-accent)",
-            color: "var(--color-text-inverse)",
-            borderRadius: "var(--radius-md)",
-            textDecoration: "none",
-            fontWeight: "var(--font-semibold)",
+            padding: 'var(--space-3) var(--space-8)',
+            background: 'var(--color-accent)',
+            color: 'var(--color-text-inverse)',
+            borderRadius: 'var(--radius-md)',
+            textDecoration: 'none',
+            fontWeight: 'var(--font-semibold)',
           }}
         >
           Get started
@@ -128,12 +127,12 @@ const indexRoute = createRoute({
         <Link
           to="/srd"
           style={{
-            padding: "var(--space-3) var(--space-8)",
-            background: "var(--color-surface-raised)",
-            color: "var(--color-text-primary)",
-            borderRadius: "var(--radius-md)",
-            border: "1px solid var(--color-border)",
-            textDecoration: "none",
+            padding: 'var(--space-3) var(--space-8)',
+            background: 'var(--color-surface-raised)',
+            color: 'var(--color-text-primary)',
+            borderRadius: 'var(--radius-md)',
+            border: '1px solid var(--color-border)',
+            textDecoration: 'none',
           }}
         >
           Browse SRD
@@ -147,13 +146,13 @@ const indexRoute = createRoute({
 
 const loginRoute = createRoute({
   getParentRoute: () => rootRoute,
-  path: "/login",
+  path: '/login',
   component: LoginPage,
 });
 
 const registerRoute = createRoute({
   getParentRoute: () => rootRoute,
-  path: "/register",
+  path: '/register',
   component: RegisterPage,
 });
 
@@ -161,21 +160,21 @@ const registerRoute = createRoute({
 
 const dashboardRoute = createRoute({
   getParentRoute: () => shellRoute,
-  path: "/dashboard",
+  path: '/dashboard',
   beforeLoad: requireAuth,
   component: DashboardPage,
 });
 
 const characterNewRoute = createRoute({
   getParentRoute: () => shellRoute,
-  path: "/characters/new",
+  path: '/characters/new',
   beforeLoad: requireAuth,
   component: CharacterWizard,
 });
 
 const characterDetailRoute = createRoute({
   getParentRoute: () => shellRoute,
-  path: "/characters/$id",
+  path: '/characters/$id',
   beforeLoad: requireAuth,
   component: function CharacterSheetRoute() {
     const { id } = characterDetailRoute.useParams();
@@ -187,55 +186,55 @@ const characterDetailRoute = createRoute({
 
 const srdRoute = createRoute({
   getParentRoute: () => shellRoute,
-  path: "/srd",
+  path: '/srd',
   component: SrdIndexPage,
 });
 
 const srdSpeciesRoute = createRoute({
   getParentRoute: () => shellRoute,
-  path: "/srd/species",
+  path: '/srd/species',
   component: SrdSpeciesPage,
 });
 
 const srdClassesRoute = createRoute({
   getParentRoute: () => shellRoute,
-  path: "/srd/classes",
+  path: '/srd/classes',
   component: SrdClassesPage,
 });
 
 const srdBackgroundsRoute = createRoute({
   getParentRoute: () => shellRoute,
-  path: "/srd/backgrounds",
+  path: '/srd/backgrounds',
   component: SrdBackgroundsPage,
 });
 
 const srdSpellsRoute = createRoute({
   getParentRoute: () => shellRoute,
-  path: "/srd/spells",
+  path: '/srd/spells',
   component: SrdSpellsPage,
 });
 
 const srdMonstersRoute = createRoute({
   getParentRoute: () => shellRoute,
-  path: "/srd/monsters",
+  path: '/srd/monsters',
   component: SrdMonstersPage,
 });
 
 const srdItemsRoute = createRoute({
   getParentRoute: () => shellRoute,
-  path: "/srd/items",
+  path: '/srd/items',
   component: SrdItemsPage,
 });
 
 const srdConditionsRoute = createRoute({
   getParentRoute: () => shellRoute,
-  path: "/srd/conditions",
+  path: '/srd/conditions',
   component: SrdConditionsPage,
 });
 
 const srdRulesRoute = createRoute({
   getParentRoute: () => shellRoute,
-  path: "/srd/rules",
+  path: '/srd/rules',
   component: SrdRulesPage,
 });
 
@@ -243,25 +242,25 @@ const srdRulesRoute = createRoute({
 
 const legalRoute = createRoute({
   getParentRoute: () => shellRoute,
-  path: "/legal",
+  path: '/legal',
   component: LegalPage,
 });
 
 const legalTermsRoute = createRoute({
   getParentRoute: () => shellRoute,
-  path: "/legal/terms",
+  path: '/legal/terms',
   component: TermsPage,
 });
 
 const legalPrivacyRoute = createRoute({
   getParentRoute: () => shellRoute,
-  path: "/legal/privacy",
+  path: '/legal/privacy',
   component: PrivacyPage,
 });
 
 const legalSrdRoute = createRoute({
   getParentRoute: () => shellRoute,
-  path: "/legal/srd",
+  path: '/legal/srd',
   component: SrdAttributionsPage,
 });
 
@@ -291,9 +290,9 @@ const routeTree = rootRoute.addChildren([
   ]),
 ]);
 
-export const router = createRouter({ routeTree, defaultPreload: "intent" });
+export const router = createRouter({ routeTree, defaultPreload: 'intent' });
 
-declare module "@tanstack/react-router" {
+declare module '@tanstack/react-router' {
   interface Register {
     router: typeof router;
   }

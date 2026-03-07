@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { Button } from '../../../components/ui/Button/Button.js';
 import { Spinner } from '../../../components/ui/Spinner/Spinner.js';
 import { useSrdBackgrounds, useSrdClasses, useSrdSpecies } from '../../srd/hooks/useSrd.js';
+import { SrdMarkdown } from '../../srd/SrdMarkdown/SrdMarkdown.js';
 import { useCharacter, useDeleteCharacter, useUpdateCharacter } from '../hooks/useCharacters.js';
 import styles from './CharacterSheet.module.css';
 
@@ -446,7 +447,7 @@ export function CharacterSheet({ characterId }: Props) {
                   <div key={`${f.source}-${f.name}`} className={styles.feature}>
                     <p className={styles.featureSource}>{f.source}</p>
                     <p className={styles.featureName}>{f.name}</p>
-                    <p className={styles.featureDesc}>{f.description}</p>
+                    <SrdMarkdown content={f.description} className={styles.featureDesc} />
                   </div>
                 ))}
               </div>
@@ -504,7 +505,10 @@ export function CharacterSheet({ characterId }: Props) {
                   )}
                 </div>
                 {character.appearance.description && (
-                  <p className={styles.featureDesc}>{character.appearance.description}</p>
+                  <SrdMarkdown
+                    content={character.appearance.description}
+                    className={styles.featureDesc}
+                  />
                 )}
               </div>
             )}
