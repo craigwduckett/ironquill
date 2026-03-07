@@ -351,6 +351,8 @@
   box-shadow: var(--shadow-md);
   pointer-events: none;
   text-align: left;
+  text-transform: none;
+  letter-spacing: normal;
   /* Fade instead of display toggle — no reflow */
   opacity: 0;
   visibility: hidden;
