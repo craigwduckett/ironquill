@@ -1,4 +1,11 @@
 /**
+ * Source: 5e-bits/5e-database (MIT License) — https://github.com/5e-bits/5e-database
+ * SRD 5.1 content © 2016 Wizards of the Coast LLC, used under OGL 1.0a
+ * SRD 5.2 content © 2024 Wizards of the Coast LLC, used under CC-BY-4.0
+ * IronQuill is not affiliated with Wizards of the Coast LLC or Hasbro Inc.
+ */
+
+/**
  * Transformers for SRD backgrounds.
  * 2014: src/2014 — feature-based backgrounds (Shelter of the Faithful, etc.)
  * 2024: src/2024 — ability-score + feat-based backgrounds (new design).

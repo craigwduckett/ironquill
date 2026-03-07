@@ -1,4 +1,11 @@
 /**
+ * Source: 5e-bits/5e-database (MIT License) — https://github.com/5e-bits/5e-database
+ * SRD 5.1 content © 2016 Wizards of the Coast LLC, used under OGL 1.0a
+ * SRD 5.2 content © 2024 Wizards of the Coast LLC, used under CC-BY-4.0
+ * IronQuill is not affiliated with Wizards of the Coast LLC or Hasbro Inc.
+ */
+
+/**
  * SRD seed script — populates all srd_* tables with data from:
  *   - 2014: 5e-bits/5e-database src/2014 (SRD 5.1, OGL)
  *   - 2024: 5e-bits/5e-database src/2024 (SRD 5.2, CC-BY-4.0)

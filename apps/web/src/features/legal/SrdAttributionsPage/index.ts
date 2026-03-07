@@ -1,1 +1,1 @@
-export { SrdAttributionsPage } from "./SrdAttributionsPage.js";
+export { SrdAttributionsPage } from './SrdAttributionsPage.js';

@@ -44,6 +44,16 @@ ironquill/
         └── types/          # Types derived from Zod with z.infer<>
 ```
 
+## Legal & Compliance
+
+SRD content is used under two licenses — see `.cursor/rules/legal-compliance.mdc` for full obligations.
+
+- **Never** use "Dungeons & Dragons" or "D&D" in UI copy, page titles, or meta tags
+- **Always** use "D&D 5e SRD", "fifth-edition SRD", or "SRD 5.x content"
+- Required public routes: `/legal`, `/legal/terms`, `/legal/privacy`, `/legal/srd`
+- Every page rendered inside `AppShell` includes a footer with OGL/CC-BY attribution
+- Seed files carry license headers identifying the OGL 1.0a / CC-BY-4.0 source
+
 ## Naming Conventions
 
 | Thing | Convention | Example |

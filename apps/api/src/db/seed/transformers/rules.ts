@@ -1,4 +1,10 @@
 /**
+ * Source: 5e-bits/5e-database (MIT License) — https://github.com/5e-bits/5e-database
+ * SRD 5.1 content © 2016 Wizards of the Coast LLC, used under OGL 1.0a
+ * IronQuill is not affiliated with Wizards of the Coast LLC or Hasbro Inc.
+ */
+
+/**
  * Transformer for SRD rules (combat, spellcasting, etc.) and rule sections.
  * Source: 2014 only — no 2024 rules data in 5e-bits/5e-database yet.
  *

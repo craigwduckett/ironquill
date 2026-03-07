@@ -1,4 +1,10 @@
 /**
+ * Source: 5e-bits/5e-database (MIT License) — https://github.com/5e-bits/5e-database
+ * SRD 5.1 content © 2016 Wizards of the Coast LLC, used under OGL 1.0a
+ * IronQuill is not affiliated with Wizards of the Coast LLC or Hasbro Inc.
+ */
+
+/**
  * Transformer for SRD monsters.
  * Source: 2014 only — 2024 monsters not yet available in 5e-bits/5e-database.
  */

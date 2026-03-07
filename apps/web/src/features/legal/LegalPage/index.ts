@@ -1,1 +1,1 @@
-export { LegalPage } from "./LegalPage.js";
+export { LegalPage } from './LegalPage.js';
