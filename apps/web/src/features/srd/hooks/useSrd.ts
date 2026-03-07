@@ -194,7 +194,6 @@ export function useSrdClasses() {
     queryKey: srdKeys.classes(),
     queryFn: () => api.get<SrdClass[]>('/srd/classes'),
     staleTime: 1000 * 60 * 60,
-    refetchOnMount: 'always',
   });
 }
 
@@ -204,7 +203,6 @@ export function useSrdClassDetail(id: string) {
     queryFn: () => api.get<SrdClass>(`/srd/classes/${id}`),
     enabled: Boolean(id),
     staleTime: 1000 * 60 * 60,
-    refetchOnMount: 'always',
   });
 }
 
@@ -213,7 +211,6 @@ export function useSrdBackgrounds() {
     queryKey: srdKeys.backgrounds(),
     queryFn: () => api.get<SrdBackground[]>('/srd/backgrounds'),
     staleTime: 1000 * 60 * 60,
-    refetchOnMount: 'always',
   });
 }
 

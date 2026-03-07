@@ -28,13 +28,13 @@ const FEAT_TYPE_COLORS: Record<string, string> = {
   'epic-boon': 'var(--color-success)',
 };
 
+const ALL_FEAT_TYPES = ['All', 'origin', 'general', 'fighting-style', 'epic-boon'] as const;
+
 export function SrdFeatsPage() {
   const { data, isLoading, isError } = useSrdFeats();
   const [search, setSearch] = useState('');
   const [typeFilter, setTypeFilter] = useState('All');
   const [selected, setSelected] = useState<SrdFeat | null>(null);
-
-  const allTypes = ['All', 'origin', 'general', 'fighting-style', 'epic-boon'];
 
   const filtered = useMemo(() => {
     return (data ?? [])
@@ -72,11 +72,12 @@ export function SrdFeatsPage() {
           <input
             className={styles.searchInput}
             placeholder="Search feats…"
+            aria-label="Search feats"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
           <div className={styles.chips}>
-            {allTypes.map((t) => (
+            {ALL_FEAT_TYPES.map((t) => (
               <button
                 key={t}
                 type="button"

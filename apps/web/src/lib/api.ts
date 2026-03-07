@@ -34,9 +34,7 @@ async function request<T>(path: string, options: RequestInit, token?: string): P
 }
 
 export const api = {
-  // cache: 'no-store' bypasses the browser HTTP cache — TanStack Query manages its own cache.
-  get: <T>(path: string, token?: string) =>
-    request<T>(path, { method: 'GET', cache: 'no-store' }, token),
+  get: <T>(path: string, token?: string) => request<T>(path, { method: 'GET' }, token),
 
   post: <T>(path: string, body: unknown, token?: string) =>
     request<T>(path, { method: 'POST', body: JSON.stringify(body) }, token),
