@@ -7,7 +7,15 @@
   },
   "files": {
     "ignoreUnknown": false,
-    "includes": ["**", "!**/node_modules", "!**/dist", "!**/build", "!**/.cache", "!**/migrations", "!**/seed/data/**/*.json"]
+    "includes": [
+      "**",
+      "!**/node_modules",
+      "!**/dist",
+      "!**/build",
+      "!**/.cache",
+      "!**/migrations",
+      "!**/seed/data/**/*.json"
+    ]
   },
   "formatter": {
     "enabled": true,
