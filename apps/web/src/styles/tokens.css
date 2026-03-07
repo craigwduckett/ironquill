@@ -1,0 +1,102 @@
+/* ── Design Tokens ────────────────────────────────────────────────────────── */
+:root {
+  /* Colour palette — dark fantasy theme */
+  --color-bg: #0f0f13;
+  --color-bg-subtle: #16161d;
+  --color-surface: #1c1c26;
+  --color-surface-raised: #222230;
+  --color-border: #2e2e40;
+  --color-border-subtle: #232333;
+
+  --color-accent: #c8a96e; /* parchment gold */
+  --color-accent-hover: #dbbf84;
+  --color-accent-muted: rgba(200, 169, 110, 0.15);
+
+  --color-danger: #e05c5c;
+  --color-danger-muted: rgba(224, 92, 92, 0.15);
+  --color-success: #5cb87a;
+  --color-success-muted: rgba(92, 184, 122, 0.15);
+  --color-warning: #e09d3c;
+  --color-warning-muted: rgba(224, 157, 60, 0.15);
+  --color-info: #5c9ee0;
+
+  --color-text-primary: #e8e4dc;
+  --color-text-secondary: #9a958a;
+  --color-text-muted: #5e5a54;
+  --color-text-inverse: #0f0f13;
+  --color-text-accent: #c8a96e;
+
+  /* HP colours */
+  --color-hp-full: #5cb87a;
+  --color-hp-mid: #e09d3c;
+  --color-hp-low: #e05c5c;
+
+  /* Spacing scale (4px base) */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+  --space-20: 80px;
+
+  /* Border radius */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-full: 9999px;
+
+  /* Typography */
+  --font-display: "Cinzel", Georgia, serif;
+  --font-body: "Inter", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", "Fira Code", monospace;
+
+  --text-xs: 0.75rem; /* 12px */
+  --text-sm: 0.875rem; /* 14px */
+  --text-base: 1rem; /* 16px */
+  --text-lg: 1.125rem; /* 18px */
+  --text-xl: 1.25rem; /* 20px */
+  --text-2xl: 1.5rem; /* 24px */
+  --text-3xl: 1.875rem; /* 30px */
+  --text-4xl: 2.25rem; /* 36px */
+
+  --font-normal: 400;
+  --font-medium: 500;
+  --font-semibold: 600;
+  --font-bold: 700;
+
+  --leading-tight: 1.25;
+  --leading-snug: 1.375;
+  --leading-normal: 1.5;
+  --leading-relaxed: 1.625;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.5);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.6);
+  --shadow-xl: 0 16px 48px rgba(0, 0, 0, 0.7);
+  --shadow-accent: 0 0 16px rgba(200, 169, 110, 0.2);
+
+  /* Transitions */
+  --transition-fast: 120ms ease;
+  --transition-normal: 200ms ease;
+  --transition-slow: 300ms ease;
+
+  /* Layout */
+  --sidebar-width: 240px;
+  --topnav-height: 56px;
+  --content-max-width: 1280px;
+
+  /* Z-index scale */
+  --z-base: 0;
+  --z-raised: 10;
+  --z-overlay: 100;
+  --z-modal: 200;
+  --z-toast: 300;
+  --z-tooltip: 400;
+}

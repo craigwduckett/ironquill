@@ -1,0 +1,34 @@
+---
+description: Git and commit standards — Conventional Commits, no Cursor attribution, no unverified commits
+alwaysApply: true
+---
+
+# Git Standards
+
+## Commit Messages
+
+Follow Conventional Commits format:
+
+```
+feat: add character creation wizard step 3
+fix: correct HP calculation when temp HP is active
+chore: add Drizzle migration for session entities
+docs: update SRD seeding instructions
+refactor: extract initiative tracker into Zustand store
+```
+
+Prefixes: `feat`, `fix`, `chore`, `docs`, `refactor`, `test`, `style`
+
+## Rules
+
+- No `Co-authored-by: cursor` or similar AI attribution in commits
+- No unverified commits
+- Feature branches off `main` — PR required to merge
+- Never commit `.env` files or secrets
+
+## Linting & Formatting
+
+- **Biome** is the single tool for linting and formatting (replaces ESLint + Prettier)
+- Config lives in `biome.json` at the repo root
+- Run `pnpm biome check --write .` to lint and format in one pass
+- CI runs `pnpm biome ci .` — fails on any lint or format violation

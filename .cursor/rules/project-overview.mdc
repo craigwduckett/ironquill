@@ -1,0 +1,59 @@
+---
+description: IronQuill project overview, stack, and repository structure
+alwaysApply: true
+---
+
+# IronQuill — D&D Adventure Manager
+
+A web app that augments tabletop D&D sessions. Helps DMs run adventures and players manage characters. Does NOT replace physical dice or tabletop interaction.
+
+## Stack
+
+| Layer | Technology |
+|-------|-----------|
+| Frontend | React 19, TypeScript, Vite, TanStack Router, TanStack Query, Zustand, CSS Modules |
+| Backend | Node.js 22 LTS, Fastify, TypeScript, Drizzle ORM, Socket.io |
+| Database | PostgreSQL 16 |
+| Shared | Zod schemas + TypeScript types in `packages/shared` |
+| Storage | Cloudflare R2 via `@aws-sdk/client-s3` |
+| Hosting | Railway (API + DB) + Cloudflare Pages (frontend) |
+| Linting / Formatting | Biome (replaces ESLint + Prettier) — single `biome.json` at repo root |
+
+## Repository Structure
+
+```
+ironquill/
+├── apps/
+│   ├── web/src/
+│   │   ├── components/     # Shared UI components
+│   │   ├── features/       # Feature modules: character/, adventure/, session/, srd/
+│   │   ├── hooks/          # Shared custom hooks
+│   │   ├── routes/         # TanStack Router route files
+│   │   ├── stores/         # Zustand stores
+│   │   ├── services/       # TanStack Query keys + API fetchers
+│   │   └── styles/         # Global CSS tokens, resets
+│   └── api/src/
+│       ├── db/             # Drizzle schema, migrations, seed
+│       ├── plugins/        # Fastify plugins (auth, websocket, cors)
+│       ├── routes/         # Route handlers by domain
+│       ├── services/       # Business logic (framework-agnostic)
+│       └── lib/            # Utilities (storage, tokens, errors)
+└── packages/
+    └── shared/src/
+        ├── schemas/        # Zod validation schemas (source of truth)
+        └── types/          # Types derived from Zod with z.infer<>
+```
+
+## Naming Conventions
+
+| Thing | Convention | Example |
+|-------|-----------|---------|
+| Files / folders | kebab-case | `character-sheet.tsx` |
+| Components | PascalCase | `CharacterSheet` |
+| Hooks | camelCase, use prefix | `useCharacter` |
+| Constants | SCREAMING_SNAKE_CASE | `MAX_PARTY_SIZE` |
+| CSS class names | camelCase (CSS Modules) | `.cardActive` |
+| DB tables | snake_case | `srd_monsters` |
+| DB columns | snake_case | `ability_scores` |
+| Zod schemas | PascalCase + Schema suffix | `CharacterCreateSchema` |
+| TypeScript types | PascalCase | `Character`, `AdventureStatus` |

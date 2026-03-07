@@ -1,0 +1,77 @@
+---
+description: Frontend React standards — CSS Modules, component structure, state, forms, Socket.io
+globs: apps/web/**/*.{ts,tsx,css}
+alwaysApply: false
+---
+
+# Frontend Standards
+
+## CSS Modules (No Tailwind)
+
+- All styles use CSS Modules — one `.module.css` file per component, colocated in the same folder
+- CSS custom properties defined in `src/styles/tokens.css` — never hardcode colours, spacing, or font sizes
+- Use `clsx` for conditional class composition
+
+```tsx
+// CharacterCard.tsx
+import styles from './CharacterCard.module.css';
+import clsx from 'clsx';
+
+export function CharacterCard({ active }: CharacterCardProps) {
+  return <div className={clsx(styles.card, active && styles.cardActive)} />;
+}
+```
+
+```css
+/* CharacterCard.module.css */
+.card {
+  padding: var(--space-4);
+  background: var(--color-surface);
+  border-radius: var(--radius-md);
+}
+.cardActive {
+  border: 2px solid var(--color-accent);
+}
+```
+
+## Component Rules
+
+- Functional components only — no class components
+- One component per file; filename matches the exported component name
+- Props type named `[ComponentName]Props`
+- Colocate component, CSS module, and test in the same directory with a barrel `index.ts`
+
+```
+features/character/CharacterCard/
+├── CharacterCard.tsx
+├── CharacterCard.module.css
+├── CharacterCard.test.tsx
+└── index.ts
+```
+
+## State Management
+
+- **TanStack Query** owns all server state — fetching, caching, mutations, invalidation
+- **Zustand** for client-only UI state (initiative tracker, modal state, session UI)
+- Never store server data in Zustand
+- Query keys defined as constants in the service file
+
+```typescript
+// services/characters.ts
+export const characterKeys = {
+  all: ['characters'] as const,
+  detail: (id: string) => ['characters', id] as const,
+};
+```
+
+## Forms
+
+- **React Hook Form** + **Zod resolver** for all forms
+- Schema always imported from `packages/shared` — never define validation inline
+
+## Real-Time (Socket.io)
+
+- Socket client initialised once in `src/lib/socket.ts`
+- Wrap listeners in custom hooks that clean up on unmount
+- Never emit directly from components — go through service functions
+- Event types imported from `packages/shared`

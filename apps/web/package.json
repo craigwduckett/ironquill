@@ -1,0 +1,38 @@
+{
+  "name": "@ironquill/web",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@ironquill/shared": "workspace:*",
+    "@tanstack/react-query": "^5.66.0",
+    "@tanstack/react-router": "^1.114.3",
+    "clsx": "^2.1.1",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "react-hook-form": "^7.54.2",
+    "socket.io-client": "^4.8.1",
+    "zod": "^3.24.1",
+    "zustand": "^5.0.3",
+    "@hookform/resolvers": "^3.9.1"
+  },
+  "devDependencies": {
+    "@tanstack/router-devtools": "^1.114.3",
+    "@tanstack/react-query-devtools": "^5.66.0",
+    "@types/react": "^19.0.7",
+    "@types/react-dom": "^19.0.3",
+    "@vitejs/plugin-react": "^4.3.4",
+    "typescript": "^5.7.2",
+    "vite": "^6.1.0",
+    "vitest": "^2.1.8",
+    "@testing-library/react": "^16.2.0",
+    "@testing-library/user-event": "^14.6.0"
+  }
+}

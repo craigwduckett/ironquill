@@ -1,0 +1,56 @@
+---
+description: Testing standards — Vitest, React Testing Library, route testing, test naming
+globs: **/*.test.{ts,tsx}
+alwaysApply: false
+---
+
+# Testing Standards
+
+## Tools
+
+- **Frontend:** Vitest + React Testing Library
+- **Backend:** Vitest + Fastify's `inject()` for route testing
+- Test files colocated with source: `CharacterCard.test.tsx`, `character.service.test.ts`
+
+## Naming
+
+- Test names describe behaviour, not implementation
+- Use plain English, not technical jargon
+
+```typescript
+// ✅ Good
+it('returns 404 when character does not exist')
+it('shows HP bar when character is in active session')
+
+// ❌ Bad
+it('characterService.findById null case')
+it('renders with isActive=false prop')
+```
+
+## Structure
+
+- No `describe` nesting deeper than 2 levels
+- Group by feature/scenario, not by method
+
+## Frontend Tests
+
+- Test user-visible behaviour, not internal state
+- Query by role, label, or text — not by CSS class or test ID unless necessary
+- Mock API calls via MSW (Mock Service Worker)
+
+## Backend Tests
+
+- Test routes via `app.inject()` — never call service functions directly in route tests
+- Use a test database or transaction rollbacks — never mock Drizzle
+
+```typescript
+it('returns 404 when character does not exist', async () => {
+  const res = await app.inject({
+    method: 'GET',
+    url: '/characters/nonexistent-id',
+    headers: { authorization: `Bearer ${testToken}` },
+  });
+  expect(res.statusCode).toBe(404);
+  expect(res.json().code).toBe('CHARACTER_NOT_FOUND');
+});
+```

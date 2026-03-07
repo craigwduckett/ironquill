@@ -1,0 +1,39 @@
+---
+description: TypeScript standards — strict types, Zod-first schemas, no any
+globs: **/*.ts,**/*.tsx
+alwaysApply: false
+---
+
+# TypeScript Standards
+
+- Strict mode enabled everywhere (`"strict": true`)
+- No `any` — use `unknown` and narrow with type guards or Zod `.parse()`
+- Prefer `type` over `interface`; use `interface` only when intentional extension is needed
+- All exported functions must have explicit return types
+- Zod schemas in `packages/shared` are the **single source of truth** — infer TypeScript types from them
+
+```typescript
+// ✅ Good — derive type from schema
+import { CharacterSchema } from '@ironquill/shared';
+export type Character = z.infer<typeof CharacterSchema>;
+
+// ❌ Bad — manually duplicating the schema
+export interface Character {
+  id: string;
+  name: string;
+  // ...
+}
+```
+
+- Use discriminated unions for state modelling
+
+```typescript
+// ✅ Good
+type SessionState =
+  | { status: 'idle' }
+  | { status: 'loading' }
+  | { status: 'active'; sessionId: string }
+  | { status: 'error'; message: string };
+```
+
+- Never cast with `as` unless at a verified boundary (e.g. Drizzle JSONB `.$type<T>()`)

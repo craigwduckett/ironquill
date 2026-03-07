@@ -1,0 +1,71 @@
+---
+description: Backend standards — Fastify routes, service layer, Drizzle ORM, error handling, auth
+globs: apps/api/**/*.ts
+alwaysApply: false
+---
+
+# Backend Standards
+
+## Fastify Routes
+
+- Routes registered as `FastifyPluginAsync` in `src/routes/` grouped by domain
+- Request body, params, and query validated with Zod via `fastify-type-provider-zod`
+- Business logic lives in `src/services/` — never inline in route handlers
+
+```typescript
+// routes/characters/index.ts
+const characterRoutes: FastifyPluginAsync = async (app) => {
+  app.post('/', {
+    schema: { body: CharacterCreateSchema },
+    handler: async (req, reply) => {
+      const character = await characterService.create(req.user.id, req.body);
+      return reply.code(201).send(character);
+    },
+  });
+};
+```
+
+## Service Layer
+
+- Services are plain async functions, not classes
+- No Fastify types in service files — they are framework-agnostic
+- Services accept and return types from `packages/shared`
+
+## Drizzle ORM
+
+- Schema in `src/db/schema/` — one file per domain
+- JSONB columns typed with `.$type<T>()` using types from `packages/shared`
+- Migrations generated with `drizzle-kit generate` — never written by hand
+- No raw SQL unless a specific optimisation requires it
+
+```typescript
+// db/schema/characters.ts
+export const characters = pgTable('characters', {
+  id: uuid('id').primaryKey().defaultRandom(),
+  abilityScores: jsonb('ability_scores').$type<AbilityScores>().notNull(),
+});
+```
+
+## Error Handling
+
+- Use `AppError` class with `statusCode` and `code` fields — never inline `reply.code().send()`
+- Never swallow errors silently
+- All async handlers use `try/catch`; unexpected errors bubble to Fastify's error handler
+
+```typescript
+// ✅ Good
+throw new AppError('Character not found', { statusCode: 404, code: 'CHARACTER_NOT_FOUND' });
+```
+
+## Authentication
+
+- JWT access token (15 min), refresh token (7 days) in `httpOnly` + `Secure` + `SameSite=Strict` cookie
+- Protected routes declare `preHandler: [app.authenticate]`
+- `request.user` typed as `JwtPayload` from `packages/shared`
+
+## Database Conventions
+
+- UUID primary keys with `defaultRandom()`
+- `created_at` and `updated_at` on all mutable tables
+- SRD tables are read-only at the application level — no update/delete routes
+- All migrations committed to git in `src/db/migrations/`
