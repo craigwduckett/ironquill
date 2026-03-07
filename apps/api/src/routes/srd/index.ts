@@ -51,10 +51,10 @@ const FeatQuerySchema = EditionQuerySchema.extend({
 const srdRoutes: FastifyPluginAsync = async (fastify) => {
   const app = fastify.withTypeProvider<ZodTypeProvider>();
 
-  // SRD data is seeded and read-only at the application level.
-  // Cache for 1 hour at CDN/browser level to avoid redundant Postgres hits.
+  // TanStack Query manages client-side caching; disable browser HTTP caching
+  // to prevent stale error responses from persisting after server-side fixes.
   app.addHook('onSend', (_request, reply, _payload, done) => {
-    reply.header('Cache-Control', 'public, max-age=3600');
+    reply.header('Cache-Control', 'no-store');
     done();
   });
 

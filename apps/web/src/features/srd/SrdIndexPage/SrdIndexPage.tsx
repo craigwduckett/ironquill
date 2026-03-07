@@ -18,19 +18,25 @@ const CATEGORIES = [
     slug: 'backgrounds',
     icon: '📜',
     name: 'Backgrounds',
-    desc: 'Character backgrounds — skills, equipment, features',
+    desc: 'Character backgrounds — skills, equipment, origin feats',
+  },
+  {
+    slug: 'feats',
+    icon: '⭐',
+    name: 'Feats',
+    desc: 'Origin, general, fighting style, and epic boon feats',
   },
   {
     slug: 'spells',
     icon: '✨',
     name: 'Spells',
-    desc: '319 spells — searchable by level, school, and class',
+    desc: '337 spells — searchable by level, school, and class',
   },
   {
     slug: 'monsters',
     icon: '🐉',
     name: 'Monsters',
-    desc: 'Bestiary of 334 creatures — filter by CR, type, and size',
+    desc: 'Bestiary of 324 creatures — filter by CR, type, and size',
   },
   {
     slug: 'items',

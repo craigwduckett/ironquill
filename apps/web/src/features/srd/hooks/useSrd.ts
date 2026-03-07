@@ -125,6 +125,25 @@ export type SrdRule = {
   keywords: string[];
 };
 
+export type SrdFeatType = 'origin' | 'general' | 'fighting-style' | 'epic-boon';
+
+export type SrdFeatPrerequisites = {
+  level?: number;
+  ability?: string;
+  proficiency?: string;
+  spellcasting?: boolean;
+} | null;
+
+export type SrdFeat = {
+  id: string;
+  sourceEdition: SrdEdition;
+  name: string;
+  description: string;
+  type: SrdFeatType;
+  prerequisites: SrdFeatPrerequisites;
+  repeatable: boolean | null;
+};
+
 // ── Query hooks ───────────────────────────────────────────────────────────────
 
 export const srdKeys = {
@@ -142,6 +161,7 @@ export const srdKeys = {
   conditions: () => ['srd', 'conditions'] as const,
   conditionDetail: (id: string) => ['srd', 'conditions', id] as const,
   rules: (params?: Record<string, string>) => ['srd', 'rules', params ?? {}] as const,
+  feats: () => ['srd', 'feats'] as const,
 };
 
 function buildQuery(params?: Record<string, string | undefined>) {
@@ -174,6 +194,7 @@ export function useSrdClasses() {
     queryKey: srdKeys.classes(),
     queryFn: () => api.get<SrdClass[]>('/srd/classes'),
     staleTime: 1000 * 60 * 60,
+    refetchOnMount: 'always',
   });
 }
 
@@ -183,6 +204,7 @@ export function useSrdClassDetail(id: string) {
     queryFn: () => api.get<SrdClass>(`/srd/classes/${id}`),
     enabled: Boolean(id),
     staleTime: 1000 * 60 * 60,
+    refetchOnMount: 'always',
   });
 }
 
@@ -191,6 +213,7 @@ export function useSrdBackgrounds() {
     queryKey: srdKeys.backgrounds(),
     queryFn: () => api.get<SrdBackground[]>('/srd/backgrounds'),
     staleTime: 1000 * 60 * 60,
+    refetchOnMount: 'always',
   });
 }
 
@@ -257,5 +280,13 @@ export function useSrdRules(params?: { q?: string; category?: string }) {
     queryFn: () => api.get<SrdRule[]>(`/srd/rules${buildQuery(params)}`),
     staleTime: 1000 * 60 * 60,
     placeholderData: keepPreviousData,
+  });
+}
+
+export function useSrdFeats() {
+  return useQuery({
+    queryKey: srdKeys.feats(),
+    queryFn: () => api.get<SrdFeat[]>('/srd/feats'),
+    staleTime: 1000 * 60 * 60,
   });
 }
