@@ -3,84 +3,7 @@ import { useState } from 'react';
 import { Badge, EmptyState, Spinner } from '../../../components/ui/index.js';
 import { type SrdClass, useSrdClasses } from '../hooks/useSrd.js';
 import styles from '../SrdListPage.module.css';
-
-function ClassDetail({ cls }: { cls: SrdClass }) {
-  return (
-    <div className={styles.detail}>
-      <div className={styles.detailTitle}>{cls.name}</div>
-      <div className={styles.cardMeta}>
-        <Badge variant="accent">Hit Die {cls.hitDie}</Badge>
-      </div>
-
-      {cls.savingThrows.length > 0 && (
-        <div className={styles.detailSection}>
-          <div className={styles.detailSectionLabel}>Saving Throws</div>
-          <ul className={styles.detailList}>
-            {cls.savingThrows.map((s) => (
-              <li key={s}>
-                <Badge variant="warning">{s}</Badge>
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
-
-      {cls.armorProficiencies.length > 0 && (
-        <div className={styles.detailSection}>
-          <div className={styles.detailSectionLabel}>Armour Proficiencies</div>
-          <ul className={styles.detailList}>
-            {cls.armorProficiencies.map((a) => (
-              <li key={a}>
-                <Badge>{a}</Badge>
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
-
-      {cls.weaponProficiencies.length > 0 && (
-        <div className={styles.detailSection}>
-          <div className={styles.detailSectionLabel}>Weapon Proficiencies</div>
-          <ul className={styles.detailList}>
-            {cls.weaponProficiencies.map((w) => (
-              <li key={w}>
-                <Badge>{w}</Badge>
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
-
-      {cls.skillChoices && (
-        <div className={styles.detailSection}>
-          <div className={styles.detailSectionLabel}>Skills (choose {cls.skillChoices.choose})</div>
-          <ul className={styles.detailList}>
-            {cls.skillChoices.from.map((s) => (
-              <li key={s}>
-                <Badge variant="info">{s}</Badge>
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
-
-      {cls.startingEquipment.length > 0 && (
-        <div className={styles.detailSection}>
-          <div className={styles.detailSectionLabel}>Starting Equipment</div>
-          <ul className={styles.detailList}>
-            {cls.startingEquipment.map((e) => (
-              <li key={`${String(e.name)}-eq`}>
-                <Badge>
-                  {String(e.name)} ×{String(e.quantity)}
-                </Badge>
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
-    </div>
-  );
-}
+import { SrdMarkdown } from '../SrdMarkdown/SrdMarkdown.js';
 
 export function SrdClassesPage() {
   const { data, isLoading, isError } = useSrdClasses();
@@ -124,7 +47,7 @@ export function SrdClassesPage() {
                   key={c.id}
                   type="button"
                   className={styles.card}
-                  onClick={() => setSelected(c)}
+                  onClick={() => setSelected((prev) => (prev?.id === c.id ? null : c))}
                   aria-pressed={selected?.id === c.id}
                 >
                   <div className={styles.cardName}>{c.name}</div>
@@ -146,7 +69,101 @@ export function SrdClassesPage() {
               ))}
             </div>
           </div>
-          {selected && <ClassDetail cls={selected} />}
+
+          {selected && (
+            <div className={styles.detail}>
+              <div className={styles.detailHeader}>
+                <div>
+                  <div className={styles.detailTitle}>{selected.name}</div>
+                  <div className={styles.cardMeta}>
+                    <Badge variant="accent">Hit Die {selected.hitDie}</Badge>
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  className={styles.detailClose}
+                  onClick={() => setSelected(null)}
+                >
+                  Close
+                </button>
+              </div>
+
+              {selected.description && (
+                <div className={styles.detailSection}>
+                  <SrdMarkdown content={selected.description} />
+                </div>
+              )}
+
+              {selected.savingThrows.length > 0 && (
+                <div className={styles.detailSection}>
+                  <div className={styles.detailSectionLabel}>Saving Throws</div>
+                  <ul className={styles.detailList}>
+                    {selected.savingThrows.map((s) => (
+                      <li key={s}>
+                        <Badge variant="warning">{s}</Badge>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
+              {selected.armorProficiencies.length > 0 && (
+                <div className={styles.detailSection}>
+                  <div className={styles.detailSectionLabel}>Armour Proficiencies</div>
+                  <ul className={styles.detailList}>
+                    {selected.armorProficiencies.map((a) => (
+                      <li key={a}>
+                        <Badge>{a}</Badge>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
+              {selected.weaponProficiencies.length > 0 && (
+                <div className={styles.detailSection}>
+                  <div className={styles.detailSectionLabel}>Weapon Proficiencies</div>
+                  <ul className={styles.detailList}>
+                    {selected.weaponProficiencies.map((w) => (
+                      <li key={w}>
+                        <Badge>{w}</Badge>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
+              {selected.skillChoices && (
+                <div className={styles.detailSection}>
+                  <div className={styles.detailSectionLabel}>
+                    Skills (choose {selected.skillChoices.choose})
+                  </div>
+                  <ul className={styles.detailList}>
+                    {selected.skillChoices.from.map((s) => (
+                      <li key={s}>
+                        <Badge variant="info">{s}</Badge>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
+              {selected.startingEquipment.length > 0 && (
+                <div className={styles.detailSection}>
+                  <div className={styles.detailSectionLabel}>Starting Equipment</div>
+                  <ul className={styles.detailList}>
+                    {selected.startingEquipment.map((e) => (
+                      <li key={`${String(e.name)}-eq`}>
+                        <Badge>
+                          {String(e.name)} ×{String(e.quantity)}
+                        </Badge>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </div>
+          )}
         </div>
       )}
     </div>

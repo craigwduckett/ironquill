@@ -13,13 +13,7 @@ export async function getByUser(userId: string) {
 }
 
 export async function getById(id: string, requestingUserId: string) {
-  const character = await db.query.characters.findFirst({
-    where: eq(characters.id, id),
-    with: {
-      inventory: true,
-      spells: true,
-    },
-  });
+  const [character] = await db.select().from(characters).where(eq(characters.id, id)).limit(1);
 
   if (!character) throw AppError.notFound('Character');
   if (character.userId !== requestingUserId) throw AppError.forbidden();
@@ -55,9 +49,11 @@ export async function create(userId: string, input: CharacterCreateInput) {
 }
 
 export async function update(id: string, userId: string, input: CharacterUpdateInput) {
-  const existing = await db.query.characters.findFirst({
-    where: and(eq(characters.id, id), eq(characters.userId, userId)),
-  });
+  const [existing] = await db
+    .select({ id: characters.id })
+    .from(characters)
+    .where(and(eq(characters.id, id), eq(characters.userId, userId)))
+    .limit(1);
   if (!existing) throw AppError.notFound('Character');
 
   const [updated] = await db
@@ -70,9 +66,11 @@ export async function update(id: string, userId: string, input: CharacterUpdateI
 }
 
 export async function remove(id: string, userId: string) {
-  const existing = await db.query.characters.findFirst({
-    where: and(eq(characters.id, id), eq(characters.userId, userId)),
-  });
+  const [existing] = await db
+    .select({ id: characters.id })
+    .from(characters)
+    .where(and(eq(characters.id, id), eq(characters.userId, userId)))
+    .limit(1);
   if (!existing) throw AppError.notFound('Character');
 
   await db.delete(characters).where(eq(characters.id, id));

@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { Badge, EmptyState, Spinner } from '../../../components/ui/index.js';
 import { type SrdSpell, useSrdSpells } from '../hooks/useSrd.js';
 import styles from '../SrdListPage.module.css';
+import { SrdMarkdown } from '../SrdMarkdown/SrdMarkdown.js';
 
 const SCHOOLS = [
   'Abjuration',
@@ -21,59 +22,6 @@ function componentString(c: SrdSpell['components']) {
   if (c.somatic) parts.push('S');
   if (c.material) parts.push(`M (${c.material})`);
   return parts.join(', ');
-}
-
-function SpellDetail({ spell }: { spell: SrdSpell }) {
-  return (
-    <div className={styles.detail}>
-      <div className={styles.detailTitle}>{spell.name}</div>
-      <div className={styles.cardMeta}>
-        <Badge variant="accent">{spell.level === 0 ? 'Cantrip' : `Level ${spell.level}`}</Badge>
-        <Badge>{spell.school}</Badge>
-        {spell.concentration && <Badge variant="warning">Concentration</Badge>}
-        {spell.ritual && <Badge variant="info">Ritual</Badge>}
-      </div>
-
-      <div className={styles.detailSection}>
-        <div className={styles.detailSectionLabel}>Details</div>
-        <p className={styles.detailText}>
-          <strong>Casting Time:</strong> {spell.castingTime}
-          {'\n'}
-          <strong>Range:</strong> {spell.range}
-          {'\n'}
-          <strong>Components:</strong> {componentString(spell.components)}
-          {'\n'}
-          <strong>Duration:</strong> {spell.duration}
-        </p>
-      </div>
-
-      <hr className={styles.divider} />
-
-      <div className={styles.detailSection}>
-        <p className={styles.detailText}>{spell.description}</p>
-      </div>
-
-      {spell.higherLevels && (
-        <div className={styles.detailSection}>
-          <div className={styles.detailSectionLabel}>At Higher Levels</div>
-          <p className={styles.detailText}>{spell.higherLevels}</p>
-        </div>
-      )}
-
-      {spell.classes.length > 0 && (
-        <div className={styles.detailSection}>
-          <div className={styles.detailSectionLabel}>Classes</div>
-          <ul className={styles.detailList}>
-            {spell.classes.map((c) => (
-              <li key={c}>
-                <Badge>{c}</Badge>
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
-    </div>
-  );
 }
 
 export function SrdSpellsPage() {
@@ -159,7 +107,7 @@ export function SrdSpellsPage() {
                   key={s.id}
                   type="button"
                   className={styles.card}
-                  onClick={() => setSelected(s)}
+                  onClick={() => setSelected((prev) => (prev?.id === s.id ? null : s))}
                   aria-pressed={selected?.id === s.id}
                 >
                   <div className={styles.cardName}>{s.name}</div>
@@ -179,7 +127,68 @@ export function SrdSpellsPage() {
               <EmptyState icon="✨" title="No spells found" description="Try different filters." />
             )}
           </div>
-          {selected && <SpellDetail spell={selected} />}
+
+          {selected && (
+            <div className={styles.detail}>
+              <div className={styles.detailHeader}>
+                <div>
+                  <div className={styles.detailTitle}>{selected.name}</div>
+                  <div className={styles.cardMeta}>
+                    <Badge variant="accent">
+                      {selected.level === 0 ? 'Cantrip' : `Level ${selected.level}`}
+                    </Badge>
+                    <Badge>{selected.school}</Badge>
+                    {selected.concentration && <Badge variant="warning">Concentration</Badge>}
+                    {selected.ritual && <Badge variant="info">Ritual</Badge>}
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  className={styles.detailClose}
+                  onClick={() => setSelected(null)}
+                >
+                  Close
+                </button>
+              </div>
+
+              <div className={styles.detailSection}>
+                <div className={styles.detailSectionLabel}>Details</div>
+                <p className={styles.detailText}>
+                  <strong>Casting Time:</strong> {selected.castingTime}
+                  {'\n'}
+                  <strong>Range:</strong> {selected.range}
+                  {'\n'}
+                  <strong>Components:</strong> {componentString(selected.components)}
+                  {'\n'}
+                  <strong>Duration:</strong> {selected.duration}
+                </p>
+              </div>
+
+              <hr className={styles.divider} />
+
+              <SrdMarkdown content={selected.description} />
+
+              {selected.higherLevels && (
+                <div className={styles.detailSection}>
+                  <div className={styles.detailSectionLabel}>At Higher Levels</div>
+                  <SrdMarkdown content={selected.higherLevels} />
+                </div>
+              )}
+
+              {selected.classes.length > 0 && (
+                <div className={styles.detailSection}>
+                  <div className={styles.detailSectionLabel}>Classes</div>
+                  <ul className={styles.detailList}>
+                    {selected.classes.map((c) => (
+                      <li key={c}>
+                        <Badge>{c}</Badge>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </div>
+          )}
         </div>
       )}
     </div>

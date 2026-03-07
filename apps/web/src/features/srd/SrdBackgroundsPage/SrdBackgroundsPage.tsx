@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { Badge, EmptyState, Spinner } from '../../../components/ui/index.js';
 import { type SrdBackground, useSrdBackgrounds } from '../hooks/useSrd.js';
 import styles from '../SrdListPage.module.css';
+import { SrdMarkdown } from '../SrdMarkdown/SrdMarkdown.js';
 
 export function SrdBackgroundsPage() {
   const { data, isLoading, isError } = useSrdBackgrounds();
@@ -49,7 +50,7 @@ export function SrdBackgroundsPage() {
                   key={b.id}
                   type="button"
                   className={styles.card}
-                  onClick={() => setSelected(b)}
+                  onClick={() => setSelected((prev) => (prev?.id === b.id ? null : b))}
                   aria-pressed={selected?.id === b.id}
                 >
                   <div className={styles.cardName}>{b.name}</div>
@@ -69,9 +70,20 @@ export function SrdBackgroundsPage() {
 
           {selected && (
             <div className={styles.detail}>
-              <div className={styles.detailTitle}>{selected.name}</div>
-              <div className={styles.cardMeta}>
-                <Badge variant="info">{selected.sourceEdition}</Badge>
+              <div className={styles.detailHeader}>
+                <div>
+                  <div className={styles.detailTitle}>{selected.name}</div>
+                  <div className={styles.cardMeta}>
+                    <Badge variant="info">{selected.sourceEdition}</Badge>
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  className={styles.detailClose}
+                  onClick={() => setSelected(null)}
+                >
+                  Close
+                </button>
               </div>
 
               {selected.skillProficiencies.length > 0 && (
@@ -86,6 +98,7 @@ export function SrdBackgroundsPage() {
                   </ul>
                 </div>
               )}
+
               {selected.toolProficiencies.length > 0 && (
                 <div className={styles.detailSection}>
                   <div className={styles.detailSectionLabel}>Tool Proficiencies</div>
@@ -101,7 +114,7 @@ export function SrdBackgroundsPage() {
 
               <div className={styles.detailSection}>
                 <div className={styles.detailSectionLabel}>Feature: {selected.featureName}</div>
-                <p className={styles.detailText}>{selected.featureDescription}</p>
+                <SrdMarkdown content={selected.featureDescription} />
               </div>
             </div>
           )}

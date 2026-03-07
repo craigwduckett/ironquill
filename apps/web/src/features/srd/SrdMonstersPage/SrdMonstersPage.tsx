@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { Badge, EmptyState, Spinner } from '../../../components/ui/index.js';
 import { type SrdMonster, useSrdMonsters } from '../hooks/useSrd.js';
 import styles from '../SrdListPage.module.css';
+import { SrdMarkdown } from '../SrdMarkdown/SrdMarkdown.js';
 
 function modifier(score: number) {
   const mod = Math.floor((score - 10) / 2);
@@ -14,80 +15,6 @@ function crLabel(cr: number) {
   if (cr === 0.25) return '1/4';
   if (cr === 0.5) return '1/2';
   return String(cr);
-}
-
-function MonsterDetail({ monster }: { monster: SrdMonster }) {
-  const stats = monster.abilityScores;
-  return (
-    <div className={styles.detail}>
-      <div className={styles.detailTitle}>{monster.name}</div>
-      <div className={styles.cardMeta}>
-        <Badge variant="danger">CR {crLabel(monster.cr)}</Badge>
-        <Badge>{monster.size}</Badge>
-        <Badge>{monster.type}</Badge>
-        <Badge variant="default">{monster.alignment}</Badge>
-      </div>
-
-      <div className={styles.detailSection}>
-        <p className={styles.detailText}>
-          <strong>AC:</strong> {monster.ac}
-          {monster.acType ? ` (${monster.acType})` : ''}
-          {'\n'}
-          <strong>HP:</strong> {monster.hp} ({monster.hpFormula}){'\n'}
-          <strong>Speed:</strong>{' '}
-          {Object.entries(monster.speed)
-            .map(([k, v]) => `${k} ${v}`)
-            .join(', ')}
-        </p>
-      </div>
-
-      <hr className={styles.divider} />
-
-      <div className={styles.statGrid}>
-        {Object.entries(stats).map(([k, v]) => (
-          <div key={k} className={styles.stat}>
-            <div className={styles.statLabel}>{k}</div>
-            <div className={styles.statValue}>{v}</div>
-            <div className={styles.statMod}>{modifier(v as number)}</div>
-          </div>
-        ))}
-      </div>
-
-      <hr className={styles.divider} />
-
-      <div className={styles.detailSection}>
-        <p className={styles.detailText}>
-          <strong>Senses:</strong> {monster.senses}
-          {'\n'}
-          <strong>Languages:</strong> {monster.languages}
-          {'\n'}
-          <strong>XP:</strong> {monster.xp.toLocaleString()}
-        </p>
-      </div>
-
-      {monster.specialAbilities && monster.specialAbilities.length > 0 && (
-        <div className={styles.detailSection}>
-          <div className={styles.detailSectionLabel}>Special Abilities</div>
-          {monster.specialAbilities.map((a) => (
-            <p key={String(a.name)} className={styles.detailText}>
-              <strong>{String(a.name)}.</strong> {String(a.desc)}
-            </p>
-          ))}
-        </div>
-      )}
-
-      {monster.actions.length > 0 && (
-        <div className={styles.detailSection}>
-          <div className={styles.detailSectionLabel}>Actions</div>
-          {monster.actions.map((a) => (
-            <p key={String(a.name)} className={styles.detailText}>
-              <strong>{String(a.name)}.</strong> {String(a.desc)}
-            </p>
-          ))}
-        </div>
-      )}
-    </div>
-  );
 }
 
 const MONSTER_TYPES = [
@@ -209,7 +136,7 @@ export function SrdMonstersPage() {
                   key={m.id}
                   type="button"
                   className={styles.card}
-                  onClick={() => setSelected(m)}
+                  onClick={() => setSelected((prev) => (prev?.id === m.id ? null : m))}
                   aria-pressed={selected?.id === m.id}
                 >
                   <div className={styles.cardName}>{m.name}</div>
@@ -232,7 +159,94 @@ export function SrdMonstersPage() {
               />
             )}
           </div>
-          {selected && <MonsterDetail monster={selected} />}
+
+          {selected && (
+            <div className={styles.detail}>
+              <div className={styles.detailHeader}>
+                <div>
+                  <div className={styles.detailTitle}>{selected.name}</div>
+                  <div className={styles.cardMeta}>
+                    <Badge variant="danger">CR {crLabel(selected.cr)}</Badge>
+                    <Badge>{selected.size}</Badge>
+                    <Badge>{selected.type}</Badge>
+                    <Badge variant="default">{selected.alignment}</Badge>
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  className={styles.detailClose}
+                  onClick={() => setSelected(null)}
+                >
+                  Close
+                </button>
+              </div>
+
+              <div className={styles.detailSection}>
+                <p className={styles.detailText}>
+                  <strong>AC:</strong> {selected.ac}
+                  {selected.acType ? ` (${selected.acType})` : ''}
+                  {'\n'}
+                  <strong>HP:</strong> {selected.hp} ({selected.hpFormula}){'\n'}
+                  <strong>Speed:</strong>{' '}
+                  {Object.entries(selected.speed)
+                    .map(([k, v]) => `${k} ${v}`)
+                    .join(', ')}
+                </p>
+              </div>
+
+              <hr className={styles.divider} />
+
+              <div className={styles.statGrid}>
+                {Object.entries(selected.abilityScores).map(([k, v]) => (
+                  <div key={k} className={styles.stat}>
+                    <div className={styles.statLabel}>{k}</div>
+                    <div className={styles.statValue}>{v}</div>
+                    <div className={styles.statMod}>{modifier(v as number)}</div>
+                  </div>
+                ))}
+              </div>
+
+              <hr className={styles.divider} />
+
+              <div className={styles.detailSection}>
+                <p className={styles.detailText}>
+                  <strong>Senses:</strong> {selected.senses}
+                  {'\n'}
+                  <strong>Languages:</strong> {selected.languages}
+                  {'\n'}
+                  <strong>XP:</strong> {selected.xp.toLocaleString()}
+                </p>
+              </div>
+
+              {selected.specialAbilities && selected.specialAbilities.length > 0 && (
+                <div className={styles.detailSection}>
+                  <div className={styles.detailSectionLabel}>Special Abilities</div>
+                  {selected.specialAbilities.map((a) => (
+                    <div key={String(a.name)} className={styles.detailSection}>
+                      <p className={styles.detailText}>
+                        <strong>{String(a.name)}.</strong>
+                      </p>
+                      <SrdMarkdown content={String(a.desc)} />
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {selected.actions.length > 0 && (
+                <div className={styles.detailSection}>
+                  <div className={styles.detailSectionLabel}>Actions</div>
+                  {selected.actions.map((a) => (
+                    <div key={String(a.name)} className={styles.detailSection}>
+                      <p className={styles.detailText}>
+                        <strong>{String(a.name)}.</strong>
+                      </p>
+                      <SrdMarkdown content={String(a.desc)} />
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
         </div>
       )}
     </div>

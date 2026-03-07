@@ -10,6 +10,7 @@ import { lazy } from 'react';
 import { AppShell } from './components/layout/AppShell/AppShell.js';
 import { LoginPage } from './features/auth/LoginPage/LoginPage.js';
 import { RegisterPage } from './features/auth/RegisterPage/RegisterPage.js';
+import { CharacterSheet } from './features/character/CharacterSheet/index.js';
 import { CharacterWizard } from './features/character/CharacterWizard/index.js';
 import { DashboardPage } from './features/character/DashboardPage/index.js';
 import { LegalPage } from './features/legal/LegalPage/index.js';
@@ -175,27 +176,10 @@ const characterDetailRoute = createRoute({
   getParentRoute: () => shellRoute,
   path: '/characters/$id',
   beforeLoad: requireAuth,
-  component: () => (
-    <div
-      style={{
-        maxWidth: 'var(--content-max-width)',
-        margin: '0 auto',
-        padding: 'var(--space-8) var(--space-6)',
-      }}
-    >
-      <h1
-        style={{
-          fontFamily: 'var(--font-display)',
-          fontSize: 'var(--text-3xl)',
-          color: 'var(--color-accent)',
-          marginBottom: 'var(--space-4)',
-        }}
-      >
-        Character Sheet
-      </h1>
-      <p style={{ color: 'var(--color-text-secondary)' }}>Character sheet — coming next.</p>
-    </div>
-  ),
+  component: function CharacterSheetRoute() {
+    const { id } = characterDetailRoute.useParams();
+    return <CharacterSheet characterId={id} />;
+  },
 });
 
 // ── SRD routes ────────────────────────────────────────────────────────────────

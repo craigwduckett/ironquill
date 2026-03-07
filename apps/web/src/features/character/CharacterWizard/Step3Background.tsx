@@ -1,4 +1,5 @@
 import { useSrdBackgrounds } from '../../srd/hooks/useSrd.js';
+import { SrdMarkdown } from '../../srd/SrdMarkdown/SrdMarkdown.js';
 import styles from './CharacterWizard.module.css';
 import type { WizardDraft } from './wizardState.js';
 
@@ -88,7 +89,7 @@ export function Step3Background({ draft, onChange }: Props) {
           </div>
 
           {selected.description && (
-            <p className={styles.detailDescription}>{selected.description}</p>
+            <SrdMarkdown content={selected.description} className={styles.detailDescription} />
           )}
 
           {/* Skill proficiencies */}
@@ -116,7 +117,7 @@ export function Step3Background({ draft, onChange }: Props) {
             <div className={styles.traitList}>
               <div className={styles.trait}>
                 <p className={styles.traitName}>{selected.featureName}</p>
-                <p className={styles.traitDesc}>{selected.featureDescription}</p>
+                <SrdMarkdown content={selected.featureDescription} className={styles.traitDesc} />
               </div>
             </div>
           )}

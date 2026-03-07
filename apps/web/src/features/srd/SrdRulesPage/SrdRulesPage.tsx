@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { Badge, EmptyState, Spinner } from '../../../components/ui/index.js';
 import { type SrdRule, useSrdRules } from '../hooks/useSrd.js';
 import styles from '../SrdListPage.module.css';
+import { SrdMarkdown } from '../SrdMarkdown/SrdMarkdown.js';
 
 export function SrdRulesPage() {
   const [search, setSearch] = useState('');
@@ -14,7 +15,7 @@ export function SrdRulesPage() {
     category: category || undefined,
   });
 
-  const rules = data ?? [];
+  const rules = (data ?? []).filter((r) => r.description.trim().length > 0);
   const categories = [...new Set((data ?? []).map((r) => r.category))].sort();
 
   return (
@@ -72,7 +73,7 @@ export function SrdRulesPage() {
                   key={r.id}
                   type="button"
                   className={styles.card}
-                  onClick={() => setSelected(r)}
+                  onClick={() => setSelected((prev) => (prev?.id === r.id ? null : r))}
                   aria-pressed={selected?.id === r.id}
                 >
                   <div className={styles.cardName}>{r.topic}</div>
@@ -90,13 +91,22 @@ export function SrdRulesPage() {
 
           {selected && (
             <div className={styles.detail}>
-              <div className={styles.detailTitle}>{selected.topic}</div>
-              <div className={styles.cardMeta}>
-                <Badge>{selected.category}</Badge>
+              <div className={styles.detailHeader}>
+                <div>
+                  <div className={styles.detailTitle}>{selected.topic}</div>
+                  <div className={styles.cardMeta}>
+                    <Badge>{selected.category}</Badge>
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  className={styles.detailClose}
+                  onClick={() => setSelected(null)}
+                >
+                  Close
+                </button>
               </div>
-              <div className={styles.detailSection}>
-                <p className={styles.detailText}>{selected.description}</p>
-              </div>
+              <SrdMarkdown content={selected.description} />
               {selected.keywords.length > 0 && (
                 <div className={styles.detailSection}>
                   <div className={styles.detailSectionLabel}>Keywords</div>

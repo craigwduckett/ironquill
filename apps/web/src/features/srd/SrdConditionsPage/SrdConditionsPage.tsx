@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { Badge, EmptyState, Spinner } from '../../../components/ui/index.js';
 import { type SrdCondition, useSrdConditions } from '../hooks/useSrd.js';
 import styles from '../SrdListPage.module.css';
+import { SrdMarkdown } from '../SrdMarkdown/SrdMarkdown.js';
 
 export function SrdConditionsPage() {
   const { data, isLoading, isError } = useSrdConditions();
@@ -49,7 +50,7 @@ export function SrdConditionsPage() {
                   key={c.id}
                   type="button"
                   className={styles.card}
-                  onClick={() => setSelected(c)}
+                  onClick={() => setSelected((prev) => (prev?.id === c.id ? null : c))}
                   aria-pressed={selected?.id === c.id}
                 >
                   <div className={styles.cardName}>{c.name}</div>
@@ -64,14 +65,27 @@ export function SrdConditionsPage() {
 
           {selected && (
             <div className={styles.detail}>
-              <div className={styles.detailTitle}>{selected.name}</div>
-              <div className={styles.cardMeta}>
-                <Badge variant="info">{selected.sourceEdition}</Badge>
+              <div className={styles.detailHeader}>
+                <div>
+                  <div className={styles.detailTitle}>{selected.name}</div>
+                  <div className={styles.cardMeta}>
+                    <Badge variant="info">{selected.sourceEdition}</Badge>
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  className={styles.detailClose}
+                  onClick={() => setSelected(null)}
+                >
+                  Close
+                </button>
               </div>
+
               <div className={styles.detailSection}>
-                <p className={styles.detailText}>{selected.description}</p>
+                <SrdMarkdown content={selected.description} />
               </div>
-              {selected.mechanicalEffects.length > 1 && (
+
+              {selected.mechanicalEffects.length > 0 && (
                 <div className={styles.detailSection}>
                   <div className={styles.detailSectionLabel}>Effects</div>
                   <ul style={{ paddingLeft: 'var(--space-4)' }}>

@@ -20,6 +20,11 @@ export function AuthLayout({ title, subtitle, children, footer }: AuthLayoutProp
         {subtitle && <p className={styles.subtitle}>{subtitle}</p>}
         {children}
         {footer && <div className={styles.footer}>{footer}</div>}
+        <div className={styles.homeLink}>
+          <Link to="/" className={styles.footerLink}>
+            ← Back to home
+          </Link>
+        </div>
       </div>
     </div>
   );
