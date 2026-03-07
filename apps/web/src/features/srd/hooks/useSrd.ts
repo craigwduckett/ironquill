@@ -14,6 +14,7 @@ export type SrdSpecies = {
   traits: Array<{ name: string; description: string }>;
   abilityBonuses: Partial<Record<string, number>>;
   languages: string[];
+  languageDesc: string | null;
   speed: number;
   size: string;
 };

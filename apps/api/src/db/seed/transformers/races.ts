@@ -51,6 +51,13 @@ export type RawRace2014 = {
   language_desc?: string;
 };
 
+/** Lookup maps supplied by the seed script at call time */
+export type TraitLookup = Map<string, string>;
+export type LanguageLookup = Map<
+  string,
+  { desc: string; type: string; script: string; typicalSpeakers: string[] }
+>;
+
 const ABILITY_INDEX_MAP: Record<string, string> = {
   str: 'STR',
   dex: 'DEX',
@@ -60,7 +67,11 @@ const ABILITY_INDEX_MAP: Record<string, string> = {
   cha: 'CHA',
 };
 
-export function transformRace2014(raw: RawRace2014) {
+export function transformRace2014(
+  raw: RawRace2014,
+  traitLookup: TraitLookup,
+  languageLookup: LanguageLookup,
+) {
   const abilityBonuses: Record<string, number> = {};
   for (const ab of raw.ability_bonuses) {
     const key = ABILITY_INDEX_MAP[ab.ability_score.index] ?? ab.ability_score.name;
@@ -69,14 +80,30 @@ export function transformRace2014(raw: RawRace2014) {
 
   const description = [raw.alignment, raw.age, raw.size_description].filter(Boolean).join(' ');
 
+  const traits = raw.traits.map((t) => ({
+    name: t.name,
+    description: traitLookup.get(t.index) ?? '',
+  }));
+
+  // Enrich language names with metadata from the language lookup
+  const languages = raw.languages.map((l) => {
+    const meta = languageLookup.get(l.index);
+    if (!meta) return l.name;
+    const parts = [l.name];
+    if (meta.type) parts.push(`(${meta.type})`);
+    if (meta.script) parts.push(`— script: ${meta.script}`);
+    return parts.join(' ');
+  });
+
   return {
     sourceEdition: '2014' as const,
     displayTerm: 'Race' as const,
     name: raw.name,
     description: description || null,
-    traits: raw.traits.map((t) => ({ name: t.name, description: '' })),
+    traits,
     abilityBonuses,
-    languages: raw.languages.map((l) => l.name),
+    languages,
+    languageDesc: raw.language_desc ?? null,
     speed: raw.speed,
     size: raw.size,
   };

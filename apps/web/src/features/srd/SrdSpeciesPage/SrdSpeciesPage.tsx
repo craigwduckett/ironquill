@@ -206,15 +206,29 @@ export function SrdSpeciesPage() {
               <div className={styles.detailSection}>
                 <div className={styles.detailSectionLabel}>
                   Languages
-                  <Tip text="Languages your character can speak, read, and write by default. Useful for roleplaying and deciphering ancient texts in the game." />
+                  <Tip text="Languages your character can speak, read, and write by default. In D&D, different creatures and cultures have their own languages. Knowing a language lets you communicate with that group and read their written works." />
                 </div>
                 <ul className={styles.detailList}>
-                  {selected.languages.map((l) => (
-                    <li key={l}>
-                      <Badge>{l}</Badge>
-                    </li>
-                  ))}
+                  {selected.languages.map((l) => {
+                    // Stored as "Name (Type) — script: X"
+                    const namePart = l.split(' (')[0] ?? l;
+                    const scriptMatch = l.match(/script: ([^)]+)/);
+                    const typePart = l.match(/\(([^)]+)\)/)?.[1];
+                    const fullLabel = [namePart, typePart].filter(Boolean).join(' · ');
+                    return (
+                      <li key={l}>
+                        <span title={scriptMatch ? `Script: ${scriptMatch[1]}` : undefined}>
+                          <Badge>{fullLabel}</Badge>
+                        </span>
+                      </li>
+                    );
+                  })}
                 </ul>
+                {selected.languageDesc && (
+                  <p className={styles.detailText} style={{ marginTop: 'var(--space-2)' }}>
+                    {selected.languageDesc}
+                  </p>
+                )}
               </div>
             )}
           </div>

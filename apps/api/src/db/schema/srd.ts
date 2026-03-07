@@ -40,7 +40,9 @@ export const srdSpecies = pgTable('srd_species', {
     .$type<Partial<Record<string, number>>>()
     .notNull()
     .default({}),
+  // Each entry is "Name (Type) — script: X" for enriched display
   languages: text('languages').array().notNull().default([]),
+  languageDesc: text('language_desc'),
   speed: integer('speed').notNull().default(30),
   size: varchar('size', { length: 20 }).notNull().default('Medium'),
 });

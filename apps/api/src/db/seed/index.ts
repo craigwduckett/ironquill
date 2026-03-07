@@ -26,6 +26,7 @@ import { readFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { db } from '../client.js';
+import { characterInventory, characterSpells, characters } from '../schema/characters.js';
 import {
   srdBackgrounds,
   srdClasses,
@@ -60,7 +61,7 @@ import {
 } from './transformers/items.js';
 import type { RawMonster2014 } from './transformers/monsters.js';
 import { transformMonster2014 } from './transformers/monsters.js';
-import type { RawRace2014 } from './transformers/races.js';
+import type { LanguageLookup, RawRace2014, TraitLookup } from './transformers/races.js';
 import { transformRace2014 as transformSpecies2014 } from './transformers/races.js';
 import {
   type RawRule2014,
@@ -93,11 +94,38 @@ async function batchInsert<T extends Record<string, unknown>>(
 
 // ── Seed functions ────────────────────────────────────────────────────────────
 
+type RawTraitData = { index: string; name: string; desc: string };
+type RawLanguageData = {
+  index: string;
+  name: string;
+  desc: string;
+  type: string;
+  script: string;
+  typical_speakers: string[];
+};
+
 async function seedSpecies() {
   // 2014 data uses the term "Race"; 2024 will use "Species".
   // The transformer sets displayTerm accordingly on each row.
   const raw = loadJson<RawRace2014[]>(join(dataDir, 'races.json'));
-  const rows = raw.map(transformSpecies2014);
+
+  const rawTraits = loadJson<RawTraitData[]>(join(dataDir, 'traits.json'));
+  const traitLookup: TraitLookup = new Map(rawTraits.map((t) => [t.index, t.desc]));
+
+  const rawLanguages = loadJson<RawLanguageData[]>(join(dataDir, 'languages.json'));
+  const languageLookup: LanguageLookup = new Map(
+    rawLanguages.map((l) => [
+      l.index,
+      {
+        desc: l.desc,
+        type: l.type,
+        script: l.script,
+        typicalSpeakers: l.typical_speakers,
+      },
+    ]),
+  );
+
+  const rows = raw.map((r) => transformSpecies2014(r, traitLookup, languageLookup));
   await batchInsert(srdSpecies, rows);
   console.log(`  species: inserted ${rows.length} rows (2014, displayTerm='Race')`);
 }
@@ -196,7 +224,11 @@ async function seedRules() {
 async function main() {
   console.log('Seeding SRD data…\n');
 
-  // Truncate all SRD tables in dependency-safe order
+  // Truncate in dependency-safe order.
+  // Characters reference SRD tables via FK, so clear them first.
+  await db.delete(characterInventory);
+  await db.delete(characterSpells);
+  await db.delete(characters);
   await db.delete(srdRules);
   await db.delete(srdConditions);
   await db.delete(srdItems);
