@@ -10,7 +10,9 @@ import * as nonceService from '../../services/nonce.js';
 const REFRESH_TOKEN_MAX_AGE = 7 * 24 * 60 * 60;
 const ACCESS_TOKEN_TTL = '15m';
 const REFRESH_COOKIE_NAME = 'refreshToken';
-const REFRESH_COOKIE_PATH = '/auth/refresh';
+// Scoped to /auth so the cookie is sent to /auth/me (session restore),
+// /auth/refresh (silent renewal) and /auth/logout — but NOT to other routes.
+const REFRESH_COOKIE_PATH = '/auth';
 
 type TokenPayload = { sub: string; email: string; displayName: string };
 
@@ -67,6 +69,27 @@ const authRoutes: FastifyPluginAsync = async (fastify) => {
     const user = await authService.verifyCredentials(request.body);
     const { accessToken, payload } = buildAccessToken(app, user);
     await setRefreshCookie(reply, payload);
+
+    // #region agent log
+    const fsLogin = await import('node:fs');
+    fsLogin.appendFileSync(
+      '/home/craig/git/ironquill/.cursor/debug-6e1f58.log',
+      JSON.stringify({
+        sessionId: '6e1f58',
+        location: 'auth/index.ts:/login',
+        message: 'POST /login success',
+        data: {
+          cookiePath: REFRESH_COOKIE_PATH,
+          cookieName: REFRESH_COOKIE_NAME,
+          setCookieHeader: reply.getHeader('set-cookie'),
+          requestOrigin: request.headers.origin,
+          requestHost: request.headers.host,
+        },
+        timestamp: Date.now(),
+      }) + '\n',
+    );
+    // #endregion
+
     return reply.send({ accessToken, user });
   });
 
@@ -100,6 +123,30 @@ const authRoutes: FastifyPluginAsync = async (fastify) => {
   // Called on page load to restore an in-memory session from the refresh cookie.
   app.get('/me', async (request, reply) => {
     const token = request.cookies[REFRESH_COOKIE_NAME];
+
+    // #region agent log
+    const fs = await import('node:fs');
+    fs.appendFileSync(
+      '/home/craig/git/ironquill/.cursor/debug-6e1f58.log',
+      JSON.stringify({
+        sessionId: '6e1f58',
+        location: 'auth/index.ts:/me',
+        message: 'GET /me received',
+        data: {
+          hasCookie: !!token,
+          allCookieKeys: Object.keys(request.cookies),
+          cookiePath: REFRESH_COOKIE_PATH,
+          headers: {
+            cookie: request.headers.cookie?.slice(0, 80) ?? null,
+            host: request.headers.host,
+            origin: request.headers.origin,
+          },
+        },
+        timestamp: Date.now(),
+      }) + '\n',
+    );
+    // #endregion
+
     if (!token) throw AppError.unauthorized();
 
     let refreshPayload: TokenPayload & { nonce: string };

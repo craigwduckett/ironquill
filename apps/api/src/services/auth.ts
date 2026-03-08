@@ -8,9 +8,12 @@ import { AppError } from '../lib/errors.js';
 const SALT_ROUNDS = 12;
 
 export async function register(input: RegisterInput) {
-  const existing = await db.query.users.findFirst({
-    where: eq(users.email, input.email.toLowerCase()),
-  });
+  const [existing] = await db
+    .select({ id: users.id })
+    .from(users)
+    .where(eq(users.email, input.email.toLowerCase()))
+    .limit(1);
+
   if (existing) {
     throw AppError.conflict('An account with this email already exists', 'EMAIL_TAKEN');
   }
@@ -35,9 +38,12 @@ export async function register(input: RegisterInput) {
 }
 
 export async function verifyCredentials(input: LoginInput) {
-  const user = await db.query.users.findFirst({
-    where: eq(users.email, input.email.toLowerCase()),
-  });
+  const [user] = await db
+    .select()
+    .from(users)
+    .where(eq(users.email, input.email.toLowerCase()))
+    .limit(1);
+
   if (!user) {
     throw AppError.unauthorized('Invalid email or password');
   }
@@ -51,10 +57,16 @@ export async function verifyCredentials(input: LoginInput) {
 }
 
 export async function getUserById(id: string) {
-  const user = await db.query.users.findFirst({
-    where: eq(users.id, id),
-    columns: { id: true, email: true, displayName: true },
-  });
+  const [user] = await db
+    .select({
+      id: users.id,
+      email: users.email,
+      displayName: users.displayName,
+    })
+    .from(users)
+    .where(eq(users.id, id))
+    .limit(1);
+
   if (!user) throw AppError.unauthorized();
   return user;
 }

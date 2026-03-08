@@ -10,13 +10,14 @@ import {
   MiniMap,
   type Node,
   type NodeProps,
+  type OnConnect,
   type OnNodeDrag,
   Position,
   ReactFlow,
   useEdgesState,
   useNodesState,
 } from '@xyflow/react';
-import { useCallback, useEffect, useMemo } from 'react';
+import { useCallback, useEffect } from 'react';
 import { api } from '../../../lib/api.js';
 import { useAuthStore } from '../../../stores/auth.js';
 import {
@@ -80,6 +81,7 @@ function buildEdges(connections: SceneConnection[]): Edge[] {
     target: conn.toSceneId,
     label: conn.label ?? undefined,
     markerEnd: { type: MarkerType.ArrowClosed },
+    style: { stroke: 'var(--color-accent)', strokeWidth: 2 },
   }));
 }
 
@@ -89,15 +91,18 @@ export function SceneFlowGraph({ adventureId }: Props) {
   const queryClient = useQueryClient();
   const token = useAuthStore((s) => s.accessToken);
 
-  const initialNodes = useMemo(() => buildNodes(scenes), [scenes]);
-  const initialEdges = useMemo(() => buildEdges(connections), [connections]);
+  const [nodes, setNodes, onNodesChange] = useNodesState<Node>([]);
+  const [edges, setEdges] = useEdgesState<Edge>([]);
 
-  const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
-  const [edges, , onEdgesChange] = useEdgesState(initialEdges);
-
+  // Keep nodes and edges in sync with server data — these are the sole
+  // source of truth; we never let React Flow manage deletions locally.
   useEffect(() => {
     setNodes(buildNodes(scenes));
   }, [scenes, setNodes]);
+
+  useEffect(() => {
+    setEdges(buildEdges(connections));
+  }, [connections, setEdges]);
 
   const handleNodeDragStop: OnNodeDrag = useCallback(
     (_event, node) => {
@@ -116,14 +121,37 @@ export function SceneFlowGraph({ adventureId }: Props) {
     [adventureId, token, queryClient],
   );
 
+  const handleConnect: OnConnect = useCallback(
+    (connection) => {
+      // Prevent duplicate A→B connections — the same pair already exists.
+      const alreadyExists = connections.some(
+        (c) => c.fromSceneId === connection.source && c.toSceneId === connection.target,
+      );
+      if (alreadyExists) return;
+
+      void api
+        .post<SceneConnection>(
+          `/adventures/${adventureId}/scenes/${connection.source}/connections`,
+          { toSceneId: connection.target },
+          token ?? undefined,
+        )
+        .then(() =>
+          queryClient.invalidateQueries({
+            queryKey: adventureKeys.connections(adventureId),
+          }),
+        );
+    },
+    [adventureId, token, queryClient, connections],
+  );
+
   return (
     <div className={styles.container}>
       <ReactFlow
         nodes={nodes}
         edges={edges}
         onNodesChange={onNodesChange}
-        onEdgesChange={onEdgesChange}
         onNodeDragStop={handleNodeDragStop}
+        onConnect={handleConnect}
         nodeTypes={nodeTypes}
         fitView
       >

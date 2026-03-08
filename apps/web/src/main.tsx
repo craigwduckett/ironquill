@@ -16,9 +16,9 @@ const queryClient = new QueryClient({
   },
 });
 
-// Restores the in-memory auth session from the httpOnly refresh cookie on
-// every page load. The router renders immediately — protected routes redirect
-// to /login if the session cannot be restored.
+// Kicks off GET /auth/me on every page load to restore the in-memory session
+// from the httpOnly refresh cookie. AuthGuard in the router renders null while
+// this is in-flight, preventing any flash to /login on hard refresh.
 function App() {
   useRestoreSession();
   return <RouterProvider router={router} />;

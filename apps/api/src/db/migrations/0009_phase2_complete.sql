@@ -47,6 +47,9 @@ ALTER TABLE "scene_connections"
   ADD CONSTRAINT "scene_connections_to_scene_id_scenes_id_fk"
   FOREIGN KEY ("to_scene_id") REFERENCES "public"."scenes"("id") ON DELETE cascade;--> statement-breakpoint
 
+ALTER TABLE "scene_connections"
+  ADD CONSTRAINT "scene_connections_from_to_unique" UNIQUE ("from_scene_id", "to_scene_id");--> statement-breakpoint
+
 -- ── Encounters ────────────────────────────────────────────────────────────────
 
 CREATE TABLE "encounters" (

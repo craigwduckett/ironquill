@@ -1,4 +1,4 @@
-import { and, eq } from 'drizzle-orm';
+import { and, eq, sql } from 'drizzle-orm';
 import { db } from '../db/client.js';
 import { adventurePlayers, adventures } from '../db/schema/adventures.js';
 import type { InitiativeEntry } from '../db/schema/sessions.js';
@@ -157,7 +157,7 @@ export async function startCombat(
   if (existing) {
     const [updated] = await db
       .update(sessionCombat)
-      .set({ initiativeOrder, round: 1, isActive: 1 })
+      .set({ initiativeOrder, round: 1, isActive: true })
       .where(eq(sessionCombat.sessionId, sessionId))
       .returning();
     if (!updated) throw AppError.notFound('Combat');
@@ -176,32 +176,37 @@ export async function startCombat(
 export async function advanceTurn(sessionId: string, userId: string) {
   await assertDm(sessionId, userId);
 
-  const [combat] = await db
-    .select()
-    .from(sessionCombat)
-    .where(eq(sessionCombat.sessionId, sessionId))
-    .limit(1);
+  // SELECT FOR UPDATE serialises concurrent advanceTurn calls, preventing
+  // lost-update races where two requests read the same state and both write.
+  const [result] = await db.transaction(async (tx) => {
+    const [combat] = await tx
+      .select()
+      .from(sessionCombat)
+      .where(eq(sessionCombat.sessionId, sessionId))
+      .limit(1)
+      .for('update');
 
-  if (!combat) throw AppError.notFound('Combat');
+    if (!combat) throw AppError.notFound('Combat');
 
-  const order = combat.initiativeOrder;
-  const currentIdx = order.findIndex((e) => e.isCurrent);
-  const nextIdx = (currentIdx + 1) % order.length;
-  const isNewRound = nextIdx === 0;
+    const order = combat.initiativeOrder;
+    const currentIdx = order.findIndex((e) => e.isCurrent);
+    const nextIdx = (currentIdx + 1) % order.length;
+    const isNewRound = nextIdx === 0;
 
-  const updated = order.map((entry, i) => ({
-    ...entry,
-    isCurrent: i === nextIdx,
-  }));
+    const updated = order.map((entry, i) => ({
+      ...entry,
+      isCurrent: i === nextIdx,
+    }));
 
-  const [result] = await db
-    .update(sessionCombat)
-    .set({
-      initiativeOrder: updated,
-      round: isNewRound ? combat.round + 1 : combat.round,
-    })
-    .where(eq(sessionCombat.sessionId, sessionId))
-    .returning();
+    return tx
+      .update(sessionCombat)
+      .set({
+        initiativeOrder: updated,
+        round: isNewRound ? sql`${sessionCombat.round} + 1` : sessionCombat.round,
+      })
+      .where(eq(sessionCombat.sessionId, sessionId))
+      .returning();
+  });
 
   if (!result) throw AppError.notFound('Combat');
   return result;

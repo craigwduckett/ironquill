@@ -68,8 +68,36 @@
     {
       "idx": 9,
       "version": "7",
-      "when": 1741392000000,
+      "when": 1741478400000,
       "tag": "0009_phase2_complete",
+      "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1772970000000,
+      "tag": "0010_indexes_and_fixes",
+      "breakpoints": true
+    },
+    {
+      "idx": 11,
+      "version": "7",
+      "when": 1772980000000,
+      "tag": "0011_updated_at_triggers",
+      "breakpoints": true
+    },
+    {
+      "idx": 12,
+      "version": "7",
+      "when": 1772990000000,
+      "tag": "0012_srd_trgm_indexes",
+      "breakpoints": true
+    },
+    {
+      "idx": 13,
+      "version": "7",
+      "when": 1773000000000,
+      "tag": "0013_heavy_captain_flint",
       "breakpoints": true
     }
   ]

@@ -24,7 +24,9 @@ app.setSerializerCompiler(serializerCompiler);
 
 // CORS
 await app.register(cors, {
-  origin: env.NODE_ENV === 'production' ? ['https://ironquill.app'] : ['http://localhost:5173'],
+  // In dev, allow any localhost port — Vite may auto-increment if 5173 is busy.
+  // In production, lock to the exact deployed origin.
+  origin: env.NODE_ENV === 'production' ? ['https://ironquill.app'] : /^http:\/\/localhost(:\d+)?$/,
   credentials: true,
 });
 

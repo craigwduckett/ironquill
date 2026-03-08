@@ -1,10 +1,13 @@
 import {
+  boolean,
+  index,
   integer,
   jsonb,
   pgEnum,
   pgTable,
   text,
   timestamp,
+  unique,
   uuid,
   varchar,
 } from 'drizzle-orm/pg-core';
@@ -19,21 +22,25 @@ export const sessionStatusEnum = pgEnum('session_status', ['lobby', 'active', 'p
 // ── Sessions ──────────────────────────────────────────────────────────────────
 // A live run of an adventure. Campaigns have many sessions; one-shots typically one.
 
-export const sessions = pgTable('sessions', {
-  id: uuid('id').primaryKey().defaultRandom(),
-  adventureId: uuid('adventure_id')
-    .notNull()
-    .references(() => adventures.id, { onDelete: 'cascade' }),
-  currentSceneId: uuid('current_scene_id').references(() => scenes.id, {
-    onDelete: 'set null',
-  }),
-  status: sessionStatusEnum('status').notNull().default('lobby'),
-  startedAt: timestamp('started_at', { withTimezone: true }),
-  endedAt: timestamp('ended_at', { withTimezone: true }),
-  summary: text('summary'),
-  createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
-  updatedAt: timestamp('updated_at', { withTimezone: true }).notNull().defaultNow(),
-});
+export const sessions = pgTable(
+  'sessions',
+  {
+    id: uuid('id').primaryKey().defaultRandom(),
+    adventureId: uuid('adventure_id')
+      .notNull()
+      .references(() => adventures.id, { onDelete: 'cascade' }),
+    currentSceneId: uuid('current_scene_id').references(() => scenes.id, {
+      onDelete: 'set null',
+    }),
+    status: sessionStatusEnum('status').notNull().default('lobby'),
+    startedAt: timestamp('started_at', { withTimezone: true }),
+    endedAt: timestamp('ended_at', { withTimezone: true }),
+    summary: text('summary'),
+    createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
+    updatedAt: timestamp('updated_at', { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => [index('sessions_adventure_id_idx').on(t.adventureId)],
+);
 
 // ── Session Combat ────────────────────────────────────────────────────────────
 // Ephemeral combat state. One row per active session (deleted when combat ends).
@@ -48,6 +55,7 @@ export type InitiativeEntry = {
   isCurrent: boolean;
 };
 
+// session_id has a UNIQUE constraint which creates an implicit index — no extra index needed.
 export const sessionCombat = pgTable('session_combat', {
   id: uuid('id').primaryKey().defaultRandom(),
   sessionId: uuid('session_id')
@@ -55,7 +63,7 @@ export const sessionCombat = pgTable('session_combat', {
     .unique()
     .references(() => sessions.id, { onDelete: 'cascade' }),
   round: integer('round').notNull().default(1),
-  isActive: integer('is_active').notNull().default(1),
+  isActive: boolean('is_active').notNull().default(true),
   initiativeOrder: jsonb('initiative_order').$type<InitiativeEntry[]>().notNull().default([]),
   createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
   updatedAt: timestamp('updated_at', { withTimezone: true }).notNull().defaultNow(),
@@ -65,54 +73,74 @@ export const sessionCombat = pgTable('session_combat', {
 // Tracks live HP for each NPC during a session. Separate from initiative_order JSONB
 // so that HP updates don't rewrite the entire combat column.
 
-export const sessionNpcHp = pgTable('session_npc_hp', {
-  id: uuid('id').primaryKey().defaultRandom(),
-  sessionId: uuid('session_id')
-    .notNull()
-    .references(() => sessions.id, { onDelete: 'cascade' }),
-  npcId: uuid('npc_id')
-    .notNull()
-    .references(() => sceneNpcs.id, { onDelete: 'cascade' }),
-  hpCurrent: integer('hp_current').notNull(),
-  hpMax: integer('hp_max').notNull(),
-  createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
-  updatedAt: timestamp('updated_at', { withTimezone: true }).notNull().defaultNow(),
-});
+export const sessionNpcHp = pgTable(
+  'session_npc_hp',
+  {
+    id: uuid('id').primaryKey().defaultRandom(),
+    sessionId: uuid('session_id')
+      .notNull()
+      .references(() => sessions.id, { onDelete: 'cascade' }),
+    npcId: uuid('npc_id')
+      .notNull()
+      .references(() => sceneNpcs.id, { onDelete: 'cascade' }),
+    hpCurrent: integer('hp_current').notNull(),
+    hpMax: integer('hp_max').notNull(),
+    createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
+    updatedAt: timestamp('updated_at', { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => [
+    index('session_npc_hp_session_id_idx').on(t.sessionId),
+    unique('session_npc_hp_session_npc_unique').on(t.sessionId, t.npcId),
+  ],
+);
 
 // ── Session Conditions ────────────────────────────────────────────────────────
 // Active conditions on characters or NPCs during a session.
 // Rows are deleted when the condition is removed (no end timestamp).
 
-export const sessionConditions = pgTable('session_conditions', {
-  id: uuid('id').primaryKey().defaultRandom(),
-  sessionId: uuid('session_id')
-    .notNull()
-    .references(() => sessions.id, { onDelete: 'cascade' }),
-  characterId: uuid('character_id').references(() => characters.id, {
-    onDelete: 'cascade',
-  }),
-  npcId: uuid('npc_id').references(() => sceneNpcs.id, { onDelete: 'cascade' }),
-  conditionId: uuid('condition_id')
-    .notNull()
-    .references(() => srdConditions.id),
-  appliedAt: timestamp('applied_at', { withTimezone: true }).notNull().defaultNow(),
-});
+export const sessionConditions = pgTable(
+  'session_conditions',
+  {
+    id: uuid('id').primaryKey().defaultRandom(),
+    sessionId: uuid('session_id')
+      .notNull()
+      .references(() => sessions.id, { onDelete: 'cascade' }),
+    characterId: uuid('character_id').references(() => characters.id, {
+      onDelete: 'cascade',
+    }),
+    npcId: uuid('npc_id').references(() => sceneNpcs.id, {
+      onDelete: 'cascade',
+    }),
+    conditionId: uuid('condition_id')
+      .notNull()
+      .references(() => srdConditions.id),
+    appliedAt: timestamp('applied_at', { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => [index('session_conditions_session_id_idx').on(t.sessionId)],
+);
 
 // ── Roll Log ──────────────────────────────────────────────────────────────────
 // Append-only audit trail of dice rolls during a session.
 
-export const rollLog = pgTable('roll_log', {
-  id: uuid('id').primaryKey().defaultRandom(),
-  sessionId: uuid('session_id')
-    .notNull()
-    .references(() => sessions.id, { onDelete: 'cascade' }),
-  characterId: uuid('character_id').references(() => characters.id, {
-    onDelete: 'set null',
-  }),
-  rollType: varchar('roll_type', { length: 100 }).notNull(),
-  result: integer('result').notNull(),
-  rolledAt: timestamp('rolled_at', { withTimezone: true }).notNull().defaultNow(),
-});
+export const rollLog = pgTable(
+  'roll_log',
+  {
+    id: uuid('id').primaryKey().defaultRandom(),
+    sessionId: uuid('session_id')
+      .notNull()
+      .references(() => sessions.id, { onDelete: 'cascade' }),
+    characterId: uuid('character_id').references(() => characters.id, {
+      onDelete: 'set null',
+    }),
+    rollType: varchar('roll_type', { length: 100 }).notNull(),
+    result: integer('result').notNull(),
+    rolledAt: timestamp('rolled_at', { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => [
+    index('roll_log_session_id_idx').on(t.sessionId),
+    index('roll_log_character_id_idx').on(t.characterId),
+  ],
+);
 
 // ── Inferred types ────────────────────────────────────────────────────────────
 

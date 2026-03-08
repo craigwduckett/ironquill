@@ -4,8 +4,9 @@ import {
   createRouter,
   Outlet,
   redirect,
+  useNavigate,
 } from '@tanstack/react-router';
-import { lazy } from 'react';
+import { lazy, type ReactNode, useEffect } from 'react';
 import { AppShell } from './components/layout/AppShell/AppShell.js';
 import { AdventureNewPage } from './features/adventure/AdventureNewPage/index.js';
 import { AdventureOverviewPage } from './features/adventure/AdventureOverviewPage/index.js';
@@ -50,8 +51,6 @@ const RouterDevtools = import.meta.env.DEV
   : ((() => null) as () => null);
 
 // ── Root (bare) ───────────────────────────────────────────────────────────────
-// Auth routes use this root directly so they render their own full-screen
-// layout without the AppShell header/footer.
 
 const rootRoute = createRootRoute({
   component: () => (
@@ -75,12 +74,53 @@ const shellRoute = createRoute({
   ),
 });
 
-// ── Auth guard helper ─────────────────────────────────────────────────────────
+// ── Auth guard ────────────────────────────────────────────────────────────────
+// beforeLoad runs synchronously. On a hard refresh, accessToken is null and
+// isRestoring is true (GET /auth/me hasn't resolved yet). We only redirect
+// when we *know* there is no session (isRestoring=false, accessToken=null).
+// While restoring, we let navigation proceed — AuthGuard renders null until
+// the check settles, then either shows the page or throws a redirect.
 
 function requireAuth() {
-  const { accessToken } = useAuthStore.getState();
-  if (!accessToken) throw redirect({ to: '/login' });
+  const { accessToken, isRestoring } = useAuthStore.getState();
+  if (!isRestoring && !accessToken) throw redirect({ to: '/login' });
 }
+
+// Component-level guard. Renders nothing during session restore, then either
+// shows children (authenticated) or navigates to /login (not authenticated).
+// useNavigate is used instead of throw redirect() — throwing inside a component
+// render causes React to treat it as an unhandled error, not a navigation.
+function AuthGuard({ children }: { children: ReactNode }) {
+  const accessToken = useAuthStore((s) => s.accessToken);
+  const isRestoring = useAuthStore((s) => s.isRestoring);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!isRestoring && !accessToken) {
+      void navigate({ to: '/login', replace: true });
+    }
+  }, [isRestoring, accessToken, navigate]);
+
+  if (isRestoring) return null;
+  if (!accessToken) return null;
+  return <>{children}</>;
+}
+
+// ── Protected layout route ────────────────────────────────────────────────────
+// All routes that require authentication nest under this. The combination of
+// beforeLoad (fast-path redirect when auth is confirmed absent) and AuthGuard
+// (handles the async restore window) prevents any flash to /login on refresh.
+
+const protectedRoute = createRoute({
+  getParentRoute: () => shellRoute,
+  id: 'protected',
+  beforeLoad: requireAuth,
+  component: () => (
+    <AuthGuard>
+      <Outlet />
+    </AuthGuard>
+  ),
+});
 
 // ── Home route ────────────────────────────────────────────────────────────────
 
@@ -104,26 +144,23 @@ const registerRoute = createRoute({
   component: RegisterPage,
 });
 
-// ── Protected routes (all nested under shellRoute) ────────────────────────────
+// ── Protected routes (all nested under protectedRoute) ────────────────────────
 
 const dashboardRoute = createRoute({
-  getParentRoute: () => shellRoute,
+  getParentRoute: () => protectedRoute,
   path: '/dashboard',
-  beforeLoad: requireAuth,
   component: DashboardPage,
 });
 
 const characterNewRoute = createRoute({
-  getParentRoute: () => shellRoute,
+  getParentRoute: () => protectedRoute,
   path: '/characters/new',
-  beforeLoad: requireAuth,
   component: CharacterWizard,
 });
 
 const characterDetailRoute = createRoute({
-  getParentRoute: () => shellRoute,
+  getParentRoute: () => protectedRoute,
   path: '/characters/$id',
-  beforeLoad: requireAuth,
   component: function CharacterSheetRoute() {
     const { id } = characterDetailRoute.useParams();
     return <CharacterSheet characterId={id} />;
@@ -131,9 +168,8 @@ const characterDetailRoute = createRoute({
 });
 
 const characterLevelUpRoute = createRoute({
-  getParentRoute: () => shellRoute,
+  getParentRoute: () => protectedRoute,
   path: '/characters/$id/levelup',
-  beforeLoad: requireAuth,
   component: function LevelUpRoute() {
     const { id } = characterLevelUpRoute.useParams();
     return <LevelUpPage characterId={id} />;
@@ -143,16 +179,14 @@ const characterLevelUpRoute = createRoute({
 // ── Adventure routes ──────────────────────────────────────────────────────────
 
 const adventureNewRoute = createRoute({
-  getParentRoute: () => shellRoute,
+  getParentRoute: () => protectedRoute,
   path: '/adventures/new',
-  beforeLoad: requireAuth,
   component: AdventureNewPage,
 });
 
 const adventureDetailRoute = createRoute({
-  getParentRoute: () => shellRoute,
+  getParentRoute: () => protectedRoute,
   path: '/adventures/$id',
-  beforeLoad: requireAuth,
   component: function AdventureDetailRoute() {
     const { id } = adventureDetailRoute.useParams();
     return <AdventureOverviewPage adventureId={id} />;
@@ -160,9 +194,8 @@ const adventureDetailRoute = createRoute({
 });
 
 const adventureScenesRoute = createRoute({
-  getParentRoute: () => shellRoute,
+  getParentRoute: () => protectedRoute,
   path: '/adventures/$id/scenes',
-  beforeLoad: requireAuth,
   component: function AdventureScenesRoute() {
     const { id } = adventureScenesRoute.useParams();
     return <ScenesPage adventureId={id} />;
@@ -170,9 +203,8 @@ const adventureScenesRoute = createRoute({
 });
 
 const adventureSettingsRoute = createRoute({
-  getParentRoute: () => shellRoute,
+  getParentRoute: () => protectedRoute,
   path: '/adventures/$id/settings',
-  beforeLoad: requireAuth,
   component: function AdventureSettingsRoute() {
     const { id } = adventureSettingsRoute.useParams();
     return <AdventureSettingsPage adventureId={id} />;
@@ -180,9 +212,8 @@ const adventureSettingsRoute = createRoute({
 });
 
 const adventureNpcsRoute = createRoute({
-  getParentRoute: () => shellRoute,
+  getParentRoute: () => protectedRoute,
   path: '/adventures/$id/npcs',
-  beforeLoad: requireAuth,
   component: function AdventureNpcsRoute() {
     const { id } = adventureNpcsRoute.useParams();
     return <NPCRosterPage adventureId={id} />;
@@ -190,9 +221,8 @@ const adventureNpcsRoute = createRoute({
 });
 
 const adventurePresetsRoute = createRoute({
-  getParentRoute: () => shellRoute,
+  getParentRoute: () => protectedRoute,
   path: '/adventures/$id/presets',
-  beforeLoad: requireAuth,
   component: function AdventurePresetsRoute() {
     const { id } = adventurePresetsRoute.useParams();
     return <KidsPresetsPage adventureId={id} />;
@@ -202,9 +232,8 @@ const adventurePresetsRoute = createRoute({
 // ── Session routes ────────────────────────────────────────────────────────────
 
 const adventureSessionsRoute = createRoute({
-  getParentRoute: () => shellRoute,
+  getParentRoute: () => protectedRoute,
   path: '/adventures/$id/sessions',
-  beforeLoad: requireAuth,
   component: function AdventureSessionsRoute() {
     const { id } = adventureSessionsRoute.useParams();
     return <SessionLobbyPage adventureId={id} />;
@@ -212,9 +241,8 @@ const adventureSessionsRoute = createRoute({
 });
 
 const dmSessionRoute = createRoute({
-  getParentRoute: () => shellRoute,
+  getParentRoute: () => protectedRoute,
   path: '/sessions/$id/dm',
-  beforeLoad: requireAuth,
   component: function DmSessionRoute() {
     const { id } = dmSessionRoute.useParams();
     return <DmSessionPage sessionId={id} />;
@@ -222,12 +250,10 @@ const dmSessionRoute = createRoute({
 });
 
 const playerSessionRoute = createRoute({
-  getParentRoute: () => shellRoute,
+  getParentRoute: () => protectedRoute,
   path: '/sessions/$id/play',
-  beforeLoad: requireAuth,
   component: function PlayerSessionRoute() {
     const { id } = playerSessionRoute.useParams();
-    // characterId passed via search param; default to empty string
     return <PlayerSessionPage sessionId={id} characterId="" />;
   },
 });
@@ -327,19 +353,21 @@ const routeTree = rootRoute.addChildren([
   registerRoute,
   shellRoute.addChildren([
     indexRoute,
-    dashboardRoute,
-    characterNewRoute,
-    characterDetailRoute,
-    characterLevelUpRoute,
-    adventureNewRoute,
-    adventureDetailRoute,
-    adventureScenesRoute,
-    adventureSettingsRoute,
-    adventureNpcsRoute,
-    adventurePresetsRoute,
-    adventureSessionsRoute,
-    dmSessionRoute,
-    playerSessionRoute,
+    protectedRoute.addChildren([
+      dashboardRoute,
+      characterNewRoute,
+      characterDetailRoute,
+      characterLevelUpRoute,
+      adventureNewRoute,
+      adventureDetailRoute,
+      adventureScenesRoute,
+      adventureSettingsRoute,
+      adventureNpcsRoute,
+      adventurePresetsRoute,
+      adventureSessionsRoute,
+      dmSessionRoute,
+      playerSessionRoute,
+    ]),
     srdRoute,
     srdSpeciesRoute,
     srdClassesRoute,

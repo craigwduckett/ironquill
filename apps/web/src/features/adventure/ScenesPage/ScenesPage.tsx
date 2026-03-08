@@ -207,7 +207,7 @@ export function ScenesPage({ adventureId }: Props) {
   }
 
   return (
-    <div className={styles.page}>
+    <div className={viewMode === 'flow' ? styles.pageFlow : styles.page}>
       <div className={styles.header}>
         <Link to="/adventures/$id" params={{ id: adventureId }} className={styles.back}>
           ← Adventure overview

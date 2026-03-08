@@ -9,8 +9,12 @@ type AuthUser = {
 type AuthState = {
   accessToken: string | null;
   user: AuthUser | null;
+  // True while the initial GET /auth/me is in-flight. Route guards must
+  // wait for this to settle before deciding to redirect to /login.
+  isRestoring: boolean;
   setAuth: (token: string, user: AuthUser) => void;
   clearAuth: () => void;
+  setRestoring: (value: boolean) => void;
 };
 
 // In-memory only — no localStorage persistence.
@@ -20,6 +24,8 @@ type AuthState = {
 export const useAuthStore = create<AuthState>()((set) => ({
   accessToken: null,
   user: null,
+  isRestoring: true,
   setAuth: (accessToken, user) => set({ accessToken, user }),
-  clearAuth: () => set({ accessToken: null, user: null }),
+  clearAuth: () => set({ accessToken: null, user: null, isRestoring: false }),
+  setRestoring: (value) => set({ isRestoring: value }),
 }));

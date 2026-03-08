@@ -13,7 +13,7 @@ import type {
   SceneNpcUpdateInput,
   SceneUpdateInput,
 } from '@ironquill/shared';
-import { and, eq, inArray } from 'drizzle-orm';
+import { and, eq } from 'drizzle-orm';
 import { db } from '../db/client.js';
 import {
   adventurePlayers,
@@ -197,14 +197,18 @@ export async function removeScene(
 
 export async function listConnections(adventureId: string, userId: string) {
   await assertOwner(adventureId, userId);
-  const adventureScenes = await db
-    .select({ id: scenes.id })
-    .from(scenes)
+  return db
+    .select({
+      id: sceneConnections.id,
+      fromSceneId: sceneConnections.fromSceneId,
+      toSceneId: sceneConnections.toSceneId,
+      label: sceneConnections.label,
+      conditionNotes: sceneConnections.conditionNotes,
+      createdAt: sceneConnections.createdAt,
+    })
+    .from(sceneConnections)
+    .innerJoin(scenes, eq(sceneConnections.fromSceneId, scenes.id))
     .where(eq(scenes.adventureId, adventureId));
-  const sceneIds = adventureScenes.map((s) => s.id);
-  if (sceneIds.length === 0) return [];
-
-  return db.select().from(sceneConnections).where(inArray(sceneConnections.fromSceneId, sceneIds));
 }
 
 export async function createConnection(
@@ -239,14 +243,20 @@ export async function removeConnection(
 
 export async function listNpcs(adventureId: string, userId: string) {
   await assertOwner(adventureId, userId);
-  const adventureScenes = await db
-    .select({ id: scenes.id })
-    .from(scenes)
+  return db
+    .select({
+      id: sceneNpcs.id,
+      sceneId: sceneNpcs.sceneId,
+      monsterId: sceneNpcs.monsterId,
+      customName: sceneNpcs.customName,
+      customHpMax: sceneNpcs.customHpMax,
+      notes: sceneNpcs.notes,
+      createdAt: sceneNpcs.createdAt,
+      updatedAt: sceneNpcs.updatedAt,
+    })
+    .from(sceneNpcs)
+    .innerJoin(scenes, eq(sceneNpcs.sceneId, scenes.id))
     .where(eq(scenes.adventureId, adventureId));
-  const sceneIds = adventureScenes.map((s) => s.id);
-  if (sceneIds.length === 0) return [];
-
-  return db.select().from(sceneNpcs).where(inArray(sceneNpcs.sceneId, sceneIds));
 }
 
 export async function createNpc(

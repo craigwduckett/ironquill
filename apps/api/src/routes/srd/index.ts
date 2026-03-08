@@ -1,19 +1,7 @@
-import { and, eq, gte, ilike, lte } from 'drizzle-orm';
 import type { FastifyPluginAsync } from 'fastify';
 import type { ZodTypeProvider } from 'fastify-type-provider-zod';
 import { z } from 'zod';
-import { db } from '../../db/client.js';
-import {
-  srdBackgrounds,
-  srdClasses,
-  srdConditions,
-  srdFeats,
-  srdItems,
-  srdMonsters,
-  srdRules,
-  srdSpecies,
-  srdSpells,
-} from '../../db/schema/srd.js';
+import * as srdService from '../../services/srd.js';
 
 const IdParamSchema = z.object({ id: z.string().uuid() });
 
@@ -62,136 +50,83 @@ const srdRoutes: FastifyPluginAsync = async (fastify) => {
   // Response includes `displayTerm` ('Race' | 'Species') so the UI can label
   // this concept correctly per edition without branching on the URL.
   app.get('/species', { schema: { querystring: EditionQuerySchema } }, async (request) => {
-    const edition = request.query.edition ?? '2024';
-    return db
-      .select()
-      .from(srdSpecies)
-      .where(eq(srdSpecies.sourceEdition, edition))
-      .orderBy(srdSpecies.name);
+    return srdService.listSpecies(request.query.edition ?? '2024');
   });
 
   app.get('/species/:id', { schema: { params: IdParamSchema } }, async (request) => {
-    const rows = await db.select().from(srdSpecies).where(eq(srdSpecies.id, request.params.id));
-    return rows[0] ?? null;
+    return srdService.getSpeciesById(request.params.id);
   });
 
   // ── Classes ───────────────────────────────────────────────────────────────
   app.get('/classes', { schema: { querystring: EditionQuerySchema } }, async (request) => {
-    const edition = request.query.edition ?? '2024';
-    return db
-      .select()
-      .from(srdClasses)
-      .where(eq(srdClasses.sourceEdition, edition))
-      .orderBy(srdClasses.name);
+    return srdService.listClasses(request.query.edition ?? '2024');
   });
 
   app.get('/classes/:id', { schema: { params: IdParamSchema } }, async (request) => {
-    const rows = await db.select().from(srdClasses).where(eq(srdClasses.id, request.params.id));
-    return rows[0] ?? null;
+    return srdService.getClassById(request.params.id);
   });
 
   // ── Backgrounds ───────────────────────────────────────────────────────────
   app.get('/backgrounds', { schema: { querystring: EditionQuerySchema } }, async (request) => {
-    const edition = request.query.edition ?? '2024';
-    return db
-      .select()
-      .from(srdBackgrounds)
-      .where(eq(srdBackgrounds.sourceEdition, edition))
-      .orderBy(srdBackgrounds.name);
+    return srdService.listBackgrounds(request.query.edition ?? '2024');
   });
 
   // ── Spells ────────────────────────────────────────────────────────────────
   app.get('/spells', { schema: { querystring: SpellQuerySchema } }, async (request) => {
     const q = request.query;
-    const edition = q.edition ?? '2024';
-    const conditions = [eq(srdSpells.sourceEdition, edition)];
-    if (q.name) conditions.push(ilike(srdSpells.name, `%${q.name}%`));
-    if (q.level !== undefined) conditions.push(eq(srdSpells.level, q.level));
-    if (q.school) conditions.push(ilike(srdSpells.school, q.school));
-    if (q.concentration !== undefined)
-      conditions.push(eq(srdSpells.concentration, q.concentration === 'true'));
-    if (q.ritual !== undefined) conditions.push(eq(srdSpells.ritual, q.ritual === 'true'));
-
-    return db
-      .select()
-      .from(srdSpells)
-      .where(and(...conditions))
-      .orderBy(srdSpells.level, srdSpells.name);
+    return srdService.listSpells({
+      edition: q.edition ?? '2024',
+      name: q.name,
+      level: q.level,
+      school: q.school,
+      concentration: q.concentration !== undefined ? q.concentration === 'true' : undefined,
+      ritual: q.ritual !== undefined ? q.ritual === 'true' : undefined,
+    });
   });
 
   app.get('/spells/:id', { schema: { params: IdParamSchema } }, async (request) => {
-    const rows = await db.select().from(srdSpells).where(eq(srdSpells.id, request.params.id));
-    return rows[0] ?? null;
+    return srdService.getSpellById(request.params.id);
   });
 
   // ── Monsters ──────────────────────────────────────────────────────────────
   app.get('/monsters', { schema: { querystring: MonsterQuerySchema } }, async (request) => {
     const q = request.query;
-    const edition = q.edition ?? '2024';
-    const conditions = [eq(srdMonsters.sourceEdition, edition)];
-    if (q.name) conditions.push(ilike(srdMonsters.name, `%${q.name}%`));
-    if (q.crMin !== undefined) conditions.push(gte(srdMonsters.cr, q.crMin));
-    if (q.crMax !== undefined) conditions.push(lte(srdMonsters.cr, q.crMax));
-    if (q.type) conditions.push(ilike(srdMonsters.type, q.type));
-    if (q.size) conditions.push(eq(srdMonsters.size, q.size));
-
-    return db
-      .select()
-      .from(srdMonsters)
-      .where(and(...conditions))
-      .orderBy(srdMonsters.cr, srdMonsters.name);
+    return srdService.listMonsters({
+      edition: q.edition ?? '2024',
+      name: q.name,
+      crMin: q.crMin,
+      crMax: q.crMax,
+      type: q.type,
+      size: q.size,
+    });
   });
 
   app.get('/monsters/:id', { schema: { params: IdParamSchema } }, async (request) => {
-    const rows = await db.select().from(srdMonsters).where(eq(srdMonsters.id, request.params.id));
-    return rows[0] ?? null;
+    return srdService.getMonsterById(request.params.id);
   });
 
   // ── Items ─────────────────────────────────────────────────────────────────
   app.get('/items', { schema: { querystring: EditionQuerySchema } }, async (request) => {
-    const edition = request.query.edition ?? '2024';
-    return db
-      .select()
-      .from(srdItems)
-      .where(eq(srdItems.sourceEdition, edition))
-      .orderBy(srdItems.name);
+    return srdService.listItems(request.query.edition ?? '2024');
   });
 
   app.get('/items/:id', { schema: { params: IdParamSchema } }, async (request) => {
-    const rows = await db.select().from(srdItems).where(eq(srdItems.id, request.params.id));
-    return rows[0] ?? null;
+    return srdService.getItemById(request.params.id);
   });
 
   // ── Conditions ────────────────────────────────────────────────────────────
   app.get('/conditions', { schema: { querystring: EditionQuerySchema } }, async (request) => {
-    const edition = request.query.edition ?? '2024';
-    return db
-      .select()
-      .from(srdConditions)
-      .where(eq(srdConditions.sourceEdition, edition))
-      .orderBy(srdConditions.name);
+    return srdService.listConditions(request.query.edition ?? '2024');
   });
 
   app.get('/conditions/:id', { schema: { params: IdParamSchema } }, async (request) => {
-    const rows = await db
-      .select()
-      .from(srdConditions)
-      .where(eq(srdConditions.id, request.params.id));
-    return rows[0] ?? null;
+    return srdService.getConditionById(request.params.id);
   });
 
   // ── Rules ─────────────────────────────────────────────────────────────────
   app.get('/rules', { schema: { querystring: RulesQuerySchema } }, async (request) => {
     const { q, category, edition } = request.query;
-    const activeEdition = edition ?? '2024';
-    const conditions = [eq(srdRules.sourceEdition, activeEdition)];
-    if (category) conditions.push(eq(srdRules.category, category));
-    if (q) conditions.push(ilike(srdRules.topic, `%${q}%`));
-    return db
-      .select()
-      .from(srdRules)
-      .where(and(...conditions))
-      .orderBy(srdRules.category, srdRules.topic);
+    return srdService.listRules({ edition: edition ?? '2024', q, category });
   });
 
   // ── Feats ─────────────────────────────────────────────────────────────────
@@ -199,20 +134,11 @@ const srdRoutes: FastifyPluginAsync = async (fastify) => {
   // Fighting Style feats, and Epic Boon feats.
   app.get('/feats', { schema: { querystring: FeatQuerySchema } }, async (request) => {
     const { name, type, edition } = request.query;
-    const activeEdition = edition ?? '2024';
-    const conditions = [eq(srdFeats.sourceEdition, activeEdition)];
-    if (name) conditions.push(ilike(srdFeats.name, `%${name}%`));
-    if (type) conditions.push(eq(srdFeats.type, type));
-    return db
-      .select()
-      .from(srdFeats)
-      .where(and(...conditions))
-      .orderBy(srdFeats.type, srdFeats.name);
+    return srdService.listFeats({ edition: edition ?? '2024', name, type });
   });
 
   app.get('/feats/:id', { schema: { params: IdParamSchema } }, async (request) => {
-    const rows = await db.select().from(srdFeats).where(eq(srdFeats.id, request.params.id));
-    return rows[0] ?? null;
+    return srdService.getFeatById(request.params.id);
   });
 };
 
