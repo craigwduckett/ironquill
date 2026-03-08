@@ -2,22 +2,19 @@ import '@xyflow/react/dist/style.css';
 
 import { useQueryClient } from '@tanstack/react-query';
 import {
+  applyNodeChanges,
   Background,
   Controls,
   type Edge,
-  Handle,
+  type EdgeChange,
   MarkerType,
   MiniMap,
   type Node,
-  type NodeProps,
+  type NodeChange,
   type OnConnect,
-  type OnNodeDrag,
-  Position,
   ReactFlow,
-  useEdgesState,
-  useNodesState,
 } from '@xyflow/react';
-import { useCallback, useEffect } from 'react';
+import { useCallback, useRef, useState } from 'react';
 import { api } from '../../../lib/api.js';
 import { useAuthStore } from '../../../stores/auth.js';
 import {
@@ -28,48 +25,15 @@ import {
   useScenes,
 } from '../hooks/useAdventures.js';
 import styles from './SceneFlowGraph.module.css';
+import { NODE_TYPES } from './SceneNode.js';
 
 type Props = { adventureId: string };
-
-type SceneNodeData = { scene: Scene };
-
-const SCENE_TYPE_COLOURS: Record<Scene['sceneType'], string> = {
-  exploration: '#3b82f6',
-  social: '#a855f7',
-  combat: '#ef4444',
-  puzzle: '#f59e0b',
-  rest: '#22c55e',
-  transition: '#6b7280',
-};
-
-function SceneNodeComponent({ data }: NodeProps<Node<SceneNodeData>>) {
-  const colour = SCENE_TYPE_COLOURS[data.scene.sceneType];
-
-  return (
-    <div className={styles.sceneNode}>
-      <Handle type="target" position={Position.Top} />
-      <div className={styles.sceneNodeHeader}>
-        <span className={styles.sceneNodeOrder}>{data.scene.orderIndex + 1}</span>
-        <span className={styles.sceneNodeBadge} style={{ backgroundColor: colour }}>
-          {data.scene.sceneType}
-        </span>
-      </div>
-      <p className={styles.sceneNodeTitle}>{data.scene.title}</p>
-      <Handle type="source" position={Position.Bottom} />
-    </div>
-  );
-}
-
-const nodeTypes = { sceneNode: SceneNodeComponent };
 
 function buildNodes(scenes: Scene[]): Node[] {
   return scenes.map((scene, index) => ({
     id: scene.id,
     type: 'sceneNode',
-    position: {
-      x: scene.positionX ?? index * 220,
-      y: scene.positionY ?? 0,
-    },
+    position: { x: scene.positionX ?? 0, y: scene.positionY ?? index * 200 },
     data: { scene },
   }));
 }
@@ -81,7 +45,7 @@ function buildEdges(connections: SceneConnection[]): Edge[] {
     target: conn.toSceneId,
     label: conn.label ?? undefined,
     markerEnd: { type: MarkerType.ArrowClosed },
-    style: { stroke: 'var(--color-accent)', strokeWidth: 2 },
+    style: { stroke: '#c8a96e', strokeWidth: 2 },
   }));
 }
 
@@ -91,21 +55,31 @@ export function SceneFlowGraph({ adventureId }: Props) {
   const queryClient = useQueryClient();
   const token = useAuthStore((s) => s.accessToken);
 
-  const [nodes, setNodes, onNodesChange] = useNodesState<Node>([]);
-  const [edges, setEdges] = useEdgesState<Edge>([]);
-
-  // Keep nodes and edges in sync with server data — these are the sole
-  // source of truth; we never let React Flow manage deletions locally.
-  useEffect(() => {
+  // Nodes: local state so drag positions are preserved between renders.
+  // Resets when scene IDs change (scene added/deleted).
+  const [nodes, setNodes] = useState<Node[]>(() => buildNodes(scenes));
+  const prevSceneKeyRef = useRef(scenes.map((s) => s.id).join(','));
+  const currentSceneKey = scenes.map((s) => s.id).join(',');
+  if (currentSceneKey !== prevSceneKeyRef.current) {
+    prevSceneKeyRef.current = currentSceneKey;
     setNodes(buildNodes(scenes));
-  }, [scenes, setNodes]);
+  }
 
-  useEffect(() => {
-    setEdges(buildEdges(connections));
-  }, [connections, setEdges]);
+  // Edges are derived directly from server data on every render — no local
+  // state or useEffect needed. React Flow receives up-to-date edges each render.
+  const edges: Edge[] = buildEdges(connections);
 
-  const handleNodeDragStop: OnNodeDrag = useCallback(
-    (_event, node) => {
+  const onNodesChange = useCallback(
+    (changes: NodeChange[]) => setNodes((nds) => applyNodeChanges(changes, nds)),
+    [],
+  );
+
+  // Required by React Flow v12's controlled-component contract.
+  // Edges are server-derived so local changes (selection etc.) are dropped.
+  const onEdgesChange = useCallback((_changes: EdgeChange[]) => {}, []);
+
+  const handleNodeDragStop = useCallback(
+    (_event: React.MouseEvent, node: Node) => {
       void api
         .patch(
           `/adventures/${adventureId}/scenes/${node.id}`,
@@ -123,12 +97,11 @@ export function SceneFlowGraph({ adventureId }: Props) {
 
   const handleConnect: OnConnect = useCallback(
     (connection) => {
-      // Prevent duplicate A→B connections — the same pair already exists.
+      if (!connection.source || !connection.target) return;
       const alreadyExists = connections.some(
         (c) => c.fromSceneId === connection.source && c.toSceneId === connection.target,
       );
       if (alreadyExists) return;
-
       void api
         .post<SceneConnection>(
           `/adventures/${adventureId}/scenes/${connection.source}/connections`,
@@ -147,12 +120,14 @@ export function SceneFlowGraph({ adventureId }: Props) {
   return (
     <div className={styles.container}>
       <ReactFlow
+        colorMode="dark"
         nodes={nodes}
         edges={edges}
         onNodesChange={onNodesChange}
-        onNodeDragStop={handleNodeDragStop}
+        onEdgesChange={onEdgesChange}
         onConnect={handleConnect}
-        nodeTypes={nodeTypes}
+        onNodeDragStop={handleNodeDragStop}
+        nodeTypes={NODE_TYPES}
         fitView
       >
         <Background />

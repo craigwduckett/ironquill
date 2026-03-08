@@ -5,6 +5,25 @@
   border: 1px solid var(--color-border);
   border-radius: var(--radius-lg);
   overflow: hidden;
+
+  /* Override React Flow's light-mode defaults to match the dark theme */
+  --xy-background-color: var(--color-bg);
+  --xy-background-pattern-color: var(--color-border-subtle);
+  --xy-node-background-color: var(--color-surface);
+  --xy-node-border-color: var(--color-border);
+  --xy-node-color: var(--color-text-primary);
+  --xy-edge-stroke: var(--color-accent);
+  --xy-controls-background-color: var(--color-surface-raised);
+  --xy-controls-border-color: var(--color-border);
+  --xy-controls-button-background-color: var(--color-surface-raised);
+  --xy-controls-button-background-color-hover: var(--color-surface);
+  --xy-controls-button-color: var(--color-text-primary);
+  --xy-controls-button-color-hover: var(--color-accent);
+  --xy-controls-button-border-color: var(--color-border);
+  --xy-minimap-background-color: var(--color-surface-raised);
+  --xy-minimap-mask-background-color: rgba(15, 15, 19, 0.7);
+  --xy-minimap-node-background-color: var(--color-surface);
+  --xy-minimap-node-stroke-color: var(--color-border);
 }
 
 .sceneNode {

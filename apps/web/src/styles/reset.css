@@ -28,6 +28,14 @@ svg {
   max-width: 100%;
 }
 
+/* React Flow's internal SVGs and absolutely-positioned layers must not be
+   width-constrained by the global svg reset above */
+.react-flow svg,
+.react-flow__edgelabel-renderer,
+.react-flow__viewport-portal {
+  max-width: none;
+}
+
 button {
   cursor: pointer;
   font: inherit;
