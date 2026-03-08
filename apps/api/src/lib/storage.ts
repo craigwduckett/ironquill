@@ -73,3 +73,7 @@ export async function getPresignedDownloadUrl(key: string, expiresIn = 3600): Pr
 export function portraitKey(userId: string, characterId: string, ext: string): string {
   return `portraits/${userId}/${characterId}.${ext}`;
 }
+
+export function sceneBackgroundKey(adventureId: string, sceneId: string, ext: string): string {
+  return `scene-bg/${adventureId}/${sceneId}.${ext}`;
+}

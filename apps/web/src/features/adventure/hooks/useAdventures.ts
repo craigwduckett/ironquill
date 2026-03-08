@@ -258,6 +258,22 @@ export function useDeleteScene(adventureId: string) {
   });
 }
 
+export function useSceneBackgroundUploadUrl(adventureId: string, sceneId: string) {
+  const token = useAuthStore((s) => s.accessToken);
+  return useMutation<
+    { uploadUrl: string; publicUrl: string; key: string },
+    Error,
+    { contentType: 'image/jpeg' | 'image/png' | 'image/webp' }
+  >({
+    mutationFn: (data) =>
+      api.post<{ uploadUrl: string; publicUrl: string; key: string }>(
+        `/adventures/${adventureId}/scenes/${sceneId}/background/upload-url`,
+        data,
+        token ?? undefined,
+      ),
+  });
+}
+
 // ── Scene connection hooks ────────────────────────────────────────────────────
 
 export function useConnections(adventureId: string) {

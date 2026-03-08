@@ -201,3 +201,283 @@
 .addForm .input {
   flex: 1;
 }
+
+/* ── Scene banner (background image strip on view card) ───────────────────── */
+
+.sceneBanner {
+  height: 3rem;
+  background-size: cover;
+  background-position: center;
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+}
+
+/* ── Reorder buttons ──────────────────────────────────────────────────────── */
+
+.reorderButtons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  flex-shrink: 0;
+}
+
+.reorderBtn {
+  background: transparent;
+  border: none;
+  color: var(--color-text-secondary);
+  font-size: 10px;
+  line-height: 1;
+  padding: 2px 4px;
+  cursor: pointer;
+  border-radius: var(--radius-sm);
+  transition: color 0.1s, background 0.1s;
+}
+
+.reorderBtn:hover:not(:disabled) {
+  color: var(--color-text-primary);
+  background: var(--color-surface);
+}
+
+.reorderBtn:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+
+/* ── Loot badge (view row) ────────────────────────────────────────────────── */
+
+.lootBadge {
+  font-size: var(--text-xs);
+  font-weight: var(--font-medium);
+  color: var(--color-text-secondary);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: 1px 6px;
+}
+
+/* ── Loot editor ──────────────────────────────────────────────────────────── */
+
+.lootEditor {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  border-top: 1px solid var(--color-border);
+  padding-top: var(--space-3);
+}
+
+.lootHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.lootAddBtn {
+  background: transparent;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  color: var(--color-text-secondary);
+  font-size: var(--text-sm);
+  padding: 2px var(--space-2);
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s;
+}
+
+.lootAddBtn:hover {
+  color: var(--color-accent);
+  border-color: var(--color-accent);
+}
+
+.lootEmpty {
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+  font-style: italic;
+  margin: 0;
+}
+
+.lootRow {
+  display: flex;
+  gap: var(--space-2);
+  align-items: center;
+}
+
+.lootTypeSelect {
+  padding: var(--space-1) var(--space-2);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  color: var(--color-text-primary);
+  font-size: var(--text-sm);
+  flex-shrink: 0;
+  width: 80px;
+}
+
+.lootItemName {
+  flex: 1;
+  padding: var(--space-1) var(--space-2);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  color: var(--color-text-primary);
+  font-size: var(--text-sm);
+}
+
+.lootQty {
+  width: 64px;
+  padding: var(--space-1) var(--space-2);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  color: var(--color-text-primary);
+  font-size: var(--text-sm);
+  text-align: right;
+  flex-shrink: 0;
+}
+
+.lootRemoveBtn {
+  background: transparent;
+  border: none;
+  color: var(--color-text-secondary);
+  font-size: var(--text-sm);
+  cursor: pointer;
+  padding: 4px;
+  border-radius: var(--radius-sm);
+  flex-shrink: 0;
+  transition: color 0.15s;
+}
+
+.lootRemoveBtn:hover {
+  color: #ef4444;
+}
+
+/* ── Background picker ────────────────────────────────────────────────────── */
+
+.bgSection {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  border-top: 1px solid var(--color-border);
+  padding-top: var(--space-3);
+}
+
+.bgPreview {
+  position: relative;
+  height: 80px;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+}
+
+.bgPreviewImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.bgClearBtn {
+  position: absolute;
+  top: var(--space-1);
+  right: var(--space-1);
+  background: rgba(0, 0, 0, 0.6);
+  border: none;
+  border-radius: var(--radius-sm);
+  color: #fff;
+  font-size: var(--text-xs);
+  padding: 2px 8px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.bgClearBtn:hover {
+  background: rgba(0, 0, 0, 0.85);
+}
+
+.bgPicker {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: var(--space-2);
+}
+
+.bgSwatch {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  background: transparent;
+  border: 2px solid transparent;
+  border-radius: var(--radius-md);
+  padding: 2px;
+  cursor: pointer;
+  transition: border-color 0.15s;
+}
+
+.bgSwatch:hover {
+  border-color: var(--color-border);
+}
+
+.bgSwatchActive {
+  border-color: var(--color-accent);
+}
+
+.bgSwatchImg {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  border-radius: var(--radius-sm);
+  display: block;
+}
+
+.bgSwatchLabel {
+  font-size: 10px;
+  color: var(--color-text-secondary);
+  text-align: center;
+  line-height: 1.2;
+}
+
+.bgUpload {
+  display: flex;
+  gap: var(--space-2);
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.bgUploadLabel {
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: var(--space-1) var(--space-3);
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s;
+}
+
+.bgUploadLabel:hover {
+  color: var(--color-accent);
+  border-color: var(--color-accent);
+}
+
+.bgFileInput {
+  display: none;
+}
+
+.bgDefaultBtn {
+  background: transparent;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  color: var(--color-text-secondary);
+  font-size: var(--text-sm);
+  padding: var(--space-1) var(--space-3);
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s;
+}
+
+.bgDefaultBtn:hover {
+  color: var(--color-accent);
+  border-color: var(--color-accent);
+}
+
+.bgError {
+  font-size: var(--text-sm);
+  color: #ef4444;
+  margin: 0;
+}

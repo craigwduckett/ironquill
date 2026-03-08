@@ -15,6 +15,7 @@ import {
 import type { FastifyPluginAsync } from 'fastify';
 import type { ZodTypeProvider } from 'fastify-type-provider-zod';
 import { z } from 'zod';
+import * as storage from '../../lib/storage.js';
 import * as adventureService from '../../services/adventures.js';
 
 const IdParam = z.object({ id: z.string().uuid() });
@@ -165,6 +166,29 @@ const adventureRoutes: FastifyPluginAsync = async (fastify) => {
         request.user.sub,
       );
       return reply.code(204).send();
+    },
+  );
+
+  // Returns a presigned URL for direct client-to-storage scene background upload.
+  // The client uploads directly to R2/MinIO — binary never passes through the API.
+  app.post(
+    '/:id/scenes/:sceneId/background/upload-url',
+    {
+      preHandler: [app.authenticate],
+      schema: {
+        params: SceneParam,
+        body: z.object({
+          contentType: z.enum(['image/jpeg', 'image/png', 'image/webp']),
+        }),
+      },
+    },
+    async (request) => {
+      await adventureService.getById(request.params.id, request.user.sub);
+      const ext = request.body.contentType.split('/')[1] ?? 'jpg';
+      const key = storage.sceneBackgroundKey(request.params.id, request.params.sceneId, ext);
+      const uploadUrl = await storage.getPresignedUploadUrl(key, request.body.contentType);
+      const publicUrl = `${process.env.STORAGE_PUBLIC_URL}/${key}`;
+      return { uploadUrl, publicUrl, key };
     },
   );
 
