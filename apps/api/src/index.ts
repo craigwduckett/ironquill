@@ -24,9 +24,12 @@ app.setSerializerCompiler(serializerCompiler);
 
 // CORS
 await app.register(cors, {
-  // In dev, allow any localhost port — Vite may auto-increment if 5173 is busy.
+  // In dev, allow the Vite dev server and the API port only.
   // In production, lock to the exact deployed origin.
-  origin: env.NODE_ENV === 'production' ? ['https://ironquill.app'] : /^http:\/\/localhost(:\d+)?$/,
+  origin:
+    env.NODE_ENV === 'production'
+      ? ['https://ironquill.app']
+      : ['http://localhost:5173', 'http://localhost:3000'],
   credentials: true,
 });
 

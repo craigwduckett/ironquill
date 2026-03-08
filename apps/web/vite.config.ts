@@ -10,10 +10,11 @@ export default defineConfig({
       '/api': {
         target: 'http://localhost:3000',
         rewrite: (path) => path.replace(/^\/api/, ''),
-        // Rewrite cookie domain/path so the browser accepts Set-Cookie
-        // responses from the API (port 3000) when the page is on port 5173.
+        // Rewrite cookie domain so the browser accepts Set-Cookie from port 3000.
         cookieDomainRewrite: 'localhost',
-        // Forward the correct Host header so Fastify CORS/cookie logic works.
+        // Rewrite cookie path: the API sets path=/auth but the browser sees
+        // /api/auth/... — without this rewrite the browser never sends the cookie.
+        cookiePathRewrite: { '/auth': '/api/auth' },
         changeOrigin: true,
       },
     },

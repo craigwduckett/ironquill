@@ -34,43 +34,8 @@ export function useRestoreSession() {
       try {
         const data = await api.get<AuthResponse>('/auth/me');
         setAuth(data.accessToken, data.user);
-
-        // #region agent log
-        fetch('http://127.0.0.1:7466/ingest/1480f3c7-9e6a-44cf-9fa6-0cd75c14539e', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'X-Debug-Session-Id': '6e1f58',
-          },
-          body: JSON.stringify({
-            sessionId: '6e1f58',
-            location: 'useAuth.ts:queryFn',
-            message: '/auth/me SUCCESS',
-            data: { hasToken: !!data.accessToken, user: data.user?.email },
-            timestamp: Date.now(),
-          }),
-        }).catch(() => {});
-        // #endregion
-
         return data;
-      } catch (err) {
-        // #region agent log
-        fetch('http://127.0.0.1:7466/ingest/1480f3c7-9e6a-44cf-9fa6-0cd75c14539e', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'X-Debug-Session-Id': '6e1f58',
-          },
-          body: JSON.stringify({
-            sessionId: '6e1f58',
-            location: 'useAuth.ts:queryFn',
-            message: '/auth/me FAILED',
-            data: { error: String(err) },
-            timestamp: Date.now(),
-          }),
-        }).catch(() => {});
-        // #endregion
-
+      } catch {
         return null;
       } finally {
         setRestoring(false);
