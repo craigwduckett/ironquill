@@ -13,8 +13,9 @@ import {
 } from '../hooks/useAdventures.js';
 import { SceneFlowGraph } from '../SceneFlowGraph/SceneFlowGraph.js';
 import {
+  BACKGROUND_LIBRARY,
+  type BackgroundTag,
   DEFAULT_BACKGROUND_IDS,
-  DEFAULT_BACKGROUNDS,
   resolveBackgroundSrc,
 } from '../utils/sceneBackground.js';
 import styles from './ScenesPage.module.css';
@@ -142,6 +143,32 @@ function LootEditor({
   );
 }
 
+const ALL_TAGS: BackgroundTag[] = [
+  'environment',
+  'interior',
+  'night',
+  'weather',
+  'abstract',
+  'combat',
+  'social',
+  'exploration',
+  'rest',
+  'puzzle',
+];
+
+const TAG_LABELS: Record<BackgroundTag, string> = {
+  environment: 'Outdoor',
+  interior: 'Indoor',
+  night: 'Night',
+  weather: 'Weather',
+  abstract: 'Abstract',
+  combat: 'Combat',
+  social: 'Social',
+  exploration: 'Exploration',
+  rest: 'Rest',
+  puzzle: 'Puzzle',
+};
+
 function BackgroundPicker({
   adventureId,
   sceneId,
@@ -159,8 +186,18 @@ function BackgroundPicker({
   const getUploadUrl = useSceneBackgroundUploadUrl(adventureId, sceneId);
   const [uploading, setUploading] = useState(false);
   const [uploadError, setUploadError] = useState<string | null>(null);
+  const [search, setSearch] = useState('');
+  const [activeTag, setActiveTag] = useState<BackgroundTag | null>(null);
 
   const currentSrc = resolveBackgroundSrc(backgroundImageId);
+
+  const filtered = BACKGROUND_LIBRARY.filter((b) => {
+    const matchesTag = activeTag ? b.tags.includes(activeTag) : true;
+    const matchesSearch = search.trim()
+      ? b.label.toLowerCase().includes(search.trim().toLowerCase())
+      : true;
+    return matchesTag && matchesSearch;
+  });
 
   async function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
@@ -196,6 +233,7 @@ function BackgroundPicker({
   return (
     <div className={styles.bgSection}>
       <span className={styles.label}>Background image</span>
+
       {currentSrc && (
         <div className={styles.bgPreview}>
           <img src={currentSrc} alt="Scene background preview" className={styles.bgPreviewImg} />
@@ -209,51 +247,83 @@ function BackgroundPicker({
           </button>
         </div>
       )}
-      <div className={styles.bgPicker}>
-        {SCENE_TYPES.map((type) => (
-          <button
-            type="button"
-            key={type}
-            className={`${styles.bgSwatch} ${
-              backgroundImageId === DEFAULT_BACKGROUND_IDS[type] ? styles.bgSwatchActive : ''
-            }`}
-            onClick={() => onChange(DEFAULT_BACKGROUND_IDS[type])}
-            title={SCENE_TYPE_LABELS[type]}
-            aria-label={`Use ${SCENE_TYPE_LABELS[type]} default background`}
-            aria-pressed={backgroundImageId === DEFAULT_BACKGROUND_IDS[type]}
-          >
-            <img
-              src={DEFAULT_BACKGROUNDS[type]}
-              alt={SCENE_TYPE_LABELS[type]}
-              className={styles.bgSwatchImg}
-            />
-            <span className={styles.bgSwatchLabel}>{SCENE_TYPE_LABELS[type]}</span>
-          </button>
-        ))}
-      </div>
-      <div className={styles.bgUpload}>
-        <label className={styles.bgUploadLabel}>
-          {uploading ? 'Uploading…' : 'Upload custom image'}
+
+      <div className={styles.bgLibrary}>
+        <div className={styles.bgSearchRow}>
           <input
-            ref={fileRef}
-            type="file"
-            accept="image/jpeg,image/png,image/webp"
-            className={styles.bgFileInput}
-            onChange={(e) => void handleFileChange(e)}
-            disabled={uploading}
+            type="search"
+            className={styles.bgSearchInput}
+            placeholder="Search backgrounds…"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            aria-label="Search background images"
           />
-        </label>
-        {!backgroundImageId && sceneType && (
+          {!backgroundImageId && (
+            <button
+              type="button"
+              className={styles.bgDefaultBtn}
+              onClick={() => onChange(DEFAULT_BACKGROUND_IDS[sceneType])}
+            >
+              Use scene default
+            </button>
+          )}
+        </div>
+
+        <div className={styles.bgTagRow}>
           <button
             type="button"
-            className={styles.bgDefaultBtn}
-            onClick={() => onChange(DEFAULT_BACKGROUND_IDS[sceneType])}
+            className={`${styles.bgTag} ${activeTag === null ? styles.bgTagActive : ''}`}
+            onClick={() => setActiveTag(null)}
           >
-            Use scene-type default
+            All
           </button>
-        )}
+          {ALL_TAGS.map((tag) => (
+            <button
+              key={tag}
+              type="button"
+              className={`${styles.bgTag} ${activeTag === tag ? styles.bgTagActive : ''}`}
+              onClick={() => setActiveTag(activeTag === tag ? null : tag)}
+            >
+              {TAG_LABELS[tag]}
+            </button>
+          ))}
+        </div>
+
+        <div className={styles.bgGrid} role="listbox" aria-label="Background image library">
+          {filtered.map((entry) => (
+            <button
+              key={entry.id}
+              type="button"
+              role="option"
+              aria-selected={backgroundImageId === entry.id}
+              className={`${styles.bgSwatch} ${backgroundImageId === entry.id ? styles.bgSwatchActive : ''}`}
+              onClick={() => onChange(entry.id)}
+              title={entry.label}
+            >
+              <img src={entry.src} alt={entry.label} className={styles.bgSwatchImg} />
+              <span className={styles.bgSwatchLabel}>{entry.label}</span>
+            </button>
+          ))}
+          {filtered.length === 0 && (
+            <p className={styles.bgNoResults}>No backgrounds match your search.</p>
+          )}
+        </div>
+
+        <div className={styles.bgUpload}>
+          <label className={styles.bgUploadLabel}>
+            {uploading ? 'Uploading…' : '+ Upload custom image'}
+            <input
+              ref={fileRef}
+              type="file"
+              accept="image/jpeg,image/png,image/webp"
+              className={styles.bgFileInput}
+              onChange={(e) => void handleFileChange(e)}
+              disabled={uploading}
+            />
+          </label>
+        </div>
+        {uploadError && <p className={styles.bgError}>{uploadError}</p>}
       </div>
-      {uploadError && <p className={styles.bgError}>{uploadError}</p>}
     </div>
   );
 }
