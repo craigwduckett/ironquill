@@ -1,7 +1,7 @@
 .page {
   max-width: 1100px;
   margin: 0 auto;
-  padding: 1.5rem 1rem 3rem;
+  padding: var(--space-6) var(--space-4) var(--space-12);
 }
 
 .topBar {
@@ -12,22 +12,24 @@
 }
 
 .title {
-  font-size: 1.6rem;
+  font-family: var(--font-display);
+  font-size: var(--text-headline-sm);
   font-weight: 700;
   margin: 0;
+  letter-spacing: -0.02em;
 }
 
 .statusBadge {
-  font-size: 0.75rem;
+  font-size: var(--text-label-md);
   font-weight: 700;
-  padding: 0.25rem 0.75rem;
+  padding: var(--space-1) var(--space-3);
   border-radius: 999px;
   letter-spacing: 0.08em;
 }
 
 .statusBadge[data-status="lobby"] {
-  background: var(--color-muted, #9aa3b0);
-  color: #fff;
+  background: var(--color-text-muted);
+  color: var(--color-text-primary);
 }
 .statusBadge[data-status="active"] {
   background: var(--color-success, #27ae60);
@@ -44,19 +46,19 @@
 
 .controls {
   display: flex;
-  gap: 0.75rem;
-  margin-bottom: 1.5rem;
+  gap: var(--space-3);
+  margin-bottom: var(--space-6);
   flex-wrap: wrap;
 }
 
 .primaryBtn {
-  padding: 0.5rem 1.25rem;
-  background: var(--color-primary);
-  color: #fff;
+  padding: var(--space-2) var(--space-5);
+  background: var(--color-accent);
+  color: var(--color-on-primary);
   border: none;
-  border-radius: 6px;
+  border-radius: var(--radius-md);
   cursor: pointer;
-  font-size: 0.9rem;
+  font-size: var(--text-sm);
   font-weight: 600;
 }
 
@@ -69,56 +71,58 @@
 }
 
 .secondaryBtn {
-  padding: 0.5rem 1.25rem;
+  padding: var(--space-2) var(--space-5);
   background: transparent;
-  color: var(--color-primary);
-  border: 1px solid var(--color-primary);
-  border-radius: 6px;
+  color: var(--color-accent);
+  border: none;
+  box-shadow: inset 0 0 0 1px var(--color-accent);
+  border-radius: var(--radius-md);
   cursor: pointer;
-  font-size: 0.9rem;
+  font-size: var(--text-sm);
   font-weight: 600;
 }
 
 .secondaryBtn:hover:not(:disabled) {
-  background: color-mix(in srgb, var(--color-primary) 8%, transparent);
+  background: color-mix(in srgb, var(--color-accent) 8%, transparent);
 }
 
 .dangerBtn {
-  padding: 0.5rem 1.25rem;
+  padding: var(--space-2) var(--space-5);
   background: transparent;
-  color: var(--color-danger, #c0392b);
-  border: 1px solid var(--color-danger, #c0392b);
-  border-radius: 6px;
+  color: var(--color-danger);
+  border: none;
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--color-danger) 60%, transparent);
+  border-radius: var(--radius-md);
   cursor: pointer;
-  font-size: 0.9rem;
+  font-size: var(--text-sm);
   font-weight: 600;
 }
 
 .dangerBtn:hover:not(:disabled) {
-  background: var(--color-danger, #c0392b);
-  color: #fff;
+  background: color-mix(in srgb, var(--color-danger) 20%, var(--color-surface));
+  color: var(--color-text-primary);
 }
 
 .endForm {
   background: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: 8px;
-  padding: 1rem;
-  margin-bottom: 1.5rem;
+  box-shadow: inset 0 0 0 1px var(--color-border-subtle);
+  border-radius: var(--radius-lg);
+  padding: var(--space-4);
+  margin-bottom: var(--space-6);
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: var(--space-3);
 }
 
 .endFormActions {
   display: flex;
-  gap: 0.5rem;
+  gap: var(--space-2);
 }
 
 .grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 1.5rem;
+  gap: var(--space-6);
 }
 
 @media (max-width: 700px) {
@@ -129,50 +133,53 @@
 
 .section {
   background: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: 8px;
-  padding: 1rem;
-  margin-bottom: 1rem;
+  box-shadow: inset 0 0 0 1px var(--color-border-subtle);
+  border-radius: var(--radius-lg);
+  padding: var(--space-4);
+  margin-bottom: var(--space-4);
 }
 
 .sectionHeader {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 0.75rem;
+  margin-bottom: var(--space-3);
 }
 
 .sectionTitle {
-  font-size: 1rem;
+  font-size: var(--text-base);
   font-weight: 600;
-  margin: 0 0 0.75rem;
+  margin: 0 0 var(--space-3);
 }
 
 .label {
-  font-size: 0.85rem;
+  font-size: var(--text-label-md);
   font-weight: 500;
-  color: var(--color-muted);
+  color: var(--color-text-muted);
   display: block;
-  margin-bottom: 0.35rem;
+  margin-bottom: var(--space-1);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
 }
 
 .select,
 .textarea {
   width: 100%;
-  padding: 0.5rem 0.75rem;
+  padding: var(--space-2) var(--space-3);
   background: var(--color-bg);
-  border: 1px solid var(--color-border);
-  border-radius: 6px;
-  font-size: 0.9rem;
+  border: none;
+  border-bottom: 2px solid var(--color-surface-high);
+  border-radius: 0;
+  font-size: var(--text-sm);
   color: inherit;
   box-sizing: border-box;
-  margin-bottom: 0.5rem;
+  margin-bottom: var(--space-2);
 }
 
 .select:focus,
 .textarea:focus {
-  outline: 2px solid var(--color-primary);
-  outline-offset: 1px;
+  outline: none;
+  border-bottom-color: var(--color-accent);
 }
 
 .textarea {
@@ -181,8 +188,8 @@
 }
 
 .muted {
-  color: var(--color-muted);
-  font-size: 0.9rem;
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
 }
 
 .playerList {
@@ -191,21 +198,21 @@
   margin: 0;
   display: flex;
   flex-direction: column;
-  gap: 0.35rem;
+  gap: var(--space-1);
 }
 
 .playerItem {
-  padding: 0.4rem 0.75rem;
+  padding: var(--space-2) var(--space-3);
   background: var(--color-bg);
-  border-radius: 5px;
-  font-size: 0.9rem;
+  border-radius: var(--radius-md);
+  font-size: var(--text-sm);
 }
 
 .initiativeForm {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
-  margin-bottom: 1rem;
+  gap: var(--space-2);
+  margin-bottom: var(--space-4);
 }
 
 .rollList {
@@ -214,19 +221,19 @@
   margin: 0;
   display: flex;
   flex-direction: column;
-  gap: 0.3rem;
+  gap: var(--space-1);
   max-height: 200px;
   overflow-y: auto;
 }
 
 .rollItem {
   display: flex;
-  gap: 0.5rem;
+  gap: var(--space-2);
   align-items: center;
-  font-size: 0.85rem;
-  padding: 0.3rem 0.5rem;
+  font-size: var(--text-sm);
+  padding: var(--space-1) var(--space-2);
   background: var(--color-bg);
-  border-radius: 4px;
+  border-radius: var(--radius-sm);
 }
 
 .rollName {
@@ -235,23 +242,23 @@
 }
 
 .rollType {
-  color: var(--color-muted);
+  color: var(--color-text-muted);
   flex: 1;
 }
 
 .rollResult {
   font-weight: 700;
-  color: var(--color-primary);
+  color: var(--color-accent);
   min-width: 2rem;
   text-align: right;
 }
 
 .backLink {
-  margin-top: 2rem;
+  margin-top: var(--space-8);
 }
 
 .backLink a {
-  color: var(--color-primary);
+  color: var(--color-accent);
   text-decoration: none;
-  font-size: 0.9rem;
+  font-size: var(--text-sm);
 }

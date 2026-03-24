@@ -11,7 +11,7 @@
 }
 
 .badge--default {
-  background: var(--color-surface-raised);
+  background: var(--color-surface-high);
   color: var(--color-text-secondary);
 }
 .badge--accent {
@@ -31,7 +31,7 @@
   color: var(--color-danger);
 }
 .badge--info {
-  background: rgba(92, 158, 224, 0.15);
+  background: var(--color-accent-muted);
   color: var(--color-info);
 }
 

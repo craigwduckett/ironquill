@@ -173,7 +173,7 @@
   height: 80px;
   border-radius: var(--radius-lg);
   background: var(--color-surface-raised);
-  border: 1px solid var(--color-border);
+  box-shadow: inset 0 0 0 1px var(--color-border-subtle);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -269,7 +269,7 @@
   justify-content: space-between;
   align-items: center;
   padding: var(--space-4) var(--space-6);
-  border-top: 1px solid var(--color-border);
+  box-shadow: inset 0 1px 0 var(--color-border-subtle);
   background: var(--color-surface);
   grid-column: 1 / -1;
 }
@@ -305,7 +305,8 @@
 
 .card {
   background: var(--color-surface);
-  border: 2px solid var(--color-border);
+  border: none;
+  box-shadow: inset 0 0 0 1px var(--color-border-subtle);
   border-radius: var(--radius-lg);
   padding: var(--space-4);
   cursor: pointer;
@@ -318,13 +319,13 @@
 }
 
 .card:hover {
-  border-color: var(--color-accent-hover);
+  box-shadow: inset 0 0 0 1px var(--color-accent-hover);
   background: var(--color-surface-raised);
   transform: translateY(-1px);
 }
 
 .card[data-selected="true"] {
-  border-color: var(--color-accent);
+  box-shadow: inset 0 0 0 1px var(--color-accent);
   background: var(--color-accent-muted);
 }
 
@@ -354,7 +355,7 @@
 
 .detail {
   background: var(--color-surface);
-  border: 1px solid var(--color-border);
+  box-shadow: inset 0 0 0 1px var(--color-border-subtle);
   border-radius: var(--radius-lg);
   padding: var(--space-6);
 }
@@ -399,7 +400,7 @@
 
 .detailTag {
   background: var(--color-surface-raised);
-  border: 1px solid var(--color-border);
+  box-shadow: inset 0 0 0 1px var(--color-border-subtle);
   border-radius: var(--radius-full);
   padding: var(--space-1) var(--space-3);
   font-size: var(--text-xs);
@@ -408,7 +409,7 @@
 
 .detailTag[data-accent="true"] {
   background: var(--color-accent-muted);
-  border-color: var(--color-accent);
+  box-shadow: inset 0 0 0 1px var(--color-accent);
   color: var(--color-accent);
 }
 
@@ -482,7 +483,7 @@
 
 .abilityBox {
   background: var(--color-surface);
-  border: 1px solid var(--color-border);
+  box-shadow: inset 0 0 0 1px var(--color-border-subtle);
   border-radius: var(--radius-lg);
   padding: var(--space-4);
   display: flex;
@@ -514,7 +515,8 @@
   width: 28px;
   height: 28px;
   border-radius: var(--radius-md);
-  border: 1px solid var(--color-border);
+  border: none;
+  box-shadow: inset 0 0 0 1px var(--color-border-subtle);
   background: var(--color-surface-raised);
   color: var(--color-text-secondary);
   font-size: var(--text-base);
@@ -531,7 +533,7 @@
 .abilityBtn:hover:not(:disabled) {
   background: var(--color-accent-muted);
   color: var(--color-accent);
-  border-color: var(--color-accent);
+  box-shadow: inset 0 0 0 1px var(--color-accent);
 }
 
 .abilityBtn:disabled {
@@ -568,7 +570,7 @@
   align-items: center;
   justify-content: space-between;
   background: var(--color-surface);
-  border: 1px solid var(--color-border);
+  box-shadow: inset 0 0 0 1px var(--color-border-subtle);
   border-radius: var(--radius-md);
   padding: var(--space-3) var(--space-4);
   margin-bottom: var(--space-4);
@@ -586,7 +588,7 @@
 
 .standardArrayInfo {
   background: var(--color-surface);
-  border: 1px solid var(--color-border);
+  box-shadow: inset 0 0 0 1px var(--color-border-subtle);
   border-radius: var(--radius-md);
   padding: var(--space-3) var(--space-4);
   margin-bottom: var(--space-4);
@@ -614,9 +616,10 @@
 
 .standardArraySelect {
   width: 100%;
-  background: var(--color-surface-raised);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-md);
+  background: var(--color-bg-subtle);
+  border: none;
+  border-bottom: 2px solid var(--color-surface-high);
+  border-radius: 0;
   padding: var(--space-1) var(--space-2);
   color: var(--color-text-primary);
   font-size: var(--text-sm);
@@ -647,7 +650,7 @@
 
 .reviewSection {
   background: var(--color-surface);
-  border: 1px solid var(--color-border);
+  box-shadow: inset 0 0 0 1px var(--color-border-subtle);
   border-radius: var(--radius-lg);
   padding: var(--space-4);
 }
@@ -692,9 +695,11 @@
 }
 
 .formLabel {
-  font-size: var(--text-sm);
+  font-size: var(--text-label-md);
   font-weight: var(--font-medium);
   color: var(--color-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
 .formHint {
@@ -705,22 +710,23 @@
 .formInput,
 .formTextarea,
 .formSelect {
-  background: var(--color-surface-raised);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-md);
+  background: var(--color-bg-subtle);
+  border: none;
+  border-bottom: 2px solid var(--color-surface-high);
+  border-radius: 0;
   padding: var(--space-2) var(--space-3);
   color: var(--color-text-primary);
   font-size: var(--text-sm);
   font-family: var(--font-body);
   width: 100%;
-  transition: border-color var(--transition-fast);
+  transition: border-bottom-color var(--transition-fast);
 }
 
 .formInput:focus,
 .formTextarea:focus,
 .formSelect:focus {
   outline: none;
-  border-color: var(--color-accent);
+  border-bottom-color: var(--color-accent);
 }
 
 .formTextarea {
