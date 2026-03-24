@@ -44,37 +44,39 @@
 /* ── Variants ─────────────────────────────────────────────────────────────── */
 .btn--primary {
   background: var(--color-accent);
-  color: var(--color-text-inverse);
+  color: var(--color-on-primary);
 }
 .btn--primary:hover:not(:disabled) {
   background: var(--color-accent-hover);
+  color: var(--color-on-primary);
   box-shadow: var(--shadow-accent);
 }
 
 .btn--secondary {
-  background: var(--color-surface-raised);
-  color: var(--color-text-primary);
-  border: 1px solid var(--color-border);
+  background: var(--color-surface-high);
+  color: var(--color-accent);
 }
 .btn--secondary:hover:not(:disabled) {
-  background: var(--color-border);
+  background: var(--color-surface-variant);
 }
 
 .btn--ghost {
   background: transparent;
-  color: var(--color-text-secondary);
+  color: var(--color-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-size: var(--text-label-md);
 }
 .btn--ghost:hover:not(:disabled) {
-  background: var(--color-surface-raised);
+  background: var(--color-surface);
   color: var(--color-text-primary);
 }
 
 .btn--danger {
   background: var(--color-danger-muted);
   color: var(--color-danger);
-  border: 1px solid var(--color-danger);
 }
 .btn--danger:hover:not(:disabled) {
-  background: var(--color-danger);
-  color: #fff;
+  background: color-mix(in srgb, var(--color-danger) 20%, var(--color-surface));
+  color: var(--color-text-primary);
 }
